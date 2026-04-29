@@ -7,33 +7,37 @@ while True:
 
 
     if op == 1:
+
         usuario = input('Digite seu nome de usuário: ')
-        cadastros.append(f'usuario: {usuario}')
         senha = input('Digite sua senha: ')
-        cadastros.append(f'senha: {senha}')
         tipo = input('Digite o tipo de usuário (ADM / Cliente): ').lower()
-        if tipo != 'adm' or tipo != 'cliente':
+
+        if tipo != 'adm' and tipo != 'cliente':
             while tipo != 'adm' and tipo != 'cliente':
                 print('Tipo de usuário não definido')
                 tipo = input('Digite o tipo de usuário (ADM / Cliente): ').lower()
-            cadastros.append(f'tipo: {tipo}')
+            cadastros.append([usuario,senha,tipo])
         else:
-            cadastros.append(f'tipo: {tipo}')
+            cadastros.append([usuario,senha,tipo]) #lista dentro de lista, usuario = 0, senha = 1, tipo = 2
+        print(cadastros)
 
-'''
-#apenas o ultimo usuario a cadastrar consegue entrar, não sei como ajeitar
     elif op ==2:
+
         print('--- Bem-vindo(a) de volta ---')
         usuario_entrar = input('Digite seu usuário: ')
         senha_entrar = input('Digite sua senha: ')
-        if cadastros == []:
-            print('Não há nenhum cadastro feito.')
-        elif usuario == usuario_entrar and senha_entrar == senha:
-            print('acesso consedido')
-            if tipo == 'adm':
-                print('você é adm')
+        usuario_encontrado = False
+
+        for pessoas in cadastros:
+            if usuario_entrar == pessoas[0] and senha_entrar == pessoas[1]:
+                usuario_encontrado = True
+                print(f'bem-vindo(a), {pessoas[0]}')
             else:
-                print('Vc é cliente')
-        else:
-            print('acesso negado')
-'''
+                if cadastros == []:
+                    print('Não há nenhum usuário cadastrado.')
+                elif usuario_encontrado == False:
+                    print('usuário não encontrado.')
+            if pessoas[2] == 'adm': #continua com pessoas porque ainda está dentro do for
+                print('adm')
+            else:
+                print('cliente')
