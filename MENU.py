@@ -1,66 +1,64 @@
-cadastros = []
-adms = [['kamille', '1234'], ['clara', '5678']]
+usuarios = [
+    # nome, senha, eh_admin
+    ['kamille', '1234', True],
+    ['clara', '5678', True],
+]
+
 while True:
-    print('='*10,   'MENU  PRINCIPAL  |  FAZENDA SERTÃO',   '='*10 )
+    print('='*10,   'MENU  PRINCIPAL  |  FAZENDA SERTÃO',   '='*10)
     print('1 - CADRASTRAR USUÁRIO')
     print('2 - LOGIN')
     print('3 - SAIR')
     print('\n')
-    op = int(input('QUAL OPÇÃO VOCÊ DESEJA REALIZAR:   '))
+    op = input('QUAL OPÇÃO VOCÊ DESEJA REALIZAR:   ')
 
-    if op == 1:
-
+    if op == '1':
         usuario = input('Crie um nome de usuário:  ')
 
         while True:
             senha = input('Crie sua senha: ')
-            
+
             if len(senha) <= 3:
                 print('Senha curta | Deve conter +3 caracteres.\n')
                 continue
-            elif senha == usuario:
+
+            if senha == usuario:
                 print('Senha fraca! Não pode conter o mesmo nome do usuário.\n')
                 continue
-            
+
             confirmacao = input('Confirme sua senha:')
             print('\n')
-            
+
             if senha != confirmacao:
                 print('As senhas não coincidem. Tente novamente.\n')
-            else:
-                cadastros.append([usuario, senha])
-                break
+                continue
+
+            usuarios.append([usuario, senha, False])
+            break
 
         print('Usuário cadastrado com sucesso! | Faça o login')
         print()
-        
 
-
-    if op == 2:
-        usuario = input('Usuário:  ').lower ()
+    if op == '2':
+        usuario = input('Usuário:  ').lower()
         senha = input('Senha:  ')
 
-        for adm in adms:
-            if usuario == adm[0] and senha == adm[1]:
+        for usuario in usuarios:
+            if usuario == usuario[0] and senha == usuario[1] and usuario[2] == True:
                 print('Login ADMIN')
                 break
-        else:
-            for pessoa in cadastros:
-                if usuario == pessoa[0] and senha == pessoa[1]:
-                    print('Login CLIENTE')
-                    break
-            else:
-                print('Usuário ou senha incorretos')
-        break            
+            if usuario == usuario[0] and senha == usuario[1] and usuario[2] == False:
+                print('Login')
+                break
+        
+        print('Usuário não encontrado')
 
 
-
-
-#FAZENDO ALTERAÇÕES
+# FAZENDO ALTERAÇÕES
 '''
 
-        if tipo != 'adm' and tipo != 'cliente':
-            while tipo != 'adm' and tipo != 'cliente':
+        if tipo != 'usuario' and tipo != 'cliente':
+            while tipo != 'usuario' and tipo != 'cliente':
                 print('Tipo de usuário não definido')
                 tipo = input('Digite o tipo de usuário (ADM / Cliente): ').lower()
             cadastros.append([usuario,senha,tipo])
@@ -81,7 +79,7 @@ while True:
                 print(f'bem-vindo(a), {pessoas[0]}')
             else:
                print('usuário não encontrado.')
-            if pessoas[2] == 'adm': #continua com pessoas porque ainda está dentro do for
+            if pessoas[2] == 'usuario': #continua com pessoas porque ainda está dentro do for
 
                 print('---Menu (ADM)---')
                 rebanho = []
