@@ -1,9 +1,16 @@
-rebanho = []
+rebanho = [['bovino de leite', 'brinco', 1, 'lactação'], ['caprino', 'numero', 2, 'engorda'], ['ovino', 'numero', 3, 'vendido'], ['suino', 'brinco', 4, 'disponivel para venda'], ['leitao', 'brinco', 5, 'engorda']] # rebanho fora do while aaaaaaaaaaaaaaaaaa
+# ESSE NÃO É O MENU OFICIAL
+
+
+
+
+# no menu adm tem 2 variaveis 'op', a primeira é para o menu principal e a 'op2' é para o menu de alteração --> mudar os números qnd passar para o projeto
 while True:
     print('---Menu (ADM)---')
     print('1 - Cadastrar animal no rebanho')
     print('2 - Buscar animal')
     print('3 - Atualizar lista de animais')
+    print('4 - Retirar animal da lista')
     op = int(input('Digite o que deseja fazer: '))
 
     if op == 1: 
@@ -47,7 +54,7 @@ while True:
             elif not achei:
                 print('Animal não encontrado')
 
-# Testar melhor -- Alteração na opção 'Atualizar lista de animais'
+# Testar melhor
     elif op ==3:
         busca = int(input('Informe o número do animal que está procurando: '))
         achei = False
@@ -72,8 +79,8 @@ while True:
                     print(f'Tipo de animal inalterado. {animais[0]}')
 
                 #tipo de identificação
-                modificar2 = input('você deseja modificar o tipo de identificação do animal? (S/N): ').upper()
-                if modificar2 == 'S':
+                modificar = input('você deseja modificar o tipo de identificação do animal? (S/N): ').upper()
+                if modificar == 'S':
                     identificar = ('brinco', 'numero')
                     print(f'Tipos de identificação: {identificar}')
                     nova_identificacao = input('Digite como identificar o animal: ').lower()
@@ -87,8 +94,8 @@ while True:
                     print(f'Identificação do animal inalterada. identificação = {animais[1]}')
 
                 #numero de id
-                modificar3 = input('O número de identificação será alterado? (S/N): ').upper()
-                if modificar3 == 'S':
+                modificar = input('O número de identificação será alterado? (S/N): ').upper()
+                if modificar == 'S':
                     novo_ID = int(input('Digite o novo número de identificação: '))
                     while novo_ID == numero_ID:
                         print('ID iguais, digite novamente: ')
@@ -99,8 +106,8 @@ while True:
                     print(f'Número de identificação inalterado. Número = {animais[2]}')
 
                 #status do animal
-                modificar4 = input('Deseja alterar o status do animal? (S/N): ').upper()
-                if modificar4 == 'S':
+                modificar = input('Deseja alterar o status do animal? (S/N): ').upper()
+                if modificar == 'S':
                     print(f'status programados: {stats}')
                     novo_status = input('Informe o status do animal: ').lower()
                     while novo_status not in stats:
@@ -114,3 +121,16 @@ while True:
                 print(animais)
         if not achei:
             print('Animal não encontrado')
+
+## novooo -> testar melhor (não coloquei no menuADm)
+    elif op == 4:
+        busca = int(input('Informe o número do animal que está procurando: '))
+        achei = False
+        for animais in rebanho: # para animais(sublista de rebanho) em rebanho(lista)
+            if busca == animais[2]: #buscar na sublista, no item de indice 2 - numero de id -  (sublista - animais | lista - rebanho)
+                achei = True
+                rebanho.remove(animais) #pop é usado pela posição do indice, mas sabemos apenas o número do animal(que é um valor dentro da lista), então utilizamos remove
+                print(f'Animal removido da lista com sucesso! Cadastro = {animais}')
+                print()
+                print(rebanho)
+                break

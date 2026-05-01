@@ -57,7 +57,6 @@ while True:
 
 
 #FAZENDO ALTERAÇÕES
-'''
 
         if tipo != 'adm' and tipo != 'cliente':
             while tipo != 'adm' and tipo != 'cliente':
@@ -126,4 +125,3 @@ while True:
                 elif pessoas[2] == 'cliente':
                     print('cliente')
                     break
-'''
