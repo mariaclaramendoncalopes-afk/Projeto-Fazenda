@@ -50,21 +50,23 @@ while True:
     print('='*10,   'MENU | ADM',   '='*10)
     print('1 - Cadastrar animal no rebanho')
     print('2 - Buscar animal')
-    print('3 - Atualizar lista de animais')
+    print('3 - Modificar dados do animais')
     print('4 - Retirar animal da lista')
     print('5 - Gerenciar produção e derivados')
-    print('6 - Vendas\n')
+    print('6 - Vendas')
+    print('7 - Encerrar programa\n')
     op = input('Digite o que deseja fazer: ')
-    print()
+    print('\n')
 
     if op == '1': 
         print ('  | CADASTRO  |')
         animais_F = ['bovino', 'caprino', 'ovino', 'galinha', 'galo']
-
+        print(f'Tipos disponíveis:  {animais_F}\n')
         tp = input('Informe qual o tipo do animal: ').lower()
 
         if tp not in animais_F:
-            confirmacao = input("Tipo não existe. Deseja cadastrar? (s/n): ").lower()
+            confirmacao = input("Tipo não existe. Deseja cadastrá-lo? (s/n): ").lower()
+
             if confirmacao == 's':
                 animais_F.append(tp)
                 print('Novo tipo adicionado!')
@@ -73,14 +75,14 @@ while True:
                 continue
 
         while True:
-            idd = input("Digite um novo ID de identificação: ")
+            idd = input(f"Digite um novo ID de identificação para ({tp}):  ")
 
             repetido = False
 
             for animal in rebanho:
                 if animal[1] == idd:
                     repetido = True
-                    print("Esse ID já existe, tente outro.")
+                    print("Esse ID já existe, tente outro.\n")
                     break
 
             if repetido:
@@ -127,78 +129,72 @@ while True:
                 break
 
     elif op == '3':
-        print('   | MODIFICAÇÕES |')
+        print('   |   MODIFICAR DADOS DO ANIMAL  |\n')
         busca = input('Informe o IDD do animal que está procurando: ')
         achei = False
 
         for animais in rebanho:
             if busca == animais[1]:
                 achei = True
-                print('Animal encontrado:', animais)
 
-                # id
-                modificar = input('Deseja modificar o número de identificação? (s/n): ').lower()
-                if modificar == 's':
-                    while True:
-                        novo_ID = input('Digite o novo número de identificação: ')
-                        repetido = False
+                while True:
+                    print('Animal encontrado:', animais)
+                    print('\ntipo | idd | status | peso | idade | valor | producao | vacinado | observacoes\n')
 
-                        for animal in rebanho:
-                            if animal[1] == novo_ID and animal != animais:
-                                repetido = True
-                                print('ID iguais, digite novamente: ')
+                    modificar = input('O que deseja modificar?\n').lower()
+                    alterou = True
+
+                    if modificar == 'tipo':
+                        animais[0] = input('Novo tipo: ').lower()
+
+                    elif modificar == 'idd':
+                        while True:
+                            novo_ID = input('Novo IDD: ')
+                            repetido = False
+
+                            for animal in rebanho:
+                                if animal[1] == novo_ID and animal != animais:
+                                    repetido = True
+                                    print('Esse ID já existe.')
+                                    break
+
+                            if not repetido:
+                                animais[1] = novo_ID
                                 break
 
-                        if not repetido:
-                            break
+                    elif modificar == 'status':
+                        animais[2] = input('Novo status: ').lower()
 
-                    animais[1] = novo_ID
-                    print(f'Número de identificação alterado: {novo_ID}')
-                else:
-                    print(f'Número de identificação inalterado: {animais[1]}')
+                    elif modificar == 'peso':
+                        animais[3] = input('Novo peso: ')
 
-                # status
-                modificar = input('Deseja alterar o status? (S/N): ').lower()
-                if modificar == 's':
-                    novo_status = input('Novo status: ').lower()
-                    animais[2] = novo_status
-                    print(f'Status alterado: {novo_status}')
-                else:
-                    print(f'Status inalterado: {animais[2]}')
+                    elif modificar == 'idade':
+                        animais[4] = input('Nova idade: ')
 
-                # peso
-                modificar = input('Deseja alterar o peso? (S/N): ').lower()
-                if modificar == 's':
-                    animais[3] = input('Novo peso: ')
-                
-                # idade
-                modificar = input('Deseja alterar a idade? (S/N): ').lower()
-                if modificar == 's':
-                    animais[4] = input('Nova idade: ')
+                    elif modificar == 'valor':
+                        animais[6] = input('Novo valor: ')
 
-                # valor
-                modificar = input('Deseja alterar o valor? (S/N): ').lower()
-                if modificar == 's':
-                    animais[6] = input('Novo valor: ')
+                    elif modificar == 'producao':
+                        animais[7] = input('Nova produção: ')
 
-                # produção
-                modificar = input('Deseja alterar a produção? (S/N): ').lower()
-                if modificar == 's':
-                    animais[7] = input('Nova produção: ')
+                    elif modificar == 'vacinado':
+                        animais[8] = input('Vacinado (sim/nao): ')
 
-                # vacinado
-                modificar = input('Deseja alterar vacinação? (S/N): ').lower()
-                if modificar == 's':
-                    animais[8] = input('Vacinado (sim/nao): ')
+                    elif modificar == 'observacoes':
+                        animais[9] = input('Observações: ')
 
-                # observações
-                modificar = input('Deseja alterar observações? (S/N): ').lower()
-                if modificar == 's':
-                    animais[9] = input('Observações: ')
+                    else:
+                        print('Campo inválido')
+                        alterou = False
 
-                print('Animal atualizado:', animais)
-                atualizar = input('Deseja ')
-                print('\n')
+                    if alterou:
+                        print('\nAnimal atualizado:', animais)
+
+                    continuar = input('\nDeseja alterar mais alguma coisa? (s/n): ').lower()
+                    if continuar != 's':
+                        print()
+                        break
+
                 break
 
         if not achei:
@@ -246,7 +242,8 @@ while True:
             print('1 - Registrar produção diária')
             print('2 - Adicionar derivado')
             print('3 - Ver estoque')
-            print('4 - Ver produção\n')
+            print('4 - Ver produção')
+            print('5 - Sair de gerenciamento\n')
 
             esc = input('Qual opção deseja realizar: \n')
 
@@ -298,7 +295,7 @@ while True:
                 print()
 
             else:
-                print('Opção inválida\n')
+                break
 
             continuar = input('Deseja fazer outra operação na produção? (s/n): ').lower()
             if continuar != 's':
@@ -308,12 +305,13 @@ while True:
         while True:
             print('1 - Vender animal')
             print('2 - Vender derivado')
-            print('3 - Ver vendas\n')
+            print('3 - Ver vendas')
+            print('4 - Sair de vendas\n')
 
-            esc = input('Escolha: ')
+            esc = input('Digite uma opção: ')
 
             if esc == '1':
-                print('\n--- ANIMAIS PARA VENDA ---')
+                print('\n--- ANIMAIS DISPONÍVEIS PARA VENDA ---')
                 tem = False
 
                 for a in rebanho:
@@ -381,7 +379,5 @@ while True:
                 print(f'\nTotal: R${total}\n')
 
             else:
-                print('Opção inválida\n')
-
-            if input('Continuar em vendas? (s/n): ').lower() != 's':
                 break
+
