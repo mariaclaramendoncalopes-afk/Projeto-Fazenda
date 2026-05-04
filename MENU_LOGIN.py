@@ -52,3 +52,10 @@ while True:
                 break
         else:
             print('Usuário não encontrado')
+
+    if op == '3':
+        print('\nEncerrando sistema...')
+        print('Salvando dados...')
+        print('Finalizando conexões...')
+        print('\nSistema encerrado com sucesso. Até logo!')
+        break
