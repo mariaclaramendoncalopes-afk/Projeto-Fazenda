@@ -50,6 +50,7 @@ estoque_derivados = [
 ]
 
 vendas = []
+compras = []
 
 while True:
     print('='*10,   'MENU  PRINCIPAL  |  FAZENDA SERTÃO',   '='*10)
@@ -356,9 +357,11 @@ while True:
                                 print('================= DERIVADOS =================')
                                 nome = input('Nome do produto: ').lower()
                                 peso = input('Peso (kg): ')
-                                valor = input('Valor: ')
+                                valor = input('Valor (por kg): ')
+                                valor_estoque = float(peso)*float(valor)
 
-                                estoque_derivados.append([nome, peso, valor])
+
+                                estoque_derivados.append([nome, peso, valor, valor_estoque])
 
                                 print('\nProduto adicionado!\n')
 
@@ -369,7 +372,8 @@ while True:
                                     print(f'Produto: {p[0]}')
                                     print(f'Peso: {p[1]} kg')
                                     print(f'Valor: R${p[2]}')
-                                print()
+                                    print(f'{p[3]}')
+                                    print('\n')
 
                             elif esc == '4':
                                 print('\n================= VER PRODUÇÃO =================')
@@ -378,7 +382,7 @@ while True:
                                     print(f'Data: {p[0]}')
                                     print(f'Leite: {p[1]} litros')
                                     print(f'Ovos: {p[2]} unidades')
-                                print()
+                                    print('\n')
 
                             else:
                                 break
@@ -473,12 +477,13 @@ while True:
 
 
             if usuario == pessoa[0] and senha == pessoa[1] and pessoa[2] == False:
-                compras = []
                 while True:
                     print('='*10,   'MENU | CLIENTE',   '='*10)
                     print('1 - Visualizar estoque')
                     print('2 - Comprar produtos')
-                    # print('3 - Agendar retirada/transporte')
+                    print('3 - Agendar retirada/transporte')
+                    print('4 - Sair')
+
                     op = input('Digite o que deseja fazer: ')
                     print()
 
@@ -490,12 +495,14 @@ while True:
                             print('Nenhum item há no estoque no momento, tente novamente mais tarde.\n')
 
                         print('=== ANIMAIS PARA VENDA ===')
-                        for posicaoA in range(len(vendas)):                        
-                            print(f'{vendas[posicaoA]}\n')
-                        if len(vendas) == 0:
+                        achei = False
+                        for posicaoA in rebanho:
+                            if posicaoA[2] == 'venda':
+                                print(f'{posicaoA}')
+                                achei = True
+                        if not achei:
                             print('Nenhum animal para venda no momento, tente novamente mais tarde.\n')
 
-                    #Não está completo
 
                     elif op == '2': #buscar o item e depois comprar -> apagar da lista 'vendas' e colocar na lista 'compras'
                         busca = input('O que deseja comprar? ( D - derivados/ A - animal): ').upper()
@@ -509,7 +516,7 @@ while True:
                                     print('Item encontrado:', itens)
                                     compras.append([usuario, itens])
                                     #remover item da lista 'estoque_derivados'
-                                    print(f'Usuário {usuario[0]} comprou: {itens}')
+                                    print(f'Usuário {usuario} comprou: {itens}')
                                     estoque_derivados.remove(itens)
                                     break
                                 elif achei:
@@ -518,22 +525,34 @@ while True:
 
 
                         elif busca == 'A':
-                            buscaA = input('Informe o IDD do animal que deseja comprar: ')
-
-                            for animal_V in vendas:
-                                if buscaA == animal_V[3]:
+                            print('=== ANIMAIS PARA VENDA ===')
+                            achei = False
+                            for posicaoA in rebanho:
+                                if posicaoA[2] == 'venda':
+                                    print(f'{posicaoA}')
                                     achei = True
-                                    print('Animal encontrado:', vendas)
-                                    compras.append([usuario, animal_V])
-                                    print(f'Usuário {usuario} comprou: {animal_V}')
-                                    vendas.remove(animal_V)
-                                    print(vendas)
+                            if not achei:
+                                print('Nenhum animal para venda no momento, tente novamente mais tarde.\n')
 
-                                    break
-                                elif achei:
-                                    print('Animal não encontrado')
-                                    break      
-                        print(compras)
+                            buscaA = input('Informe o IDD do animal que deseja comprar: ')
+                            for animais in rebanho:
+                                if buscaA == animais[1]:
+                                    compras.append(animais)
+                                    rebanho.remove(animais)
+                                    print('Compra realizada com sucesso')
+                    elif op == '3':
+                            
+                            print('===  AGENDAMENTOS  |  RETIRADAS  ===\n')
+                            print('Carrinho:')
+                            print(compras)
+                            
+                            #colocar if pra confirmar compra
+                            #perguntar forma de pagamento do cliente. parcelas/pix/
+                            #frete grátis ou frete pago de acordo com qunts dias a pessoa quer q chegue seu pedido
+                            #entrega com 15 dias úteis
+
+                    elif op == '4':
+                        break      
 
         else:
             print('Usuário não encontrado\n')
