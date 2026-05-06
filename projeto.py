@@ -4,35 +4,28 @@ usuarios = []
 rebanho = [
     ["bovino", "001", "lactação", "510", "4", "F", "5500", "26", "sim", "prenha"],
     ["bovino", "002", "lactação", "508", "5", "F", "5000", "25", "sim", ""],
-    ["bovino", "003", "engorda", "550", "3", "M", "4200", "0", "sim", ""],
     ["bovino", "004", "venda", "460", "4", "M", "4000", "0", "nao", ""],
-    ["bovino", "005", "lactação", "430", "3", "F", "3800", "18", "sim", ""],
-    ["bovino", "006", "doente", "400", "5", "F", "3000", "10", "nao", "febre"],
-    ["bovino", "007", "lactação", "470", "6", "F", "4200", "15", "sim", ""],
+    ["bovino", "007", "venda", "470", "6", "F", "4200", "15", "sim", ""],
 
     ["caprino", "101", "lactação", "55", "3", "F", "900", "3", "sim", ""],
     ["caprino", "102", "lactação", "60", "4", "F", "1100", "4", "sim", ""],
-    ["caprino", "103", "engorda", "70", "2", "M", "1200", "0", "sim", ""],
     ["caprino", "104", "venda", "50", "3", "M", "1000", "0", "nao", ""],
-    ["caprino", "105", "lactação", "52", "2", "F", "1300", "2", "sim", "prenha"],
-    ["caprino", "106", "doente", "45", "4", "F", "600", "1", "nao", "em tratamento"],
-    ["caprino", "107", "engorda", "75", "3", "M", "1300", "0", "sim", ""],
-    ["caprino", "108", "lactação", "58", "5", "F", "950", "3", "sim", ""],
 
     ["ovino", "201", "lactação", "65", "3", "F", "1200", "2", "sim", "prenha"],
-    ["ovino", "202", "engorda", "80", "2", "M", "1400", "0", "sim", ""],
     ["ovino", "203", "venda", "70", "3", "M", "1300", "0", "nao", ""],
     ["ovino", "204", "lactação", "60", "4", "F", "1100", "2", "sim", ""],
 
     ["galinha", "401", "producao", "3", "1", "F", "50", "1", "sim", ""],
     ["galinha", "402", "producao", "2", "1", "F", "45", "1", "sim", ""],
     ["galinha", "403", "producao", "2", "2", "F", "55", "1", "sim", ""],
-    ["galinha", "404", "producao", "3", "1", "F", "60", "1", "sim", ""],
-    ["galinha", "405", "producao", "3", "2", "F", "70", "0", "sim", "chocando"],
 
     ["galo", "501", "engorda", "4", "2", "M", "80", "0", "sim", ""],
     ["galo", "502", "venda", "3", "1", "M", "70", "0", "sim", ""]
 ]
+
+#REMOVER ANIMAIS DA LISTA E OLHAR OQ ELES PRODUZEM, OLHAR OS DERIVADOS DELES, QUANTO PRODUZEM
+#PESQUISAR MAIS SOBRE OS DERIVADOS
+#E FAZER ALGO COM O LEITE E OVOS, SISTEMA DE VENDA DE OVOS TALVEZ-BANDEIJA
 
 producao_leite = [
     ["01/06", "58", "5"],
@@ -44,7 +37,7 @@ estoque_derivados = [
     ["queijo manteiga", "4", "150"],
     ["requeijão", "3", "90"]
 ]
-
+#adicionar mais derivados
 vendas = []
 
 while True:
