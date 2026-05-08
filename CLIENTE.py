@@ -44,12 +44,12 @@ producao_leite = [
 ]
 
 estoque_derivados = [
-    ["queijo coalho", "5", "120"],
-    ["queijo manteiga", "4", "150"],
-    ["requeijão", "3", "90"]
+    ["queijo coalho", "5", "24", 120],
+    ["queijo manteiga", "4", "37.5", 150],
+    ["requeijão", "3", "30", 90]
 ]
 
-vendas = []
+vendas = [["animal", "bovino", "4000", "004"]]
 compras = []
 
 while True:
@@ -62,7 +62,7 @@ while True:
     op = input('QUAL OPÇÃO VOCÊ DESEJA REALIZAR:   ')
 
     if op == '1':
-        usuario = input('Crie um nome de usuário:  ')
+        usuario = input('Crie um nome de usuário:  ').lower()
 
         while True:
             senha = input('Crie sua senha: ')
@@ -164,14 +164,14 @@ while True:
                             if repetido:
                                 continue
 
-                            status = input('Status do animal:  ')
+                            status = input('Status do animal:  ').lower()
                             peso = input('Peso do animal:  ')
                             idade = input('Idade do animal:  ')
-                            sexo = input('Sexo (F/M):  ')
+                            sexo = input('Sexo (F/M):  ').upper()
                             valor = input('Valor:  ')
                             producao = input('Produção diária:  ')
-                            vacinado = input('É vacinado? (sim/nao):  ')
-                            observacoes = input('Observação:  ')
+                            vacinado = input('É vacinado? (sim/nao):  ').lower()
+                            observacoes = input('Observação:  ').lower()
 
                             rebanho.append([tp, idd, status, peso, idade, sexo, valor, producao, vacinado, observacoes])
 
@@ -225,7 +225,18 @@ while True:
                                 achei = True
 
                                 while True:
-                                    print('Animal encontrado:', animais)
+                                    print('\n--- ANIMAL ENCONTRADO ---')
+                                    print('Tipo:', animais[0])
+                                    print('ID:', animais[1])
+                                    print('Status:', animais[2])
+                                    print('Peso:', animais[3])
+                                    print('Idade:', animais[4])
+                                    print('Sexo:', animais[5])
+                                    print('Valor:', animais[6])
+                                    print('Produção:', animais[7])
+                                    print('Vacinado:', animais[8])
+                                    print('Observações:', animais[9])
+                                    print('-------------------------')
                                     print('\ntipo | idd | status | peso | idade | valor | producao | vacinado | observacoes\n')
 
                                     modificar = input('O que deseja modificar?\n').lower()
@@ -336,7 +347,7 @@ while True:
 
                             if esc == '1':
                                 print('================= PRODUÇÃO =================')
-                                data = input('Data: ')
+                                data = input('Data (dia/mês): ')
                                 leite = 0
                                 ovos = 0
 
@@ -356,9 +367,11 @@ while True:
                             elif esc == '2':
                                 print('================= DERIVADOS =================')
                                 nome = input('Nome do produto: ').lower()
-                                peso = input('Peso (kg): ')
+                                peso = input('Peso (kg/L): ')
                                 valor = input('Valor (por kg): ')
                                 valor_estoque = float(peso)*float(valor)
+                                #Adicionar valor, peso e valor do estoque se já tiver o produto
+                                #Não tem como alterar o estoque
 
 
                                 estoque_derivados.append([nome, peso, valor, valor_estoque])
@@ -370,9 +383,9 @@ while True:
                                 for p in estoque_derivados:
                                     print('----------------')
                                     print(f'Produto: {p[0]}')
-                                    print(f'Peso: {p[1]} kg')
-                                    print(f'Valor: R${p[2]}')
-                                    print(f'{p[3]}')
+                                    print(f'Peso no estoque: {p[1]} kg')
+                                    print(f'Valor do kg: R${p[2]}')
+                                    print(f'Valor total do estoque: R${p[3]}')
                                     print('\n')
 
                             elif esc == '4':
@@ -436,22 +449,28 @@ while True:
                             elif esc == '2':
                                 print('\n--- ESTOQUE ---')
                                 for p in estoque_derivados:
-                                    print(f'{p[0]} | {p[1]}kg | R${p[2]}')
+                                    print(f'{p[0]} | {p[1]}kg | R${p[2]} (por kg)')
 
                                 nome = input('\nProduto: ').lower()
+                                quantidade_vendida = input('Digite quantos KG será vendido: ')
                                 achei = False
 
                                 for p in estoque_derivados:
                                     if p[0] == nome:
                                         achei = True
 
-                                        confirmar = input('Confirmar venda? (s/n): ').lower()
-                                        if confirmar == 's':
-                                            vendas.append(['derivado', p[0], p[2]])
-                                            estoque_derivados.remove(p)
-                                            print('\nProduto vendido!\n')
+                                        if float(quantidade_vendida) <= float(p[1]):
+                                            p[3] = p[3] - float(quantidade_vendida) * float(p[2])
+                                            p[1] = float(p[1]) - float(quantidade_vendida)
+                                            confirmar = input('Confirmar venda? (s/n): ').lower()
+                                            if confirmar == 's':                                        
+                                                vendas.append(['derivado', p[0], p[2]])
+                                                print('\nProduto vendido!\n')
+                                            else:
+                                                print('\nCancelado\n')
                                         else:
-                                            print('\nCancelado\n')
+                                            print('Quantidade indisponível')
+                                            #não sei o que acontece se todo o estoque for comprado
                                         break
 
                                 if not achei:
@@ -463,7 +482,7 @@ while True:
                                 total = 0
 
                                 for v in vendas:
-                                    print(f'{v[0]} | {v[1]} | R${v[2]} | IDD: {v[3]}') #adicionei idd
+                                    print(f'{v[0]} | {v[1]} | R${v[2]} | IDD: {v[3]}') #adicionei idd ' {v[3]} - e tirei dnv kkkk
                                     total += int(v[2])
 
                                 print(f'\nTotal: R${total}\n')
@@ -508,20 +527,28 @@ while True:
                         busca = input('O que deseja comprar? ( D - derivados/ A - animal): ').upper()
                         achei = False
                         if busca == 'D':
+                            print('\n--- ESTOQUE ---')
+                            for p in estoque_derivados:
+                                print(f'{p[0]} | {p[1]}kg | R${p[2]} (por kg)')
                             buscaD = input('Digite o item que deseja comprar: ').lower()
+                            quantidade_comprada = input('Digite quantos KG será vendido: ')
 
                             for itens in estoque_derivados:
-                                if buscaD == itens[0]:
+                                if itens[0] == buscaD:
                                     achei = True
-                                    print('Item encontrado:', itens)
-                                    compras.append([usuario, itens])
-                                    #remover item da lista 'estoque_derivados'
-                                    print(f'Usuário {usuario} comprou: {itens}')
-                                    estoque_derivados.remove(itens)
-                                    break
-                                elif achei:
-                                    print('Item não encontrado')
-                                    break
+
+                                    if float(quantidade_comprada) <= float(itens[1]):
+                                        itens[3] = itens[3] - float(quantidade_comprada) * float(itens[2])
+                                        itens[1] = float(itens[1]) - float(quantidade_comprada)
+                                        confirmar = input('Confirmar venda? (s/n): ').lower()
+                                        if confirmar == 's':                                        
+                                            compras.append([usuario, itens[0], quantidade_comprada])
+                                            #tem q tirar o produto do estoque
+                                            print('\nProduto comprado!\n')
+                                        else:
+                                            print('\nCancelado\n')
+                                    else:
+                                        print('Quantidade indisponível')
 
 
                         elif busca == 'A':
@@ -540,6 +567,7 @@ while True:
                                     compras.append(animais)
                                     rebanho.remove(animais)
                                     print('Compra realizada com sucesso')
+                        
                     elif op == '3':
                             
                             print('===  AGENDAMENTOS  |  RETIRADAS  ===\n')
