@@ -460,12 +460,12 @@ while True:
                                         achei = True
 
                                         if float(quantidade_vendida) <= float(p[1]):
-                                            p[3] = p[3] - float(quantidade_vendida) * float(p[2])
-                                            p[1] = float(p[1]) - float(quantidade_vendida)
                                             confirmar = input('Confirmar venda? (s/n): ').lower()
-                                            if confirmar == 's':                                        
+                                            if confirmar == 's':
+                                                p[3] = p[3] - float(quantidade_vendida) * float(p[2])
+                                                p[1] = float(p[1]) - float(quantidade_vendida)                                        
                                                 vendas.append(['derivado', p[0], p[2]])
-                                                print('\nProduto vendido!\n')
+                                                print('\nProduto vendido!\n')                                                                                        
                                             else:
                                                 print('\nCancelado\n')
                                         else:
@@ -482,7 +482,7 @@ while True:
                                 total = 0
 
                                 for v in vendas:
-                                    print(f'{v[0]} | {v[1]} | R${v[2]} | IDD: {v[3]}') #adicionei idd ' {v[3]} - e tirei dnv kkkk
+                                    print(f'{v[0]} | {v[1]} | R${v[2]}') #adicionei idd ' {v[3]} - e tirei dnv kkkk
                                     total += int(v[2])
 
                                 print(f'\nTotal: R${total}\n')
@@ -538,10 +538,10 @@ while True:
                                     achei = True
 
                                     if float(quantidade_comprada) <= float(itens[1]):
-                                        itens[3] = itens[3] - float(quantidade_comprada) * float(itens[2])
-                                        itens[1] = float(itens[1]) - float(quantidade_comprada)
                                         confirmar = input('Confirmar venda? (s/n): ').lower()
-                                        if confirmar == 's':                                        
+                                        if confirmar == 's':
+                                            itens[3] = itens[3] - float(quantidade_comprada) * float(itens[2])
+                                            itens[1] = float(itens[1]) - float(quantidade_comprada)                                        
                                             compras.append([usuario, itens[0], quantidade_comprada])
                                             #tem q tirar o produto do estoque
                                             print('\nProduto comprado!\n')
@@ -567,11 +567,12 @@ while True:
                                     compras.append(animais)
                                     rebanho.remove(animais)
                                     print('Compra realizada com sucesso')
+                                break
                         
                     elif op == '3':
                             
                             print('===  AGENDAMENTOS  |  RETIRADAS  ===\n')
-                            print('Carrinho:')
+                            print(f'Carrinho de {[usuario]}:') # O carrinho está aparecendo todos os usuários
                             print(compras)
                             
                             #colocar if pra confirmar compra
