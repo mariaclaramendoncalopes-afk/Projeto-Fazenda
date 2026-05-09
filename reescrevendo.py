@@ -151,22 +151,59 @@ while True:
                         while True:
                             id = input(f'Digite um novo ID para ({tipo}):  ')
 
-                            repetido = False
-
                             for animal in rebanho:
                                 if animal[1] == id:
-                                    repetido = True
                                     print(' Esse ID já existe, tente outro.')
                                     break
 
-                            if not repetido:
+                            else:
+                                break
+
+                        status = input('Status do animal:  ').lower ()
+                        peso = input('Peso do animal:  ')
+                        idade = input('Idade do animal:  ')
+                        sexo = input('Sexo do animal:  (F/M)?  ').upper ()
+                        valor = input('Valor do animal:  ')
+                        producao = input('Quanto esse animal produz por dia:  ')
+                        vacinado = input('É vacinado?  (s/n)?  ').lower ()
+                        observacoes = input('Observações: (caso não tenha, deixe o espaço vazio)  ').lower ()
+
+                        rebanho.append([tipo, id, status, peso, idade, sexo, valor, producao, vacinado, observacoes])
+
+                        print(f'\nAnimal | {tipo} | cadastrado com sucesso!!\n')
+
+                        repetir = input('Deseja cadastrar outro animal?  (s/n)  ').lower ()
+
+                        if repetir != 's':
+                            print('\n')
+                            break
+
+                    if op == '2':
+                        print('     |  BUSCAS  |\n')
+                        while True:
+                            busca = input(' Digite o ID do animal que está procurando:  ')
+                            print('\n')
+
+                            for animal in rebanho:
+                                if busca == animal[1]:
+                                    print('Animal encontrado:  ')
+                                    print(animal)
+                                    break
+                            
+                            else:
+                                print('Animal não encontrado. Digite o ID novamente.\n')
+                                continue
+
+                            repetir = input('\nDeseja buscar outro animal?  (s/n)  ').lower ()
+                            print('\n')
+                            
+                            if repetir != 's':
                                 break
 
 
 
 
-
-
+'''
                     break
                 break
 
@@ -192,4 +229,4 @@ while True:
         print(' Salvando dados...')
         print(' Finalizando conexões... ')
         print('\n Sistema encerrado com sucesso. Até logo! ')
-        break
+        break'''
