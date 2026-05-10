@@ -19,16 +19,15 @@ rebanho = [
     ['galinha', '402', 'producao', '2', '1', 'F', '45', 'ovos', '1', 'sim', ''],
 ]
 
-producao_diaria = [
-    ["01/06", "22", "2"],
-]
+producao_diaria = []
 
-#nome, kilos, valor do kilo
 estoque_derivados = [
     ["queijo coalho", "5", "24", "120"],
     ["queijo manteiga", "4", "37.5", "150"],
     ["requeijão", "3", "30", "90"]
 ]
+
+carrinho = []
 
 while True:
     print('-'*10,'     MENU PRINCIPAL   |   FAZENDA SERTÃO     ','-'*10)
@@ -136,9 +135,10 @@ while True:
                     print(' 2  -  Buscar animal')
                     print(' 3  -  Modificar dados do animal')
                     print(' 4  -  Retirar animal da lista')
-                    print(' 5  -  Gerenciar produção e derivados')
-                    print(' 6  -  Relatório')
-                    print(' 7  -  Sair\n')
+                    print(' 5  -  Gerenciar produção')
+                    print(' 6  -  Gerenciar derivados')
+                    print(' 7  -  Relatório')
+                    print(' 8  -  Sair\n')
 
                     op = input('Digite uma opção:  ')
 
@@ -331,19 +331,17 @@ while True:
 
                     elif op == '5':
                         while True:
-                            print('='*10, 'GERENCIAMENTO', '='*10)
+                            print('='*10, 'GERENCIAR  PRODUÇÕES', '='*10)
                             print('\n')
                             print('1 - Registrar produção diária')
-                            print('2 - Adicionar derivado')
-                            print('3 - Ver estoque')
-                            print('4 - Ver produção')
-                            print('5 - Sair de gerenciamento\n')
+                            print('2 - Ver relatório das produções')
+                            print('3 - Sair\n')
 
                             esc = input('Qual opção deseja realizar: ')
 
                             if esc == '1':
 
-                                print('\n================= PRODUÇÃO =================')
+                                print('\n===== REGISTRAR   PRODUÇÃO =====')
 
                                 data = input('Data: ')
 
@@ -372,9 +370,43 @@ while True:
 
                                 print('\nProdução diária registrada com sucesso!\n')
 
+
                             elif esc == '2':
 
-                                print('================= DERIVADOS =================')
+                                print('\n===== RELATÓRIO DE PRODUÇÃO =====\n')
+
+                                if len(producao_diaria) == 0:
+                                    print('Nenhuma produção registrada ainda.\n')
+
+                                else:
+                                    for registro in producao_diaria:
+
+                                        data = registro[0]
+                                        producoes = registro[1]
+
+                                        print(f'DATA: {data}')
+                                        print('--------------------------')
+
+                                        for item in producoes:
+                                            print(f'{item[0]}: {item[1]}')
+
+                                        print('\n')
+                            else:
+                                break
+
+                    elif op == '6':
+                        while True:
+                            print('='*10, 'GERENCIAMENTO  DERIVADOS', '='*10)
+                            print('\n')
+                            print('1 - Adicionar derivado')
+                            print('2 - Ver estoque')
+                            print('3 - Sair\n')
+
+                            esc = input('Qual opção deseja realizar: ')
+
+                            if esc == '1':
+
+                                print('===== ADICIONAR  DERIVADOS =====')
 
                                 nome = input('Nome do produto: ').lower()
                                 quantidade = float(input('Quantidade (kg/L): '))
@@ -403,8 +435,10 @@ while True:
                                     ])
 
                                     print('\nProduto adicionado!\n')
+                                input("Pressione ENTER para voltar ao menu...")
+                                print('\n'*2)
 
-                            elif esc == '3':
+                            elif esc == '2':
 
                                 print('\n================= VER ESTOQUE =================')
 
@@ -420,46 +454,213 @@ while True:
                                         print(f'Valor total do estoque: R$ {p[3]}')
                                         print('\n')
 
-'''                            elif esc == '4':
-
-                                print('\n================= VER PRODUÇÃO =================\n')
-
-                                if len(producao_diaria) == 0:
-                                    print('Nenhuma produção registrada.\n')
-
-                                else:
-
-                                    for registro in producao_diaria:
-
-                                        print('----------------')
-                                        print(f'Data: {registro[0]}')
-
-                                        for item in registro[1]:
-                                            print(f'{item[0]} : {item[1]}')
-
-                                        print('\n')
+                                input("Pressione ENTER para voltar ao menu...")
+                                print('\n'*2)
 
                             else:
                                 break
 
-                            continuar = input('Deseja fazer outra operação? (s/n): ').lower()
-                            if continuar != 's':
-                                break
-
-
                     elif op == '7':
-                        break'''
-'''
-                    break
-                break
+                        print('pensar em algo para sistema extra do ADM')
 
-
-
-
+                
+                    elif op == '8':
+                        break
 
             if usuario == pessoa[0] and senha == pessoa[1] and pessoa[2] == False:
-                print('Menu cliente')
-                break
+
+                carrinho = []
+
+                while True:
+
+                    print('='*10, 'MENU | CLIENTE', '='*10)
+                    print('1 - Ver catálogo')
+                    print('2 - Adicionar ao carrinho')
+                    print('3 - Ver carrinho / finalizar compra')
+                    print('4 - Agendar entrega / transporte')
+                    print('5 - Sair\n')
+
+                    op = input('Digite o que deseja fazer: ')
+                    print()
+
+                    if op == '1':
+
+                        print('=== DERIVADOS DISPONÍVEIS ===')
+                        for p in estoque_derivados:
+                            print(f'{p[0]} | {p[1]} kg | R$ {p[2]} por kg')
+
+                        print('\n=== ANIMAIS DISPONÍVEIS ===')
+                        for a in rebanho:
+                            if a[2] == 'venda':
+                                print(f'ID: {a[1]} | Tipo: {a[0]} | Valor: R$ {a[6]}')
+
+                        input("\nENTER para voltar...")
+
+                    elif op == '2':
+
+                        while True:
+
+                            tipo = input('Comprar (D - derivado / A - animal / S - sair): ').upper()
+
+                            if tipo == 'S':
+                                break
+
+                            elif tipo == 'D':
+
+                                nome = input('Nome do produto: ').lower()
+                                qtd = float(input('Quantidade (kg): '))
+
+                                for p in estoque_derivados:
+
+                                    if p[0] == nome:
+
+                                        if qtd <= float(p[1]):
+
+                                            total = qtd * float(p[2])
+                                            carrinho.append([nome, qtd, total])
+
+                                            print(f'\nAdicionado ao carrinho: {nome} - R$ {total}')
+
+                                        else:
+                                            print('Quantidade indisponível')
+
+                                        break
+
+                                else:
+                                    print('Produto não encontrado')
+
+                                input("\nENTER para continuar...")
+
+                            elif tipo == 'A':
+
+                                id_animal = input('ID do animal: ')
+
+                                for a in rebanho:
+
+                                    if a[1] == id_animal and a[2] == 'venda':
+
+                                        carrinho.append([a[0] + ' ID ' + a[1], 1, float(a[6])])
+
+                                        print('Animal adicionado ao carrinho!')
+                                        break
+
+                                else:
+                                    print('Animal não encontrado')
+
+                                input("\nENTER para continuar...")
+
+                            else:
+                                print('Opção inválida!')
+                                continue
+
+                    elif op == '3':
+
+                        print('\n===== SEU CARRINHO =====\n')
+
+                        if len(carrinho) == 0:
+                            print('Carrinho vazio\n')
+                            input()
+                            continue
+
+                        total_geral = 0
+
+                        for item in carrinho:
+                            print(f'{item[0]} | Quantidade: {item[1]} | R$ {item[2]}')
+                            total_geral += float(item[2])
+
+                        print('\nTOTAL: R$', total_geral)
+
+                        while True:
+
+                            print('\n1 - Confirmar compra')
+                            print('2 - Remover item')
+                            print('3 - Voltar')
+
+                            escolha = input('\nOpção: ')
+
+                            if escolha == '1':
+
+                                print('\n=== FINALIZANDO COMPRA ===')
+                                print('Total a pagar:', total_geral)
+
+                                while True:
+                                    print('\nForma de pagamento:')
+                                    print('1 - PIX')
+                                    print('2 - Cartão')
+
+                                    opcao = input('Escolha a opção: ')
+
+                                    if opcao == '1':
+                                        pagamento = 'PIX'
+                                        break
+
+                                    elif opcao == '2':
+                                        pagamento = 'Cartão'
+                                        break
+
+                                    else:
+                                        print('Opção inválida! Digite 1 ou 2.')
+
+                                print('\nCompra realizada com sucesso!')
+                                print('Pagamento:', pagamento)
+                                print('Pedido em processamento...\n')
+
+                                carrinho = []
+
+                                input()
+                                break
+
+                            elif escolha == '2':
+
+                                rem = input('Nome do item: ').lower()
+
+                                for item in carrinho:
+                                    if rem in item[0].lower():
+                                        carrinho.remove(item)
+                                        print('Item removido!')
+                                        break
+                                else:
+                                    print('Item não encontrado')
+
+                            elif escolha == '3':
+                                break
+
+                            else:
+                                print('Opção inválida!')
+                                continue
+
+                    elif op == '4':
+
+                        print('\n===== AGENDAR ENTREGA =====\n')
+
+                        endereco = input('Endereço: ')
+                        dias = int(input('Prazo (dias): '))
+
+                        if dias <= 2:
+                            frete = 20
+                        elif dias <= 5:
+                            frete = 10
+                        else:
+                            frete = 0
+
+                        print('\nResumo da entrega:')
+                        print('Endereço:', endereco)
+                        print('Prazo:', dias, 'dias')
+                        print('Frete: R$', frete)
+
+                        input("\nENTER para confirmar...")
+
+                        print('Entrega agendada com sucesso!\n')
+                        input("ENTER para voltar...")
+
+                    elif op == '5':
+                        print('Saindo...')
+                        break
+
+                    else:
+                        print('Opção inválida!')
+                        input("ENTER para continuar...")
+                
 
 
 
@@ -475,4 +676,4 @@ while True:
         print(' Salvando dados...')
         print(' Finalizando conexões... ')
         print('\n Sistema encerrado com sucesso. Até logo! ')
-        break'''
+        break
