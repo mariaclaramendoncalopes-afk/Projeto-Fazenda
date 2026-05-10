@@ -1,4 +1,4 @@
-usuarios = []
+usuarios = [['kamille', '1234', True]]
 
 # (tipo)(id:001)(status)(peso)(idade)(sexo)(valor)(produção)(vacinado)(observações)
 rebanho = [

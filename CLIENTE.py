@@ -397,6 +397,7 @@ while True:
                                     print(f'Ovos: {p[2]} unidades')
                                     print('\n')
 
+
                             else:
                                 break
 
