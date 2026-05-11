@@ -172,7 +172,7 @@ while True:
                             valor = input('Valor do animal:  ')
                             produto = input('O que ele produz:  ').lower ()
                             producao = input('Quanto esse animal produz por dia? (digite apenas a quantidade em números)  ')
-                            vacinado = input('É vacinado?  (s/n)?  ').lower ()
+                            vacinado = input('É vacinado?  (sim/nao)?  ').lower ()
                             observacoes = input('Observações: (caso não tenha, deixe o espaço vazio)  ').lower ()
 
                             rebanho.append([tipo, idd, status, peso, idade, sexo, valor, produto, producao, vacinado, observacoes])
@@ -227,7 +227,7 @@ while True:
                                         modificar = input('O que deseja modificar?  ').lower()
 
                                         if modificar == 'tipo':
-                                            animais[0] = input('Novo tipo:  ')
+                                            animais[0] = input('Novo tipo:  ').lower()
 
                                         elif modificar == 'idd':
 
@@ -245,7 +245,7 @@ while True:
                                                     break
 
                                         elif modificar == 'status':
-                                            animais[2] = input(' Novo status:  ')
+                                            animais[2] = input(' Novo status:  ').lower()
 
                                         elif modificar == 'peso':
                                             animais[3] = input('Novo peso: ')
@@ -257,16 +257,16 @@ while True:
                                             animais[6] = input('Novo valor: ')
                                     
                                         elif modificar == 'produto':
-                                            animais[7] == input('O que ele produz: ')
+                                            animais[7] == input('O que ele produz: ').lower()
 
                                         elif modificar == 'producao':
                                             animais[8] = input('Total produção diária: ')
 
                                         elif modificar == 'vacinado':
-                                            animais[9] = input('Vacinado (sim/nao): ')
+                                            animais[9] = input('Vacinado (sim/nao): ').lower()
 
                                         elif modificar == 'observacoes':
-                                            animais[10] = input('Observações: ')
+                                            animais[10] = input('Observações: ').lower()
 
                                         else:
                                             print('Essa modificação é inválida.')
@@ -505,7 +505,7 @@ while True:
                             elif tipo == 'D':
 
                                 nome = input('Nome do produto: ').lower()
-                                qtd = float(input('Quantidade (kg): '))
+                                qtd = float(input('Quantidade (kg/L): '))
 
                                 for p in estoque_derivados:
 
