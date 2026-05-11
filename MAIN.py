@@ -4,7 +4,7 @@ usuarios = [
     ['teste', '0000', False],
 ]
 
-# tipo,  ID,  status,  peso,  idade,  sexo,  valor,  produto, produção diária,  vacinado,  observações
+# tipo,  IDD,  status,  peso,  idade,  sexo,  valor,  produto, produção diária,  vacinado,  observações
 rebanho = [
     ['bovino', '001', 'lactação', '500', '4', 'F', '5000', 'leite bovino', '22', 'sim', ''],
     ['bovino', '002', 'venda', '460', '5', 'F', '4500', 'leite bovino', '19', 'sim', ''],
@@ -18,6 +18,8 @@ rebanho = [
     ['galinha', '401', 'producao', '3', '1', 'F', '50', 'ovos', '1', 'sim', ''],
     ['galinha', '402', 'producao', '2', '1', 'F', '45', 'ovos', '1', 'sim', ''],
 ]
+
+animais_d = ['bovino', 'caprino', 'ovino', 'galinha']
 
 producao_diaria = []
 
@@ -45,15 +47,12 @@ while True:
         while True:
             usuario = input(' Digite um novo usuário:  ').lower()
 
-            existe = False
-
             for pessoa in usuarios:
                 if pessoa[0] == usuario:
-                    existe = True
                     print(' Já existe usuário com este nome, tente novamente.\n')
                     break
 
-            if not existe:
+            else:
                 break
 
         while True:
@@ -86,15 +85,12 @@ while True:
         while True:
             usuario = input(' Digite um novo usuário:  ').lower()
 
-            existe = False
-
             for pessoa in usuarios:
                 if pessoa[0] == usuario:
-                    existe = True
                     print(' Já existe usuário com este nome, tente novamente.\n')
                     break
 
-            if not existe:
+            else:
                 break
 
         while True:
@@ -144,55 +140,56 @@ while True:
 
                     if op == '1':
                         print('\n           |  CADASTRAR ANIMAL NO RABANHO  |\n')
-                        animais_d = ['bovino', 'caprino', 'ovino', 'galinha']
-                        print(f' Tipos disponíveis:  {animais_d}')
-                        tipo = input(' Informe qual o tipo de animal:  ').lower ()
-
-                        if tipo not in animais_d:
-                            criar_tipo = input('Esse tipo não existe. Deseja cadastrá-lo  (s/n)?  ').lower ()
-
-                            if criar_tipo == 's':
-                                animais_d.append(criar_tipo)
-                                print(' Novo tipo adicionado!\n')
-                            else:
-                                print('Cadastro cancelado.\n')
-                                continue
-                        
                         while True:
-                            id = input(f'Digite um novo ID para ({tipo}):  ')
+                            print(f'| Tipos disponíveis:  {animais_d} |')
+                            tipo = input('Informe qual o tipo de animal:  ').lower ()
 
-                            for animal in rebanho:
-                                if animal[1] == id:
-                                    print(' Esse ID já existe, tente outro.')
+                            if tipo not in animais_d:
+                                criar_tipo = input('Esse tipo não existe. Deseja cadastrá-lo  (s/n)?  ').lower ()
+
+                                if criar_tipo == 's':
+                                    animais_d.append(tipo)
+                                    print('\nNovo tipo adicionado!\n')
+                                else:
+                                    print('\nCadastro cancelado.\n')
+                                    break
+                            
+                            while True:
+                                idd = input(f'Digite um novo IDD para ({tipo}):  ')
+
+                                for animal in rebanho:
+                                    if animal[1] == idd:
+                                        print('\nEsse IDD já existe, tente outro.\n')
+                                        break
+
+                                else:
                                     break
 
-                            else:
-                                break
+                            status = input('Status do animal:  ').lower ()
+                            peso = input('Peso do animal:  ')
+                            idade = input('Idade do animal:  ')
+                            sexo = input('Sexo do animal:  (F/M)?  ').upper ()
+                            valor = input('Valor do animal:  ')
+                            produto = input('O que ele produz:  ').lower ()
+                            producao = input('Quanto esse animal produz por dia? (digite apenas a quantidade em números)  ')
+                            vacinado = input('É vacinado?  (s/n)?  ').lower ()
+                            observacoes = input('Observações: (caso não tenha, deixe o espaço vazio)  ').lower ()
 
-                        status = input('Status do animal:  ').lower ()
-                        peso = input('Peso do animal:  ')
-                        idade = input('Idade do animal:  ')
-                        sexo = input('Sexo do animal:  (F/M)?  ').upper ()
-                        valor = input('Valor do animal:  ')
-                        produto = input('O que ele produz:  ').lower ()
-                        producao = input('Quanto esse animal produz por dia:  ')
-                        vacinado = input('É vacinado?  (s/n)?  ').lower ()
-                        observacoes = input('Observações: (caso não tenha, deixe o espaço vazio)  ').lower ()
+                            rebanho.append([tipo, idd, status, peso, idade, sexo, valor, produto, producao, vacinado, observacoes])
 
-                        rebanho.append([tipo, id, status, peso, idade, sexo, valor, produto, producao, vacinado, observacoes])
+                            print(f'\nAnimal | {tipo} | cadastrado com sucesso!!\n')
 
-                        print(f'\nAnimal | {tipo} | cadastrado com sucesso!!\n')
-
-                        repetir = input('Deseja cadastrar outro animal?  (s/n)  ').lower ()
-
-                        if repetir != 's':
+                            repetir = input('Deseja cadastrar outro animal?  (s/n)  ').lower ()
                             print('\n')
-                            break
+
+                            if repetir != 's':
+                                print('\n')
+                                break
 
                     elif op == '2':
                         print('     |  BUSCAS  |\n')
                         while True:
-                            busca = input(' Digite o ID do animal que está procurando:  ')
+                            busca = input(' Digite o IDD do animal que está procurando:  ')
                             print('\n')
 
                             for animal in rebanho:
@@ -201,7 +198,7 @@ while True:
                                     break
                             
                             else:
-                                print('Animal não encontrado. Digite o ID novamente.\n')
+                                print('Animal não encontrado. Digite o IDD novamente.\n')
                                 continue
 
                             repetir = input('\nDeseja buscar outro animal?  (s/n)  ').lower ()
@@ -215,7 +212,7 @@ while True:
                         print('     |  MODIFICAR DADOS DO ANIMAL  |')
 
                         while True:
-                            busca = input('\nDigite o ID do animal que está procurando:  ')
+                            busca = input('\nDigite o IDD do animal que está procurando:  ')
 
                             for animais in rebanho:
 
@@ -225,22 +222,22 @@ while True:
 
                                     while True:
 
-                                        print('\n  tipo | id | status | peso | idade | valor | produto | producao | vacinado | observacoes\n')
+                                        print('\n  tipo | idd | status | peso | idade | valor | produto | producao | vacinado | observacoes\n')
 
                                         modificar = input('O que deseja modificar?  ').lower()
 
                                         if modificar == 'tipo':
                                             animais[0] = input('Novo tipo:  ')
 
-                                        elif modificar == 'id':
+                                        elif modificar == 'idd':
 
                                             while True:
-                                                novo_id = input('Novo ID:  ')
+                                                novo_id = input('Novo IDD:  ')
 
                                                 for animal in rebanho:
 
                                                     if animal[1] == novo_id and animal != animais:
-                                                        print('Esse ID já existe')
+                                                        print('Esse IDD já existe')
                                                         break
 
                                                 else:
@@ -292,7 +289,7 @@ while True:
 
                     elif op == '4':
                         while True:
-                            busca = input('Informe o ID do animal que deseja remover: ')
+                            busca = input('Informe o IDD do animal que deseja remover: ')
 
                             for animais in rebanho:
 
@@ -300,7 +297,7 @@ while True:
 
                                     print('\n--- ANIMAL ENCONTRADO ---')
                                     print('Tipo:', animais[0])
-                                    print('ID:', animais[1])
+                                    print('IDD:', animais[1])
                                     print('Status:', animais[2])
                                     print('Peso:', animais[3])
                                     print('Idade:', animais[4])
@@ -492,7 +489,7 @@ while True:
                         print('\n=== ANIMAIS DISPONÍVEIS ===')
                         for a in rebanho:
                             if a[2] == 'venda':
-                                print(f'ID: {a[1]} | Tipo: {a[0]} | Valor: R$ {a[6]}')
+                                print(f'IDD: {a[1]} | Tipo: {a[0]} | Valor: R$ {a[6]}')
 
                         input("\nENTER para voltar...")
 
@@ -533,13 +530,13 @@ while True:
 
                             elif tipo == 'A':
 
-                                id_animal = input('ID do animal: ')
+                                id_animal = input('IDD do animal: ')
 
                                 for a in rebanho:
 
                                     if a[1] == id_animal and a[2] == 'venda':
 
-                                        carrinho.append([a[0] + ' ID ' + a[1], 1, float(a[6])])
+                                        carrinho.append([a[0] + ' IDD ' + a[1], 1, float(a[6])])
 
                                         print('Animal adicionado ao carrinho!')
                                         break
