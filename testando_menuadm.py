@@ -364,6 +364,7 @@ while True:
 
                 input("Pressione ENTER para voltar ao menu...")
                 print('\n'*2)
+                
 
             else:
                 break

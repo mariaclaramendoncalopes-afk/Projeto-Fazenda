@@ -136,7 +136,7 @@ while True:
                 animals[10] = 'checado' #não repetir após quebrar o loop
 
                 continuar = input('Deseja continuar fazendo checagens? (s/n): ').lower()
-                if continuar == 'n':
+                if continuar != 's':
                     break #quebra e volta o loop do inicio, se o usuário quiser continuar dps ele tem que fazer do zero
 
 
@@ -149,7 +149,7 @@ while True:
 
         elif busc == 'A':
             buscar_a = input('Digite o IDD do animal que está procurando: ')
-            print()
+            print('\n')
             encontrado = False
 
             for animals in relatorio:
