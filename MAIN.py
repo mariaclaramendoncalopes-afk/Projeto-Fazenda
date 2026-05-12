@@ -257,7 +257,7 @@ while True:
                                             animais[6] = input('Novo valor: ')
                                     
                                         elif modificar == 'produto':
-                                            animais[7] == input('O que ele produz: ').lower()
+                                            animais[7] = input('O que ele produz: ').lower()
 
                                         elif modificar == 'producao':
                                             animais[8] = input('Total produção diária: ')
@@ -303,7 +303,7 @@ while True:
                                     print('Idade:', animais[4])
                                     print('Sexo:', animais[5])
                                     print('Valor:', animais[6])
-                                    print('Produto:)', animais[7])
+                                    print('Produto:', animais[7])
                                     print('Produção diária:', animais[8])
                                     print('Vacinado:', animais[9])
                                     print('Observações:', animais[10])
@@ -339,6 +339,10 @@ while True:
                             if esc == '1':
 
                                 print('\n===== REGISTRAR   PRODUÇÃO =====')
+                                
+                                if len(rebanho) == 0:
+                                    print('Nenhum animal cadastrado.\n')
+                                    continue
 
                                 data = input('Data: ')
 
