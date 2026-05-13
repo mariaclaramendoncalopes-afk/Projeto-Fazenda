@@ -1,12 +1,13 @@
 rebanho = [
     ['bovino', '001', 'lactação', '500', '4', 'F', '5000', 'leite bovino', '22', 'sim', 'doente',],
-    ['caprino', '100', 'lactação', '55', '3', 'F', '900', 'leite caprino', '3', 'sim', 'saudável'],
-    ['ovino', '201', 'lactação', '60', '4', 'F', '1100', 'leite ovino', '2', 'não', 'doente'],
+    ['caprino', '100', 'lactação', '55', '3', 'F', '900', 'leite caprino', '3', 'sim', 'checado'],
+    ['ovino', '201', 'lactação', '60', '4', 'F', '1100', 'leite ovino', '2', 'nao', 'doente'],
     ]
 
 relatorio = [] # salvar todas as triagens
 
-while True: 
+while True:
+    print('=== MONITORAMENTO DO REBANHO ===') 
     print('1 - Triagem de animal doente')
     print('2 - Relatório')
 
@@ -14,9 +15,12 @@ while True:
     print()
 
     if opc == '1':
+        animal_doente = False
         for animals in rebanho:
             prioridade = 0
             if animals[10] == 'doente':
+                animal_doente = True
+
                 doentes = []
                 print('=== CHECAGEM ===')
                 print(f'IDD para checagem: {animals[0:2]}')
@@ -48,7 +52,7 @@ while True:
                 #TOSSE
                 tosse = input('O Animal está tossindo? (s/n): ').lower()
                 if tosse == 's':
-                    inf_tosse = input('Informe a gravidade: (leve / moderado / grave): ').lower()
+                    inf_tosse = input('Informe a gravidade: (leve / moderada / grave): ').lower()
                     if inf_tosse == 'leve':
                         prioridade +=1
                     elif inf_tosse == 'moderada':
@@ -88,12 +92,12 @@ while True:
                         prioridade +=4
                     doentes.append(f'Diarreia: {inf_diarreia}')
 
-                #PRODUÇÃO DE LEITE
-                if animals[2] == 'lactação':
-                    baixa_prod = input('A produção de leite está baixa? (s/n): ').lower()
+                #PRODUÇÃO
+                if animals[2] == 'lactação' or animals[2] == 'producao':
+                    baixa_prod = input('A produção está baixa? (s/n): ').lower()
                     if baixa_prod == 's':
                         prioridade +=2
-                        doentes.append('Baixa produção de leite')
+                        doentes.append('Baixa produção')
 
                 #VACINAÇÃO
                 if animals[9] == 'sim':
@@ -130,6 +134,7 @@ while True:
                     print('Prioridade Alta! Necessita de avaliação rápidamente!')
                 elif prioridade >17:
                     print('PRIORIDADE CRÍTICA! Necessita de atendimento IMEDIATO!')
+                print()
 
                 doentes.insert(2, prioridade)    
                 relatorio.append(doentes)
@@ -137,27 +142,59 @@ while True:
 
                 continuar = input('Deseja continuar fazendo checagens? (s/n): ').lower()
                 if continuar != 's':
-                    break #quebra e volta o loop do inicio, se o usuário quiser continuar dps ele tem que fazer do zero
+                    break 
+        if not animal_doente:
+            print('Não há animais doentes para a triagem.\n')
 
 
     elif opc =='2':
-        busc = input('Deseja ver todos os relatórios ou apenas buscar um animal? ( R - relatório / A - animal ): ').upper()
-        if busc == 'R':
-            print('=== RELATÓRIOS ===')
-            for animals in relatorio:
-                print(f'{animals}\n')
+        while True:
+            print('1 - Relatório de todos os animais doentes')
+            print('2 - Buscar apenas um animal doente')
+            print('3 - Animais que não estão vacinados')
+            print('4 - Sair\n')
+            busc = input('Digite a opção: ')
+            print()
 
-        elif busc == 'A':
-            buscar_a = input('Digite o IDD do animal que está procurando: ')
-            print('\n')
-            encontrado = False
+            if busc == '1':
+                print('=== RELATÓRIOS DE DOENTES ===')
+                if len(relatorio) == 0:
+                    print('Não foi feito a checagem de nenhum animal.\n')
+                else:
+                    for animals in relatorio:
+                        print(f'{animals}\n')
 
-            for animals in relatorio:
-                if buscar_a == animals[1]: #Animal atual do loop
-                    print(f'=== RELATÓRIO DO ANIMAL {buscar_a}===\n')
-                    print(f'Animal encontrado:')
-                    print(f'{animals}\n')
-                    encontrado = True
+            elif busc == '2':
+                buscar_a = input('Digite o IDD do animal que está procurando: ')
+                print()
+                encontrado = False
+                if len(relatorio) == 0:
+                    print('Não foi feito a checagem de nenhum animal.\n')
 
-            if encontrado != True:
-                print('Animal não encontrado, tente novamente!\n')
+                for animals in relatorio:
+                    if buscar_a == animals[1]: #Animal atual do loop
+                        print(f'=== RELATÓRIO DO ANIMAL {buscar_a}===\n')
+                        print(f'Animal encontrado:')
+                        print(f'{animals}\n')
+                        encontrado = True
+
+                if not encontrado:
+                    print('Animal não encontrado, tente novamente!\n')
+                
+
+            elif busc == '3':
+                nao_vac = 0
+                for animals in rebanho:
+                    if animals[9] == 'nao':
+                        nao_vac += 1
+                        print(f'{animals[0:2]}: Não vacinado!')
+                print(f'Total de animais não vacinados: {nao_vac}\n') #não mostra os que estão com a vacina pendente
+                if nao_vac == 0:
+                    print('Todos os animais estão vacinados.')
+                # for animals in relatorio:
+                #     if 'Vacinação não está em dia' in animals:
+                #         nao_vac +=1
+                #         print(f'{animals[0:2]}: Não está com a vacinação em dia!')
+            elif busc == '4':
+                break
+
