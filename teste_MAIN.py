@@ -7,7 +7,7 @@ usuarios = [
 # tipo,  IDD,  status,  peso,  idade,  sexo,  valor,  produto, produção diária,  vacinado,  observações
 rebanho = [
     ['bovino', '001', 'lactação', '500', '4', 'F', '5000', 'leite bovino', '22', 'sim', ''],
-    ['bovino', '002', 'venda', '460', '5', 'F', '4500', 'leite bovino', '19', 'sim', 'doente'],
+    ['bovino', '002', 'venda', '460', '5', 'F', '4500', 'leite bovino', '19', 'sim', ''],
     ['bovino', '003', 'venda', '490', '5', 'F', '4700', 'leite bovino', '20', 'sim', ''],
 
     ['caprino', '100', 'lactação', '55', '3', 'F', '900', 'leite caprino', '3', 'sim', 'doente'],
@@ -21,6 +21,8 @@ rebanho = [
 
 animais_d = ['bovino', 'caprino', 'ovino', 'galinha']
 
+relatorio = []
+
 producao_diaria = []
 
 estoque_derivados = [
@@ -28,8 +30,6 @@ estoque_derivados = [
     ["queijo manteiga", "4", "37.5", "150"],
     ["requeijão", "3", "30", "90"]
 ]
-
-relatorio = []
 
 carrinho = []
 
@@ -133,15 +133,15 @@ while True:
                     print(' 2  -  Buscar animal')
                     print(' 3  -  Modificar dados do animal')
                     print(' 4  -  Retirar animal da lista')
-                    print(' 5  -  Gerenciar produção')
-                    print(' 6  -  Gerenciar derivados')
-                    print(' 7  -  Monitoramento do rebanho')
+                    print(' 5  -  Monitoramento do rebanho')
+                    print(' 6  -  Gerenciar produção')
+                    print(' 7  -  Gerenciar derivados')
                     print(' 8  -  Sair\n')
 
                     op = input('Digite uma opção:  ')
 
                     if op == '1':
-                        print('\n           |  CADASTRAR ANIMAL NO REBANHO  |\n')
+                        print('\n           |  CADASTRAR ANIMAL NO RABANHO  |\n')
                         while True:
                             print(f'| Tipos disponíveis:  {animais_d} |')
                             tipo = input('Informe qual o tipo de animal:  ').lower ()
@@ -173,7 +173,7 @@ while True:
                             sexo = input('Sexo do animal:  (F/M)?  ').upper ()
                             valor = input('Valor do animal:  ')
                             produto = input('O que ele produz:  ').lower ()
-                            producao = input('Quanto esse animal produz por dia? (digite apenas a quantidade em números)  ')
+                            producao = input('Quanto esse animal produz por dia? (digite apenas a quantidade em números):  ')
                             vacinado = input('É vacinado?  (sim/nao)?  ').lower ()
                             observacoes = input('Observações: (caso não tenha, deixe o espaço vazio)  ').lower ()
 
@@ -330,150 +330,16 @@ while True:
 
                     elif op == '5':
                         while True:
-                            print('='*10, 'GERENCIAR  PRODUÇÕES', '='*10)
-                            print('\n')
-                            print('1 - Registrar produção diária')
-                            print('2 - Ver relatório das produções')
-                            print('3 - Sair\n')
-
-                            esc = input('Qual opção deseja realizar: ')
-
-                            if esc == '1':
-
-                                print('\n===== REGISTRAR   PRODUÇÃO =====')
-                                
-                                if len(rebanho) == 0:
-                                    print('Nenhum animal cadastrado.\n')
-                                    continue
-
-                                data = input('Data: ')
-
-                                producoes = []
-
-                                for animal in rebanho:
-
-                                    produto = animal[7]
-                                    quantidade = int(animal[8])
-
-                                    for item in producoes:
-
-                                        if item[0] == produto:
-                                            item[1] += quantidade
-                                            break
-
-                                    else:
-                                        producoes.append([produto, quantidade])
-
-                                producao_diaria.append([data, producoes])
-
-                                print(f'\nProdução do dia {data}:\n')
-
-                                for item in producoes:
-                                    print(item[0], ':', item[1])
-
-                                print('\nProdução diária registrada com sucesso!\n')
-
-
-                            elif esc == '2':
-
-                                print('\n===== RELATÓRIO DE PRODUÇÃO =====\n')
-
-                                if len(producao_diaria) == 0:
-                                    print('Nenhuma produção registrada ainda.\n')
-
-                                else:
-                                    for registro in producao_diaria:
-
-                                        data = registro[0]
-                                        producoes = registro[1]
-
-                                        print(f'DATA: {data}')
-                                        print('--------------------------')
-
-                                        for item in producoes:
-                                            print(f'{item[0]}: {item[1]}')
-
-                                        print('\n')
-                            else:
-                                break
-
-                    elif op == '6':
-                        while True:
-                            print('='*10, 'GERENCIAMENTO  DERIVADOS', '='*10)
-                            print('\n')
-                            print('1 - Adicionar derivado')
-                            print('2 - Ver estoque')
-                            print('3 - Sair\n')
-
-                            esc = input('Qual opção deseja realizar: ')
-
-                            if esc == '1':
-
-                                print('===== ADICIONAR  DERIVADOS =====')
-
-                                nome = input('Nome do produto: ').lower()
-                                quantidade = float(input('Quantidade (kg/L): '))
-                                valor_unitario = float(input('Valor por kg/L: '))
-
-                                for produto in estoque_derivados:
-
-                                    if produto[0] == nome:
-
-                                        produto[1] = str(float(produto[1]) + quantidade)
-                                        produto[2] = str(valor_unitario)
-                                        produto[3] = str(float(produto[1]) * float(produto[2]))
-
-                                        print('\nEstoque atualizado!\n')
-                                        break
-
-                                else:
-
-                                    valor_total = quantidade * valor_unitario
-
-                                    estoque_derivados.append([
-                                        nome,
-                                        str(quantidade),
-                                        str(valor_unitario),
-                                        str(valor_total)
-                                    ])
-
-                                    print('\nProduto adicionado!\n')
-                                input("Pressione ENTER para voltar ao menu...")
-                                print('\n'*2)
-
-                            elif esc == '2':
-
-                                print('\n================= VER ESTOQUE =================')
-
-                                if len(estoque_derivados) == 0:
-                                    print('\nEstoque vazio.\n')
-
-                                else:
-                                    for p in estoque_derivados:
-                                        print('----------------')
-                                        print(f'Produto: {p[0]}')
-                                        print(f'Peso no estoque: {p[1]} kg')
-                                        print(f'Valor do kg: R$ {p[2]}')
-                                        print(f'Valor total do estoque: R$ {p[3]}')
-                                        print('\n')
-
-                                input("Pressione ENTER para voltar ao menu...")
-                                print('\n'*2)
-
-                            else:
-                                break
-
-                    elif op == '7':
-                        while True:
                             print('=== MONITORAMENTO DO REBANHO ===') 
                             print('1 - Triagem de animal doente')
                             print('2 - Relatório')
                             print('3 - Sair')
-
+                    
                             opc = input('Digite o que deseja fazer: ')
                             print()
 
                             if opc == '1':
+                                dia_monitoramento = (input('Data: '))
                                 animal_doente = False
                                 for animals in rebanho:
                                     prioridade = 0
@@ -585,7 +451,8 @@ while True:
                                             print('PRIORIDADE CRÍTICA! Necessita de atendimento IMEDIATO!')
                                         print()
 
-                                        doentes.insert(2, f'Prioridade:{prioridade}')    
+                                        doentes.insert(2, f'Prioridade:{prioridade}')
+                                        doentes.append(f'Data do relatório: {dia_monitoramento}')    
                                         relatorio.append(doentes)
                                         animals[10] = 'checado'
 
@@ -600,9 +467,8 @@ while True:
                                 while True:
                                     print('=== RELATÓRIO ===')
                                     print('1 - Relatório de todos os animais doentes')
-                                    print('2 - Buscar apenas um animal doente')
-                                    print('3 - Animais que não estão vacinados')
-                                    print('4 - Sair\n')
+                                    print('2 - Buscar apenas um animal doente')                                    
+                                    print('3 - Sair\n')
                                     busc = input('Digite a opção: ')
                                     print()
 
@@ -622,28 +488,153 @@ while True:
                                             print('Não foi feito a checagem de nenhum animal.\n')
 
                                         for animals in relatorio:
-                                            if buscar_a == animals[1]: #Animal atual do loop
+                                            if buscar_a == animals[1]:
                                                 print(f'=== RELATÓRIO DO ANIMAL {buscar_a}===\n')
                                                 print(f'Animal encontrado:')
                                                 print(f'{animals}\n')
                                                 encontrado = True
 
                                         if not encontrado:
-                                            print('Animal não encontrado, faça a checagem tente novamente!\n')
-                                        
-
+                                            print('Animal não encontrado, faça a checagem ou tente novamente!\n')
                                     elif busc == '3':
-                                        nao_vac = 0
-                                        for animals in rebanho:
-                                            if animals[9] == 'nao':
-                                                nao_vac += 1
-                                                print(f'{animals[0:2]}: Não vacinado!')
-                                        print(f'Total de animais não vacinados: {nao_vac}\n')            
-                                    elif busc == '4':
                                         break
                             elif opc =='3':
-                                break                                
+                                break 
 
+                    elif op == '6':
+                        while True:
+                            print('='*10, 'GERENCIAR  PRODUÇÕES', '='*10)
+                            print('\n')
+                            print('1 - Registrar produção diária')
+                            print('2 - Ver relatório das produções')
+                            print('3 - Sair\n')
+
+                            esc = input('Qual opção deseja realizar: ')
+
+                            if esc == '1':
+
+                                print('\n===== REGISTRAR   PRODUÇÃO =====')
+                                
+                                if len(rebanho) == 0:
+                                    print('Nenhum animal cadastrado.\n')
+                                    continue
+
+                                data = input('Data: ')
+
+                                producoes = []
+
+                                for animal in rebanho:
+
+                                    produto = animal[7]
+                                    quantidade = int(animal[8])
+
+                                    for item in producoes:
+
+                                        if item[0] == produto:
+                                            item[1] += quantidade
+                                            break
+
+                                    else:
+                                        producoes.append([produto, quantidade])
+
+                                producao_diaria.append([data, producoes])
+
+                                print(f'\nProdução do dia {data}:\n')
+
+                                for item in producoes:
+                                    print(item[0], ':', item[1])
+
+                                print('\nProdução diária registrada com sucesso!\n')
+
+
+                            elif esc == '2':
+
+                                print('\n===== RELATÓRIO DE PRODUÇÃO =====\n')
+
+                                if len(producao_diaria) == 0:
+                                    print('Nenhuma produção registrada ainda.\n')
+
+                                else:
+                                    for registro in producao_diaria:
+
+                                        data = registro[0]
+                                        producoes = registro[1]
+
+                                        print(f'DATA: {data}')
+                                        print('--------------------------')
+
+                                        for item in producoes:
+                                            print(f'{item[0]}: {item[1]}')
+
+                                        print('\n')
+                            else:
+                                break
+
+                    elif op == '7':
+                        while True:
+                            print('='*10, 'GERENCIAMENTO  DERIVADOS', '='*10)
+                            print('\n')
+                            print('1 - Adicionar derivado')
+                            print('2 - Ver estoque')
+                            print('3 - Sair\n')
+
+                            esc = input('Qual opção deseja realizar: ')
+
+                            if esc == '1':
+
+                                print('===== ADICIONAR  DERIVADOS =====')
+
+                                nome = input('Nome do produto: ').lower()
+                                quantidade = float(input('Quantidade (kg/L): '))
+                                valor_unitario = float(input('Valor por kg/L: '))
+
+                                for produto in estoque_derivados:
+
+                                    if produto[0] == nome:
+
+                                        produto[1] = str(float(produto[1]) + quantidade)
+                                        produto[2] = str(valor_unitario)
+                                        produto[3] = str(float(produto[1]) * float(produto[2]))
+
+                                        print('\nEstoque atualizado!\n')
+                                        break
+
+                                else:
+
+                                    valor_total = quantidade * valor_unitario
+
+                                    estoque_derivados.append([
+                                        nome,
+                                        str(quantidade),
+                                        str(valor_unitario),
+                                        str(valor_total)
+                                    ])
+
+                                    print('\nProduto adicionado!\n')
+                                input("Pressione ENTER para voltar ao menu...")
+                                print('\n'*2)
+
+                            elif esc == '2':
+
+                                print('\n================= VER ESTOQUE =================')
+
+                                if len(estoque_derivados) == 0:
+                                    print('\nEstoque vazio.\n')
+
+                                else:
+                                    for p in estoque_derivados:
+                                        print('----------------')
+                                        print(f'Produto: {p[0]}')
+                                        print(f'Peso no estoque: {p[1]} kg')
+                                        print(f'Valor do kg: R$ {p[2]}')
+                                        print(f'Valor total do estoque: R$ {p[3]}')
+                                        print('\n')
+
+                                input("Pressione ENTER para voltar ao menu...")
+                                print('\n'*2)
+
+                            else:
+                                break
 
                 
                     elif op == '8':
