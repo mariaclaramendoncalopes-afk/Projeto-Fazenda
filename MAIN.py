@@ -336,7 +336,7 @@ while True:
                             print('3 - Sair')
                     
                             opc = input('Digite o que deseja fazer: ')
-                            print()
+                            print('\n')
 
                             if opc == '1':
                                 dia_monitoramento = (input('Data: '))
@@ -777,6 +777,28 @@ while True:
                                 print('\nCompra realizada com sucesso!')
                                 print('Pagamento:', pagamento)
                                 print('Pedido em processamento...\n')
+
+                                for item in carrinho:
+                                    nome_item = item[0]
+                                    quantidade = item[1]
+
+                                    for p in estoque_derivados:
+
+                                        if p[0] == nome_item:
+
+                                            p[1] = float(p[1]) - float(quantidade)
+
+                                            break
+
+                                    for a in rebanho:
+
+                                        nome_animal = a[0] + ' IDD ' + a[1]
+
+                                        if nome_item == nome_animal:
+
+                                            rebanho.remove(a)
+
+                                            break
 
                                 carrinho = []
 
