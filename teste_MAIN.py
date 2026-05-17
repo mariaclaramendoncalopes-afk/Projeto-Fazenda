@@ -31,20 +31,22 @@ estoque_derivados = [
     ["requeijão", "3", "30", "90"]
 ]
 
+relatorio_vendas = []
+
 carrinho = []
 
 while True:
-    print('-'*10,'     MENU PRINCIPAL   |   FAZENDA SERTÃO     ','-'*10)
+    print('-______- FAZENDA SERTÃO -______-')
     print('\n')
-    print('1 - Cadastrar administrador')
-    print('2 - Cadastrar usuário')
-    print('3 - Login')
-    print('4 - Sair')
+    print('1 - |  Cadastrar administrador  |')
+    print('2 - |  Cadastrar usuário        |')
+    print('3 - |  Login                    |')
+    print('4 - |  Sair                     |')
     print('\n')
     op = input('Digite a opção que deseja realizar:  ')
     
     if op == '1':
-        print('     |  CADASTRO ADM  |     \n')
+        print('     |  CADASTRO ADM  |\n')
 
         while True:
             usuario = input(' Digite um novo usuário:  ').lower()
@@ -82,7 +84,7 @@ while True:
         print('\n')
 
     if op == '2':
-        print('     |  CADASTRO CLIENTE  |     \n')
+        print('     |  CADASTRO CLIENTE  |\n')
 
         while True:
             usuario = input(' Digite um novo usuário:  ').lower()
@@ -126,22 +128,23 @@ while True:
         for pessoa in usuarios:
             if usuario == pessoa[0] and senha == pessoa[1] and pessoa[2] == True:
                 while True:
-                    print('='*10, '     MENU ADM     |     FAZENDA SERTÃO     ', '='*10)
-                    print('\n')
+                    print('\n-______-  MENU ADM   |   FAZENDA SERTÃO -______-\n')
                     print(' '*18,   f'Bem vindo(a), {usuario}\n')
-                    print(' 1  -  Cadastrar animal no rebanho')
-                    print(' 2  -  Buscar animal')
-                    print(' 3  -  Modificar dados do animal')
-                    print(' 4  -  Retirar animal da lista')
-                    print(' 5  -  Monitoramento do rebanho')
-                    print(' 6  -  Gerenciar produção')
-                    print(' 7  -  Gerenciar derivados')
-                    print(' 8  -  Sair\n')
+                    print(' 1  -  |  Cadastrar animal no rebanho  |')
+                    print(' 2  -  |  Buscar animal                |')
+                    print(' 3  -  |  Modificar dados do animal    |')
+                    print(' 4  -  |  Retirar animal da lista      |')
+                    print(' 5  -  |  Monitoramento do rebanho     |')
+                    print(' 6  -  |  Gerenciar produção           |')
+                    print(' 7  -  |  Gerenciar derivados          |')
+                    print(' 8  -  |  Relatório de vendas          |')
+                    print(' 9  -  |  Sair                         |')
 
-                    op = input('Digite uma opção:  ')
+                    op = input('\n Digite uma opção:  ')
+                    print('\n')
 
                     if op == '1':
-                        print('\n           |  CADASTRAR ANIMAL NO RABANHO  |\n')
+                        print('\n     |  CADASTRAR ANIMAL NO REBANHO  |\n')
                         while True:
                             print(f'| Tipos disponíveis:  {animais_d} |')
                             tipo = input('Informe qual o tipo de animal:  ').lower ()
@@ -224,7 +227,7 @@ while True:
 
                                     while True:
 
-                                        print('\n  tipo | idd | status | peso | idade | valor | produto | producao | vacinado | observacoes\n')
+                                        print('\n  tipo | idd | status | peso | idade | sexo | valor | produto | producao | vacinado | observacoes\n')
 
                                         modificar = input('O que deseja modificar?  ').lower()
 
@@ -255,6 +258,9 @@ while True:
                                         elif modificar == 'idade':
                                             animais[4] = input('Nova idade: ')
 
+                                        elif modificar == 'sexo':
+                                            animais[5] = input('Alterar sexo:  ').upper ()
+
                                         elif modificar == 'valor':
                                             animais[6] = input('Novo valor: ')
                                     
@@ -271,7 +277,8 @@ while True:
                                             animais[10] = input('Observações: ').lower()
 
                                         else:
-                                            print('Essa modificação é inválida.')
+                                            print('\nEssa modificação é inválida.')
+                                            continue
 
                                         print('\nAnimal atualizado:', animais)
 
@@ -297,7 +304,7 @@ while True:
 
                                 if busca == animais[1]:
 
-                                    print('\n--- ANIMAL ENCONTRADO ---')
+                                    print('\n      | ANIMAL ENCONTRADO  |')
                                     print('Tipo:', animais[0])
                                     print('IDD:', animais[1])
                                     print('Status:', animais[2])
@@ -330,35 +337,35 @@ while True:
 
                     elif op == '5':
                         while True:
-                            print('=== MONITORAMENTO DO REBANHO ===') 
-                            print('1 - Triagem de animal doente')
-                            print('2 - Relatório')
-                            print('3 - Sair')
+                            print('\n -______-  MONITORAMENTO DO REBANHO  -______-\n') 
+                            print(' 1 -  |  Triagem de animal doente  |')
+                            print(' 2 -  |  Relatório                 |')
+                            print(' 3 -  |  Sair                      |')
+                            print('\n')
                     
                             opc = input('Digite o que deseja fazer: ')
-                            print()
+                            print('\n')
 
                             if opc == '1':
-                                dia_monitoramento = (input('Data: '))
-                                animal_doente = False
-                                for animals in rebanho:
+                                dia_monitoramento = input('Data: ')
+
+                                for animal in rebanho:
                                     prioridade = 0
-                                    if animals[10] == 'doente':
-                                        animal_doente = True
+                                    if animal[10] == 'doente':
 
                                         doentes = []
-                                        print('=== CHECAGEM ===')
-                                        print(f'IDD para checagem: {animals[0:2]}')
-                                        doentes.append(animals[0])
-                                        doentes.append(animals[1])
+                                        print('  | CHECAGEM  |\n')
+                                        print(f'IDD para checagem: {animal[0:2]}')
+                                        doentes.append(animal[0])
+                                        doentes.append(animal[1])
 
                                         temperatura = float(input('Informe a temperatura do animal: '))
                                         if temperatura < 35.5:
-                                            prioridade +=4
+                                            prioridade += 4
                                             print('Hipotermia Grave!')
 
                                         elif 35.5 <= temperatura <=37.5:
-                                            prioridade +=2
+                                            prioridade += 2
                                             print('Hipotermia Moderada')
 
                                         elif  37.5 < temperatura <=39.2:
@@ -366,7 +373,7 @@ while True:
 
                                         elif 39.2 < temperatura <=40.5:
                                             print('Febre Moderada.')
-                                            prioridade +=2
+                                            prioridade += 2
 
                                         elif temperatura > 40.5:
                                             print('Febre Alta!')
@@ -377,11 +384,11 @@ while True:
                                         if tosse == 's':
                                             inf_tosse = input('Informe a gravidade: (leve / moderada / grave): ').lower()
                                             if inf_tosse == 'leve':
-                                                prioridade +=1
+                                                prioridade += 1
                                             elif inf_tosse == 'moderada':
-                                                prioridade +=2
+                                                prioridade += 2
                                             elif inf_tosse == 'grave':
-                                                prioridade +=4
+                                                prioridade += 4
                                             doentes.append(f'Tosse: {inf_tosse}')
 
                                         falta_apetite = input('O Animal apresenta falta de apetite? (s/n): ').lower()
@@ -391,13 +398,13 @@ while True:
 
                                         ferimentos = input('O Animal apresenta ferimentos? (s/n): ').lower()
                                         if ferimentos == 's':
-                                            prioridade +=3
+                                            prioridade += 3
                                             ferimentos_local = input('Informe os locais do(s) ferimentos: ')
                                             doentes.append(f'Ferimento(s) no(s) local(is): {ferimentos_local}')
 
                                         andar = input('O Animal apresenta dificuldades para andar? (s/n): ').lower()
                                         if andar == 's':
-                                            prioridade +=3
+                                            prioridade += 3
                                             doentes.append('Dificuldades para andar')
 
                                         diarreia = input('O Animal apresenta diarreia? (s/n): ').lower()
@@ -408,34 +415,34 @@ while True:
                                             elif inf_diarreia == 'moderada':
                                                 prioridade += 2
                                             elif inf_diarreia == 'grave':
-                                                prioridade +=4
+                                                prioridade += 4
                                             doentes.append(f'Diarreia: {inf_diarreia}')
 
-                                        if animals[2] == 'lactação' or animals[2] == 'producao':
+                                        if animal[2] == 'lactação' or animal[2] == 'producao':
                                             baixa_prod = input('A produção está baixa? (s/n): ').lower()
                                             if baixa_prod == 's':
-                                                prioridade +=2
+                                                prioridade += 2
                                                 doentes.append('Baixa produção')
 
-                                        if animals[9] == 'sim':
+                                        if animal[9] == 'sim':
                                             vacina_dia = input('A vacinação do animal está em dia? (s/n): ').lower()
                                             if vacina_dia == 'n':
-                                                prioridade +=2
+                                                prioridade += 2
                                                 doentes.append('Vacinação não está em dia')
                                                 
                                         medicamento = input('O animal utiliza algum medicamento? (s/n): ').lower()
                                         if medicamento == 's':
-                                            prioridade +=1
+                                            prioridade += 1
                                             inf_med = input('Informe o(s) medicamento(s) utilizado(s): ')
                                             doentes.append(f'Medicamento(s) utilizado(s): {inf_med}')
 
                                         dias_doente = int(input('A quantos dias o animal está doente? '))
-                                        if dias_doente <=3:
-                                            prioridade +=1
-                                        elif 4<= dias_doente <=7:
+                                        if dias_doente <= 3:
+                                            prioridade += 1
+                                        elif 4 <= dias_doente <= 7:
                                             prioridade += 2
                                         elif dias_doente > 7:
-                                            prioridade +=4
+                                            prioridade += 4
                                         doentes.append(f'{dias_doente} dia(s) doente')
 
                                         print(f'Fim da checagem.\n')
@@ -449,71 +456,74 @@ while True:
                                             print('Prioridade Alta! Necessita de avaliação rápidamente!')
                                         elif prioridade >17:
                                             print('PRIORIDADE CRÍTICA! Necessita de atendimento IMEDIATO!')
-                                        print()
+                                        print('\n')
 
                                         doentes.insert(2, f'Prioridade:{prioridade}')
                                         doentes.append(f'Data do relatório: {dia_monitoramento}')    
                                         relatorio.append(doentes)
-                                        animals[10] = 'checado'
+                                        animal[10] = 'checado'
 
                                         continuar = input('Deseja continuar fazendo checagens? (s/n): ').lower()
                                         if continuar != 's':
                                             break 
-                                if not animal_doente:
+                                else:
                                     print('Não há animais doentes para a triagem.\n')
 
 
                             elif opc =='2':
                                 while True:
-                                    print('=== RELATÓRIO ===')
-                                    print('1 - Relatório de todos os animais doentes')
-                                    print('2 - Buscar apenas um animal doente')                                    
-                                    print('3 - Sair\n')
+                                    print(' -______-  RELATÓRIO  -______-\n')
+                                    print(' 1 -  |  Relatório de todos os animais doentes  |')
+                                    print(' 2 -  |  Buscar apenas um animal doente         |')                                    
+                                    print(' 3 -  |  Sair                                   |')
+                                    print('\n')
                                     busc = input('Digite a opção: ')
                                     print()
 
                                     if busc == '1':
-                                        print('=== RELATÓRIOS DE DOENTES ===')
+                                        print('  |  RELATÓRIOS DE DOENTES  |\n')
                                         if len(relatorio) == 0:
                                             print('Não foi feito a checagem de nenhum animal.\n')
                                         else:
-                                            for animals in relatorio:
-                                                print(f'{animals}\n')
+                                            for animal in relatorio:
+                                                print(f'{animal}\n')
 
                                     elif busc == '2':
                                         buscar_a = input('Digite o IDD do animal que está procurando: ')
-                                        print()
-                                        encontrado = False
+                                        print('\n')
+                                
                                         if len(relatorio) == 0:
                                             print('Não foi feito a checagem de nenhum animal.\n')
+                                            continue
 
-                                        for animals in relatorio:
-                                            if buscar_a == animals[1]:
+                                        for animal in relatorio:
+                                            if buscar_a == animal[1]:
                                                 print(f'=== RELATÓRIO DO ANIMAL {buscar_a}===\n')
                                                 print(f'Animal encontrado:')
-                                                print(f'{animals}\n')
-                                                encontrado = True
+                                                print(f'{animal}\n')
 
-                                        if not encontrado:
+                                        else:
                                             print('Animal não encontrado, faça a checagem ou tente novamente!\n')
+
                                     elif busc == '3':
                                         break
+
                             elif opc =='3':
                                 break 
 
                     elif op == '6':
                         while True:
-                            print('='*10, 'GERENCIAR  PRODUÇÕES', '='*10)
+                            print('\n -______-  GERENCIAR  PRODUÇÕES  -______-\n')
+                            print(' 1 -  |  Registrar produção diária    |')
+                            print(' 2 -  |  Ver relatório das produções  |')
+                            print(' 3 -  |  Sair                         |')
                             print('\n')
-                            print('1 - Registrar produção diária')
-                            print('2 - Ver relatório das produções')
-                            print('3 - Sair\n')
 
                             esc = input('Qual opção deseja realizar: ')
 
                             if esc == '1':
 
-                                print('\n===== REGISTRAR   PRODUÇÃO =====')
+                                print('\n  |  REGISTRAR   PRODUÇÃO  |  \n')
                                 
                                 if len(rebanho) == 0:
                                     print('Nenhum animal cadastrado.\n')
@@ -545,6 +555,7 @@ while True:
                                     print(item[0], ':', item[1])
 
                                 print('\nProdução diária registrada com sucesso!\n')
+                                input('ENTER para continuar')
 
 
                             elif esc == '2':
@@ -567,6 +578,9 @@ while True:
                                             print(f'{item[0]}: {item[1]}')
 
                                         print('\n')
+
+                                input('ENTER para continuar')
+
                             else:
                                 break
 
@@ -576,7 +590,8 @@ while True:
                             print('\n')
                             print('1 - Adicionar derivado')
                             print('2 - Ver estoque')
-                            print('3 - Sair\n')
+                            print('3 - Editar produto')
+                            print('4 - Sair\n')
 
                             esc = input('Qual opção deseja realizar: ')
 
@@ -603,12 +618,7 @@ while True:
 
                                     valor_total = quantidade * valor_unitario
 
-                                    estoque_derivados.append([
-                                        nome,
-                                        str(quantidade),
-                                        str(valor_unitario),
-                                        str(valor_total)
-                                    ])
+                                    estoque_derivados.append([nome, str(quantidade), str(valor_unitario), str(valor_total)])
 
                                     print('\nProduto adicionado!\n')
                                 input("Pressione ENTER para voltar ao menu...")
@@ -633,25 +643,111 @@ while True:
                                 input("Pressione ENTER para voltar ao menu...")
                                 print('\n'*2)
 
+                            elif esc == '3':
+
+                                print('\n===== EDITAR PRODUTO =====\n')
+
+                                nome_editar = input('Digite o nome do produto: ').lower()
+
+                                for produto in estoque_derivados:
+
+                                    if produto[0] == nome_editar:
+
+                                        while True:
+
+                                            print('\nO que deseja editar?\n')
+                                            print('1 - Nome')
+                                            print('2 - Quantidade')
+                                            print('3 - Valor por kg/L')
+                                            print('4 - Sair\n')
+
+                                            editar = input('Escolha: ')
+
+                                            if editar == '1':
+
+                                                novo_nome = input('Novo nome: ').lower()
+                                                produto[0] = novo_nome
+
+                                                print('\nNome atualizado!\n')
+
+                                            elif editar == '2':
+
+                                                nova_quantidade = float(input('Nova quantidade: '))
+                                                produto[1] = str(nova_quantidade)
+
+                                                produto[3] = str(
+                                                    float(produto[1]) * float(produto[2])
+                                                )
+
+                                                print('\nQuantidade atualizada!\n')
+
+                                            elif editar == '3':
+
+                                                novo_valor = float(input('Novo valor por kg/L: '))
+                                                produto[2] = str(novo_valor)
+
+                                                produto[3] = str(float(produto[1]) * float(produto[2]))
+
+                                                print('\nValor atualizado!\n')
+
+                                            else:
+                                                break
+
+                                        break
+
+                                else:
+                                    print('\nProduto não encontrado!\n')
+
+                                input("Pressione ENTER para voltar ao menu...")
+                                print('\n')
+
                             else:
                                 break
 
-                
+
                     elif op == '8':
+
+                        print('\n===== RELATÓRIO DE VENDAS =====\n')
+
+                        if len(relatorio_vendas) == 0:
+
+                            print('Nenhuma venda realizada.\n')
+
+                        else:
+
+                            for venda in relatorio_vendas:
+
+                                print('CLIENTE:', venda[0])
+
+                                print('\nITENS:')
+
+                                for item in venda[1]:
+
+                                    print(f'{item[0]} | Qtd: {item[1]} | R$ {item[2]}')
+
+                                print('\nTOTAL:', venda[2])
+
+                                print('PAGAMENTO:', venda[3])
+
+                                print('\n---------------------------\n')
+
+                        input('ENTER para continuar...')
+                
+                    elif op == '9':
                         break
+                break
 
             if usuario == pessoa[0] and senha == pessoa[1] and pessoa[2] == False:
 
                 carrinho = []
 
                 while True:
-
-                    print('='*10, 'MENU | CLIENTE', '='*10)
-                    print('1 - Ver catálogo')
-                    print('2 - Adicionar ao carrinho')
-                    print('3 - Ver carrinho / finalizar compra')
-                    print('4 - Agendar entrega / transporte')
-                    print('5 - Sair\n')
+                    print('\n -______-  MENU | CLIENTE  -______-\n')
+                    print('1 - |  Ver catálogo                                      |')
+                    print('2 - |  Adicionar ao carrinho                             |')
+                    print('3 - |  Carrinho / Agendar transporte / Confirmar compra  |')
+                    print('4 - |  Sair                                              |')
+                    print('\n')
 
                     op = input('Digite o que deseja fazer: ')
                     print()
@@ -682,6 +778,10 @@ while True:
 
                                 nome = input('Nome do produto: ').lower()
                                 qtd = float(input('Quantidade (kg/L): '))
+
+                                if qtd <= 0:
+                                    print('Quantidade inválida!\n')
+                                    continue
 
                                 for p in estoque_derivados:
 
@@ -732,7 +832,7 @@ while True:
 
                         if len(carrinho) == 0:
                             print('Carrinho vazio\n')
-                            input()
+                            input("ENTER para continuar...")
                             continue
 
                         total_geral = 0
@@ -754,7 +854,30 @@ while True:
                             if escolha == '1':
 
                                 print('\n=== FINALIZANDO COMPRA ===')
-                                print('Total a pagar:', total_geral)
+                                print('Total dos produtos:', total_geral)
+
+                                print('\n===== ENTREGA =====\n')
+
+                                endereco = input('Endereço: ')
+                                dias = int(input('Prazo (dias): '))
+
+                                if dias <= 2:
+                                    frete = 20
+
+                                elif dias <= 5:
+                                    frete = 10
+
+                                else:
+                                    frete = 0
+
+                                total_final = total_geral + frete
+
+                                print('\nResumo da entrega:')
+                                print('Endereço:', endereco)
+                                print('Prazo:', dias, 'dias')
+                                print('Frete: R$', frete)
+
+                                print('\nTOTAL FINAL: R$', total_final)
 
                                 while True:
                                     print('\nForma de pagamento:')
@@ -778,19 +901,52 @@ while True:
                                 print('Pagamento:', pagamento)
                                 print('Pedido em processamento...\n')
 
+                                relatorio_vendas.append([usuario, carrinho.copy(), total_final, pagamento, endereco, dias])
+
+                                for item in carrinho:
+
+                                    nome_item = item[0]
+                                    quantidade = item[1]
+
+                                    for p in estoque_derivados:
+
+                                        if p[0] == nome_item:
+
+                                            p[1] = str(float(p[1]) - float(quantidade))
+                                            break
+
+                                    for a in rebanho:
+
+                                        nome_animal = a[0] + ' IDD ' + a[1]
+
+                                        if nome_item == nome_animal:
+
+                                            rebanho.remove(a)
+                                            break
+
                                 carrinho = []
 
-                                input()
+                                input('ENTER para continuar...')
                                 break
 
                             elif escolha == '2':
 
-                                rem = input('Nome do item: ').lower()
+                                rem = input('Nome ou IDD do item: ').lower()
 
                                 for item in carrinho:
+
                                     if rem in item[0].lower():
+
                                         carrinho.remove(item)
+
+                                        total_geral = 0
+
+                                        for itens in carrinho:
+                                            total_geral += float(itens[2])
+
                                         print('Item removido!')
+                                        print(f'Novo total: R$ {total_geral}')
+
                                         break
                                 else:
                                     print('Item não encontrado')
@@ -803,42 +959,13 @@ while True:
                                 continue
 
                     elif op == '4':
-
-                        print('\n===== AGENDAR ENTREGA =====\n')
-
-                        endereco = input('Endereço: ')
-                        dias = int(input('Prazo (dias): '))
-
-                        if dias <= 2:
-                            frete = 20
-                        elif dias <= 5:
-                            frete = 10
-                        else:
-                            frete = 0
-
-                        print('\nResumo da entrega:')
-                        print('Endereço:', endereco)
-                        print('Prazo:', dias, 'dias')
-                        print('Frete: R$', frete)
-
-                        input("\nENTER para confirmar...")
-
-                        print('Entrega agendada com sucesso!\n')
-                        input("ENTER para voltar...")
-
-                    elif op == '5':
-                        print('Saindo...')
+                        print('Saindo...\n')
                         break
 
                     else:
                         print('Opção inválida!')
                         input("ENTER para continuar...")
-                
-
-
-
-
-
+                break
         else:
             print('\n Usuário não encontrado \n')
 
