@@ -4,7 +4,6 @@ usuarios = [
     ['teste', '0000', False],
 ]
 
-# tipo,  IDD,  status,  peso,  idade,  sexo,  valor,  produto, produção diária,  vacinado,  observações
 rebanho = [
     ['bovino', '001', 'lactação', '500', '4', 'F', '5000', 'leite bovino', '22', 'sim', ''],
     ['bovino', '002', 'venda', '460', '5', 'F', '4500', 'leite bovino', '19', 'sim', ''],
@@ -351,6 +350,13 @@ while True:
 
                                 for animal in rebanho:
                                     prioridade = 0
+                                    if animal[10] == 'checado':
+                                        checando = input(f'O Animal {animal[0:2]} apresenta melhora? (s/n): ').lower()
+                                        if checando =='s':
+                                            animal[10] =''
+                                        elif checando == 'n':
+                                            animal[10] = 'doente'
+                                            
                                     if animal[10] == 'doente':
 
                                         doentes = []
