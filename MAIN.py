@@ -507,6 +507,7 @@ while True:
                                                 print(f'=== RELATÓRIO DO ANIMAL {buscar_a}===\n')
                                                 print(f'Animal encontrado:')
                                                 print(f'{animal}\n')
+                                                break
 
                                         else:
                                             print('Animal não encontrado, faça a checagem ou tente novamente!\n')
