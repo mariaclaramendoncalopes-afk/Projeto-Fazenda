@@ -753,7 +753,7 @@ while True:
                     print('1 - |  Ver catálogo                                      |')
                     print('2 - |  Adicionar ao carrinho                             |')
                     print('3 - |  Carrinho / Agendar transporte / Confirmar compra  |')
-                    print('4 - |  Sair                                              |')
+                    print('0 - |  Sair                                              |')
                     print('\n')
 
                     op = input('Digite o que deseja fazer: ')
@@ -819,9 +819,16 @@ while True:
 
                                     if a[1] == id_animal and a[2] == 'venda':
 
-                                        carrinho.append([a[0] + ' IDD ' + a[1], 1, float(a[6])])
+                                        nome_animal = a[0] + ' IDD ' + a[1]
 
-                                        print('Animal adicionado ao carrinho!')
+                                        for item in carrinho:
+                                            if item[0] == nome_animal:
+                                                print('Esse animal já está no carrinho!')
+                                                break
+                                        else:
+                                            carrinho.append([nome_animal, 1, float(a[6])])
+                                            print('Animal adicionado ao carrinho!')
+
                                         break
 
                                 else:
@@ -965,7 +972,7 @@ while True:
                                 print('Opção inválida!')
                                 continue
 
-                    elif op == '4':
+                    elif op == '0':
                         print('Saindo...\n')
                         break
 
