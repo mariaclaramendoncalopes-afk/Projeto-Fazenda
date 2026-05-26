@@ -78,7 +78,7 @@ def cadastro_cliente(usuarios):
         print('\n')
 
 
-def login(usuarios):
+def login(usuarios, animais_d):
         mostrar_linha()
         print('''
               
@@ -99,13 +99,13 @@ def login(usuarios):
                 mostrar_linha()
                 print('\n')
                 nome_fazenda()
-                menu_adm(usuarios, usuario)
+                menu_adm(usuarios, usuario, animais_d)
 
 
 
 
 
-def menu_adm(usuarios, usuario):
+def menu_adm(usuarios, usuario, animais_d):
     while True:
         print('\n')
         print('  ＭＥＮＵ  ＡＤＭＩＮＩＳＴＲＡＤＯＲ')
@@ -127,7 +127,11 @@ def menu_adm(usuarios, usuario):
         op = input('Digite a opção que deseja realizar:  ')
 
         if op == '1':
-            print('Você é gay')
+            mostrar_linha()
+            print('\n ＣＡＤＡＳＴＲＡＲ  ＡＮＩＭＡＬ  ＮＯ  ＲＥＢＡＮＨＯ\n')
+            while True:
+                print(f'| Tipo disponíveis: {animais_d} |\n')
+                tipo = input('Informe qual tipo de animal deseja cadastrar:  ')
         break
 
           

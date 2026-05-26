@@ -88,7 +88,7 @@ while True:
         menu_cadastros.cadastro_cliente(usuarios)
 
     elif op == '3':
-        menu_cadastros.login(usuarios)
+        menu_cadastros.login(usuarios, animais_d)
 
     else:
         print('inválido')
