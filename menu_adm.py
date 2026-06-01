@@ -344,16 +344,64 @@ def gerenciar_produçoes(rebanho, producao_diaria):
             continue
 
 
+def gerenciar_derivados(estoque_derivados):
+    while True:
+        fontes_cores.linha()
+        fontes_cores.título_gerenciamento_derivados()
+        print('''
+            (1)  - Adicionar derivado
+            (2)  - Ver estoque
+            (3)  - Editar produto no estoque
+            (4)  - Sair
+        ''')
+        opcao = apenas_int('Escolha uma opção:  ')
+
+        if opcao == 1:
+            fontes_cores.linha_comum()
+            fontes_cores.título_adicionar_derivado()
+
+            nome = input('Nome do produto:  ').lower()
+            quantidade = float(input('Quantidade (kg/l) que deseja adicionar no estoque:  '))
+            valor_kg = float(input('Valor por KG/L:  '))
+
+            for produto in estoque_derivados:
+
+                if produto['produto'] == nome:
+
+                    produto['quantidade'] += quantidade
+                    produto['valor do kg'] = valor_kg
+                    produto['valor total do estoque'] = produto['quantidade'] * produto['valor do kg']
+
+                    print('\n[bold green]Estoque atualizado![/bold green]\n')
+                    break
+            
+            else:
+                valor_total = quantidade * valor_kg
+
+                estoque_derivados.append({'produto' : nome, 'quantidade' : quantidade, 'valor do kg' : valor_kg, 'valor total do estoque' : valor_total})
+
+                print('\n[bold green]Produto adicionado no estoque![/bold green]')
+
+        elif opcao == 2:
+            fontes_cores.linha_comum()
+            fontes_cores.título_ver_estoque()
+
+            if len(estoque_derivados) == 0:
+                print('\n[bold red]Estoque vazio.[/bold red]\n')
+
+            else:
+                for produto in estoque_derivados:
+                    print('mostrar produto')
 
 
 
-                    
+
 
                 
 
 
 
-def menu_adm(usuarios, animais_d, rebanho, producao_diaria):
+def menu_adm(usuarios, animais_d, rebanho, producao_diaria, estoque_derivados):
     while True:
         fontes_cores.título_menu_adm()
         print('''
@@ -391,3 +439,6 @@ def menu_adm(usuarios, animais_d, rebanho, producao_diaria):
 
         elif op == 6:
             gerenciar_produçoes(rebanho, producao_diaria)
+
+        elif op == 7:
+            gerenciar_derivados(estoque_derivados)
