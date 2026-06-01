@@ -1,0 +1,110 @@
+from rich import print
+from rich.console import Console
+from rich.table import Table
+
+def linha():
+    print("▂" * 65)
+    print('\n')
+
+def linha_comum():
+    print('_' * 65)
+    print('\n')
+
+def título_fazenda():
+    console = Console()
+    console.print('''[bold blue]
+    █▀▀ ▄▀█ ▀█ █▀▀ █▄ █ █▀▄ ▄▀█    █▀ █▀▀ █▀█ ▀█▀ ▄▀█ ▄▀
+    █▀  █▀█ █▄ ██▄ █ ▀█ █▄▀ █▀█    ▄█ ██▄ █▀▄  █  █▀█ █▄█[/bold blue]''')
+
+def título_cadastro_adm():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＣＡＤＡＳＴＲＯ  ＡＤＭＩＮＩＳＴＲＡＤＯＲ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_cadastro_cliente():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＣＡＤＡＳＴＲＯ  ＣＬＩＥＮＴＥ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_login():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＬＯＧＩＮ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_menu_adm():
+    console = Console()
+    console.print('''[bold blue]
+           █▀▄▀█ █▀▀ █▄ █ █  █     ▄▀█ █▀▄ █▀▄▀█
+           █ ▀ █ ██▄ █ ▀█ █▄▄█     █▀█ █▄▀ █ ▀ █[/bold blue]''')
+
+def título_cadastrar_animal():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＣＡＤＡＳＴＲＡＲ  ＡＮＩＭＡＬ  ＮＯ  ＲＥＢＡＮＨＯ")
+    console.print(tabela_titulo)
+
+def título_buscar_animal():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＢＵＳＣＡＲ  ＡＮＩＭＡＬ  ＮＯ  ＲＥＢＡＮＨＯ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_modificar_animal():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＭＯＤＩＦＩＣＡＲ  ＤＡＤＯＳ  ＤＯ  ＡＮＩＭＡＬ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_remover_animal():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＲＥＭＯＶＥＲ  ＡＮＩＭＡＬ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_monitoramento_rebanho():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＭＯＮＩＴＯＲＡＭＥＮＴＯ  ＤＯ  ＲＥＢＡＮＨＯ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_gerenciar_producoes():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＧＥＲＥＮＣＩＡＲ  ＰＲＯＤＵＣＯＥＳ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_registrar_producao():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("[bold cyan]ＲＥＧＩＳＴＲＡＲ  ＰＲＯＤＵＣＡＯ  ＤＩＡＲＩＡ[/bold cyan]")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_relatorio_producao():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("[bold cyan]ＲＥＬＡＴＯＲＩＯ  ＤＡＳ  ＰＲＯＤＵＣＯＥＳ[/bold cyan]")
+    console.print(tabela_titulo)
+    print('\n')
