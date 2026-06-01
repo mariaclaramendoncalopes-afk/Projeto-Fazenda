@@ -101,7 +101,7 @@ while True:
         login = cadastros.login(usuarios)
 
         if login == 'administrador':
-            menu_adm.menu_adm(usuarios, animais_d, rebanho, producao_diaria)
+            menu_adm.menu_adm(usuarios, animais_d, rebanho, producao_diaria, estoque_derivados)
             
         
         elif login == 'cliente':
