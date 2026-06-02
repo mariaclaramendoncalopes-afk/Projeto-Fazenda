@@ -581,8 +581,38 @@ def gerenciar_derivados(estoque_derivados):
                 for produto in estoque_derivados:
                     print('mostrar produto')
 
+# - melhorar
+def mostrar_rebanho_total(rebanho, animal):
+    print('-'*5 + animal + '-'*5)
+    for tipo in rebanho:
+        if tipo['tipo'] == animal:
+            print(f'{exibir_ficha_animal(tipo)}\n')
 
-def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados):
+def quantidade_produzidos(data, producao_diaria):
+    leite = 0
+    for leites in producao_diaria:
+        leite += float(leites[data]['leite bovino'])
+        leite += float(leites[data]['leite caprino'])
+        leite += float(leites[data]['leite ovino'])
+
+        print(f'{leite}L de leite')
+
+    for ovos in producao_diaria:
+        ovo = 0
+        ovo += float(ovos[data]['ovos'])
+        print(f'{ovo} ovo(s)')
+
+def derivados_no_estoque(estoque_derivados):
+    derivado = 0
+    estoque = 0
+    for itens in estoque_derivados:
+        derivado += itens['quantidade']
+        estoque += itens['valor total do estoque']
+        print(f'{itens['produto']} - R${estoque}')
+#
+
+
+def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data):
     while True:
         fontes_cores.título_menu_adm()
         print('''
@@ -621,3 +651,14 @@ def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_d
 
         elif op == 7:
             gerenciar_derivados(estoque_derivados)
+
+        elif op == 9:
+            print('Todos animais presentes no rebanho, por tipo:\n')
+            for animal in animais_d:
+                mostrar_rebanho_total(rebanho, animal)
+            print()
+            print(f'Quantidade de leite e ovos do dia {data}')
+            quantidade_produzidos(data, producao_diaria)
+            print()
+            print(f'Estoque de Derivados')
+            derivados_no_estoque(estoque_derivados)

@@ -1,3 +1,4 @@
+import datetime
 import fontes_cores
 import cadastros
 import menu_adm
@@ -49,7 +50,12 @@ animais_d = ['bovino', 'caprino', 'ovino', 'galinha']
 
 relatorio = list()
 
-producao_diaria = dict()
+data = datetime.datetime.now()
+data = data.strftime('%d/%m/%Y')
+producao_diaria = [{
+    data:
+      {'leite bovino':61, 'leite caprino':7, 'leite ovino' :2, 'ovos' :2}
+}]
 
 estoque_derivados = [
     {'produto' : 'queijo coalho', 'quantidade' : 5 , 'valor do kg' : 24, 'valor total do estoque' : 120},
@@ -95,7 +101,7 @@ while True:
         login = cadastros.login(usuarios)
 
         if login == 'administrador':
-            menu_adm.menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados)
+            menu_adm.menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data)
             
         
         elif login == 'cliente':
