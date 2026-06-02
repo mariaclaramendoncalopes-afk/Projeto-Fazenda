@@ -1,3 +1,4 @@
+import datetime
 from rich import print
 from rich.console import Console
 import builtins
@@ -19,8 +20,24 @@ def obter_sim_nao(mensagem):
         resposta = input(mensagem).lower().strip()
         if resposta in ['s', 'n']:
             return resposta
-        print('[bold red] Resposta inválida! Digite apenas "s" para Sim ou "n" para Não.[/bold red]\n')
+        else:
+            print('[bold red] Resposta inválida! Digite apenas "s" para Sim ou "n" para Não.[/bold red]\n')
 
+
+def sintoma_gravidade(gravidade):
+    while True:
+        entrada = apenas_int(gravidade)
+        if 0< entrada <4 :
+            if entrada == 1:
+                inf = 'leve'
+            elif entrada == 2:
+                inf = 'moderada'
+            else:
+                inf = 'grave'
+            return inf
+        else:
+            print('[bold red] Informação inválida! Digite o número que melhor descreve a gravidade do sintoma.[/bold red]\n')
+        
 
 def exibir_ficha_animal(animal):
     print(f"""
@@ -270,17 +287,191 @@ def remover_animal(rebanho):
         break
 
 
-# def monitoramento_rebanho(rebanho):
-#     fontes_cores.linha()
-#     fontes_cores.título_monitoramento_rebanho()
-#     while True:
-#         print('''
+def monitoramento_rebanho(rebanho, relatorio):
+    fontes_cores.linha()
+    fontes_cores.título_monitoramento_rebanho()
+    while True:
+        print('''
               
-#             (1)  - Triagem de animal doente
-#             (2)  - Relatório animais
-#             (3)  - Sair
+            (1)  - Triagem de animal doente
+            (2)  - Relatório animais
+            (3)  - Sair
               
-#     ''')
+    ''')
+        
+        opc = apenas_int('Escolha uma opção: ')
+
+        if opc == 1:
+            dia_monitoramento = datetime.datetime.now()
+
+            dia_monitoramento = dia_monitoramento.strftime('%d/%m/%Y')
+
+            for animal in rebanho:
+                prioridade = 0
+                if animal['observações'] == 'checado':
+                    seg_checagem = obter_sim_nao(f'O Animal {animal['tipo'], animal['brinco']} continua doente? (s/n): ')
+                    if seg_checagem != 's':
+                        animal['observações'] = ''
+                    else:
+                        animal['observações'] = 'doente'
+
+                if animal['observações'] == 'doente':
+
+                    doentes = {'brinco': animal['brinco'], 'tipo': animal['tipo'],'dia do relatório': dia_monitoramento , 'prioridade':prioridade, 'dia(s) doente': 0,
+                    'sintomas':[]
+                    }
+
+                    print('  | CHECAGEM  |\n')
+                    print(f'BRINCO do animal em checagem: {animal['tipo'],animal['brinco']}')
+                    temp = float(input('Informe a TEMPERATURA do animal: '))
+                    if temp < 35.5:
+                        prioridade +=4
+                        estado = 'Hipotermia Grave!'
+                    elif 35.5 <= temp <= 37.5:
+                        prioridade +=2
+                        estado = 'Hipotermia Moderada'
+                    elif 37.5 < temp <= 39.2:
+                        estado = 'Temperatura Saudável!'
+                    elif 39.5 < temp <= 40.5:
+                        prioridade +=2
+                        estado = 'Febre Moderada'
+                    else:
+                        prioridade +=4
+                        estado = 'Febre Alta!'
+                    doentes['sintomas'].append({'Temperatura': {'temperatura informada': temp, 'estado': estado}})
+
+                    tosse = obter_sim_nao('O Animal está TOSSINDO? (s/n): ')
+                    if tosse != 'n':
+                        inf_tosse = sintoma_gravidade('Informe a gravidade: (1) - "Leve", (2) - "Moderada", (3) - "Grave": ')
+                        if inf_tosse == 'leve':
+                            prioridade +=1
+                        elif inf_tosse == 'moderada':
+                            prioridade +=2
+                        elif inf_tosse == 'grave':
+                            prioridade +=4
+                        doentes['sintomas'].append({'Tosse': inf_tosse})
+
+                    falta_apetite = obter_sim_nao('O Animal apresenta FALTA DE APETITE? (s/n): ')
+                    if falta_apetite != 'n':
+                        prioridade +=2
+                        doentes['sintomas'].append({'Falta de apetite': 'presente'})
+                    
+                    ferimentos = obter_sim_nao('O Animal apresenta FERIMENTOS? (s/n): ')
+                    if ferimentos != 'n':
+                        prioridade +=3
+                        ferimentos_local = input('Informe os locais do(s) ferimentos: ')
+                        doentes['sintomas'].append({'Ferimento(s)': ferimentos_local})
+
+                    andar = obter_sim_nao('O Animal apresenta DIFICULDADE PARA ANDAR? (s/n): ')
+                    if andar != 'n':
+                        prioridade +=3
+                        doentes['sintomas'].append({'Dificuldades para andar': 'presente'})
+
+                    diarreia = obter_sim_nao('O Animal está com DIARREIA? (s/n): ')
+                    if diarreia != 'n':
+                        inf_diarreia = sintoma_gravidade('Informe a gravidade: (1) - "Leve", (2) - "Moderada", (3) - "Grave": ')
+                        if inf_diarreia == 'leve':
+                            prioridade +=1
+                        elif inf_diarreia == 'moderada':
+                            prioridade +=2
+                        elif inf_diarreia == 'grave':
+                            prioridade +=4
+                        doentes['sintomas'].append({'Diarreia': inf_diarreia})
+
+                    if animal['status'] == 'lactação' or animal['status'] == 'producao':
+                        baixa_prod = obter_sim_nao('A produção está BAIXA? (s/n): ')
+                        if baixa_prod == 's':
+                            prioridade += 2
+                            doentes['sintomas'].append({'produção': 'baixa'})
+
+                    if animal['vacinado'] == 's':
+                        vacina_dia = obter_sim_nao('A VACINAÇÃO do animal está em dia? (s/n): ')
+                        if vacina_dia == 'n':
+                            prioridade += 2
+                            doentes['sintomas'].append({'Vacinação': 'pendente'})
+                    
+                    medicamento = obter_sim_nao('O animal utiliza algum MEDICAMENTO? (s/n): ').lower()
+                    if medicamento == 's':
+                        prioridade += 1
+                        inf_med = input('Informe o(s) medicamento(s) utilizado(s): ')
+                        doentes['sintomas'].append({'utiliza medicamento': ['sim', inf_med]})
+
+                    dias_doente = apenas_int('A quantos DIAS o animal está doente? ')
+                    if dias_doente <= 3:
+                        prioridade += 1
+                    elif 4 <= dias_doente <= 7:
+                        prioridade += 2
+                    elif dias_doente > 7:
+                        prioridade += 4
+
+                    print(f'Fim da checagem.\n')
+                    print(f'Prioridade do animal: {prioridade}')
+
+                    if prioridade <= 5:
+                        print('Prioridade Baixa. Continue monitorando o animal.')
+                    elif 6<= prioridade <=10:
+                        print('Prioridade Média. Isole, observe e trate do animal.')
+                    elif 11<= prioridade <= 17:
+                        print('Prioridade Alta! Necessita de avaliação rápidamente!')
+                    elif prioridade >17:
+                        print('PRIORIDADE CRÍTICA! Necessita de atendimento IMEDIATO!')
+                    print('\n')
+                    
+                    doentes['prioridade'] = prioridade
+                    doentes['dia(s) doente'] = dias_doente
+                    relatorio.append(doentes)
+                    animal['observações'] = 'checado'
+                    print()
+
+                    continuar = obter_sim_nao('Deseja continuar fazendo checagens? (s/n): ')
+                    if continuar != 's':
+                        break 
+            else:
+                print('Não há animais doentes para a triagem.\n')
+
+        elif opc == 2:
+            while True:
+                print(' -______-  RELATÓRIO  -______-\n')
+                print('''
+                (1)  - Relatório de todos os animais doentes
+                (2)  - Buscar apenas um animal doente
+                (3)  - Sair
+                ''')
+
+                busc = apenas_int('Escolha uma opção: ')
+                print()
+
+                if busc == 1:
+                    print('  |  RELATÓRIOS DE DOENTES  |\n')
+                    if len(relatorio) == 0:
+                        print('Não foi feito a checagem de nenhum animal.\n')
+                    else:
+                        for animal in relatorio:
+                            print(f'{animal}\n')
+
+                elif busc == 2:
+                    buscar_a = input('Digite o BRINCO do animal que está procurando: ')
+                    print('\n')
+            
+                    if len(relatorio) == 0:
+                        print('Não foi feito a checagem de nenhum animal.\n')
+                        continue
+
+                    for animal in relatorio:
+                        if buscar_a == animal['brinco']:
+                            print(f'=== RELATÓRIO DO ANIMAL DE BRINCO "{buscar_a}" ===\n')
+                            print(f'Animal encontrado:')
+                            print(f'{animal}\n')
+                            break
+
+                    else:
+                        print('Animal não encontrado, faça a checagem ou tente novamente!\n')
+
+                elif busc == 3:
+                    break
+        elif opc == 3:
+            break
+
 
 
 
@@ -391,7 +582,7 @@ def gerenciar_derivados(estoque_derivados):
                     print('mostrar produto')
 
 
-def menu_adm(usuarios, animais_d, rebanho, producao_diaria, estoque_derivados):
+def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados):
     while True:
         fontes_cores.título_menu_adm()
         print('''
@@ -423,7 +614,7 @@ def menu_adm(usuarios, animais_d, rebanho, producao_diaria, estoque_derivados):
             remover_animal(rebanho)
 
         elif op == 5:
-            print('monitoramento animais')
+            monitoramento_rebanho(rebanho, relatorio)
 
         elif op == 6:
             gerenciar_produçoes(rebanho, producao_diaria)

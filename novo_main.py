@@ -47,7 +47,7 @@ rebanho = [
 
 animais_d = ['bovino', 'caprino', 'ovino', 'galinha']
 
-relatorio = dict()
+relatorio = list()
 
 producao_diaria = dict()
 
@@ -95,7 +95,7 @@ while True:
         login = cadastros.login(usuarios)
 
         if login == 'administrador':
-            menu_adm.menu_adm(usuarios, animais_d, rebanho, producao_diaria, estoque_derivados)
+            menu_adm.menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados)
             
         
         elif login == 'cliente':
