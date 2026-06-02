@@ -39,9 +39,6 @@ def exibir_ficha_animal(animal):
 
 
 
-
-
-
 def cadastrar_animal(animais_d, rebanho):
 
         while True:
@@ -394,18 +391,10 @@ def gerenciar_derivados(estoque_derivados):
                     print('mostrar produto')
 
 
-
-
-
-                
-
-
-
 def menu_adm(usuarios, animais_d, rebanho, producao_diaria, estoque_derivados):
     while True:
         fontes_cores.título_menu_adm()
         print('''
-        
             (1)  -  Cadastrar animal no rebanho
             (2)  -  Buscar animal
             (3)  -  Modificar dados do animal
@@ -416,7 +405,6 @@ def menu_adm(usuarios, animais_d, rebanho, producao_diaria, estoque_derivados):
             (8)  -  Relatório de vendas
             (9)  -  xxxxxxxxxxxxxxxxxx
             (0)  -  Sair
-        
     ''')
         
         op = apenas_int('Digite qual opção deseja realizar:  ')

@@ -19,32 +19,26 @@ rebanho = [
         'brinco' : '001', 'tipo' : 'bovino', 'status' : 'lactação', 'peso' : 500, 'idade' : 4, 'sexo' : 'F',
         'valor' : 5000, 'produto' : 'leite bovino', 'produção diária' : 22, 'vacinado' : 's', 'observações' : ''
     },
-
     {
         'brinco' : '002', 'tipo' : 'bovino', 'status' : 'venda', 'peso' : 460, 'idade' : 5, 'sexo' : 'F',
         'valor' : 4700, 'produto' : 'leite bovino', 'produção diária' : 19, 'vacinado' : 'n', 'observações' : '' 
     },
-
     {
         'brinco' : '003', 'tipo' : 'bovino', 'status' : 'venda', 'peso' : 460, 'idade' : 5, 'sexo' : 'F',
         'valor' : 4700, 'produto' : 'leite bovino', 'produção diária' : 19, 'vacinado' : 's', 'observações' : '' 
     },
-
     {
         'brinco' : '100', 'tipo' : 'caprino', 'status' : 'lactação', 'peso' : 55, 'idade' : 3, 'sexo' : 'F',
         'valor' : 900, 'produto' : 'leite caprino', 'produção diária' : 3, 'vacinado' : 's', 'observações' : 'doente'        
     },
-
     {
         'brinco' : '101', 'tipo' : 'caprino', 'status' : 'venda', 'peso' : 60, 'idade' : 4, 'sexo' : 'F',
         'valor' : 950, 'produto' : 'leite caprino', 'produção diária' : 4, 'vacinado' : 's', 'observações' : ''  
     },
-
     {
         'brinco' : '201', 'tipo' : 'ovino', 'status' : 'venda', 'peso' : 60, 'idade' : 4, 'sexo' : 'F',
         'valor' : 1100, 'produto' : 'leite ovino', 'produção diária' : 2, 'vacinado' : 's', 'observações' : ''  
     },
-
     {
         'brinco' : '301', 'tipo' : 'galinha', 'status' : 'produção', 'peso' : 3, 'idade' : 1, 'sexo' : 'F',
         'valor' : 50, 'produto' : 'ovos', 'produção diária' : 1, 'vacinado' : 's', 'observações' : 'doente'  
