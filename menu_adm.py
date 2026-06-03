@@ -21,7 +21,7 @@ def obter_sim_nao(mensagem):
         if resposta in ['s', 'n']:
             return resposta
         else:
-            print('[bold red] Resposta inválida! Digite apenas "s" para Sim ou "n" para Não.[/bold red]\n')
+            print('\n[bold red]Resposta inválida! Digite apenas "s" para Sim ou "n" para Não.[/bold red]')
 
 
 def sintoma_gravidade(gravidade):
@@ -36,7 +36,7 @@ def sintoma_gravidade(gravidade):
                 inf = 'grave'
             return inf
         else:
-            print('[bold red] Informação inválida! Digite o número que melhor descreve a gravidade do sintoma.[/bold red]\n')
+            print('\n[bold red]Informação inválida! Digite o número que melhor descreve a gravidade do sintoma.[/bold red]\n')
         
 
 def exibir_ficha_animal(animal):
@@ -111,6 +111,8 @@ def cadastrar_animal(animais_d, rebanho):
             sleep(1.5)
             print(' [OK]')
             sleep(0.5)
+            print('\n')
+            fontes_cores.linha()
             print(f'\n          [bold red]{tipo}[/bold red]  |  Cadastrado com sucesso!')
 
             repetir = apenas_int(f'''
@@ -119,12 +121,11 @@ def cadastrar_animal(animais_d, rebanho):
             (1)  -  Desejo cadastrar outro animal.
             (2)  -  Sair da página cadastros.
 
-Escolha uma opção: ''')
+- Escolha uma opção: ''')
             
             if repetir != 1:
                 print('\n')
                 break
-
 
 
 def buscar_animal(rebanho):
@@ -609,7 +610,6 @@ def derivados_no_estoque(estoque_derivados):
         derivado += itens['quantidade']
         estoque += itens['valor total do estoque']
         print(f'{itens['produto']} - R${estoque}')
-#
 
 
 def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data):
