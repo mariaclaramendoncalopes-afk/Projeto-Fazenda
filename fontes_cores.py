@@ -3,11 +3,11 @@ from rich.console import Console
 from rich.table import Table
 
 def linha():
-    print("▂" * 65)
+    print("▂" * 75)
     print('\n')
 
 def linha_comum():
-    print('_' * 65)
+    print('_' * 75)
     print('\n')
 
 def título_fazenda():
@@ -138,5 +138,21 @@ def título_editar_produto():
     tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
     tabela_titulo.add_column(width=60, justify="center")
     tabela_titulo.add_row("ＥＤＩＴＡＲ 　ＰＲＯＤＵＴＯ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_checagem():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＣＨＥＣＡＧＥＭ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_relatorio():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＲＥＬＡＴＯＲＩＯ")
     console.print(tabela_titulo)
     print('\n')
