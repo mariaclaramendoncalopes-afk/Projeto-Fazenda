@@ -110,10 +110,10 @@ def cadastrar_animal(animais_d, rebanho):
                     break
 
             status = input('\nStatus do animal:  ').lower ()
-            peso = apenas_int('\nPeso do animal:  ')
+            peso = apenas_float('\nPeso do animal:  ')
             idade = apenas_int('\nIdade do animal:  ')
             sexo = input('\nSexo do animal:  (F/M)?  ').upper ()
-            valor = apenas_int('\nValor do animal:  ')
+            valor = apenas_float('\nValor do animal:  ')
             produto = input('\nO que ele produz?  (caso não produza nada, deixe o espaço vazio):  ').lower ()
             producao = apenas_int('\nQuanto esse animal produz por dia:  ')
             vacinado = obter_sim_nao('\nÉ vacinado - (s/n)?  ').lower ()
@@ -215,7 +215,7 @@ def modificar_animal(rebanho):
                         animal['status'] = input('\nAlterar status:  ').lower()
 
                     elif modificar == 4:
-                        animal['peso'] = apenas_int('\nAlterar peso:  ')
+                        animal['peso'] = apenas_float('\nAlterar peso:  ')
 
                     elif modificar == 5:
                         animal['idade'] = apenas_int('\nAlterar idade:  ')
@@ -224,7 +224,7 @@ def modificar_animal(rebanho):
                         animal['sexo'] = input('\nAlterar sexo:  ').upper()
 
                     elif modificar == 7:
-                        animal['valor'] = apenas_int('\nAlterar valor:  ')
+                        animal['valor'] = apenas_float('\nAlterar valor:  ')
 
                     elif modificar == 8:
                         animal['produto'] = input('\nAlterar produto:  ').lower()
@@ -306,6 +306,20 @@ def remover_animal(rebanho):
         
         break
 
+def nao_vacinados(rebanho,relatorio):
+    qnt = 0
+    for animal in rebanho:
+        if animal['vacinado'] == 'n':
+            qnt +=1
+            print(f'Brinco: {animal['brinco']}')
+            print(f'{animal['tipo']} - NÃO vacinado \n')
+    for animal in relatorio:
+        for sintoma in animal['sintomas']: 
+            if 'Vacinação' in sintoma and sintoma['Vacinação'] == 'pendente':
+                qnt +=1
+                print(f'Brinco: {animal['brinco']}')
+                print(f'{animal['tipo']} - Vacinação PENDENTE \n')
+    print(f'Quantidade de animais que precisam de vacina: {qnt}')
 
 def monitoramento_rebanho(rebanho, relatorio):
     console = Console()
@@ -318,7 +332,8 @@ def monitoramento_rebanho(rebanho, relatorio):
             (2)  - Relatório animais (Terminal)
             (3)  - Buscar animal doente pelo brinco
             (4)  - Exportar Relatório para PDF
-            (5)  - Sair
+            (5)  - Animais não vacinados
+            (6)  - Sair
     ''')
         
         opc = apenas_int('\n- Escolha uma opção: ')
@@ -337,7 +352,7 @@ def monitoramento_rebanho(rebanho, relatorio):
                     else:
                         animal['observações'] = 'doente'
 
-                elif animal['observações'] == 'doente':
+                if animal['observações'] == 'doente':
                     doentes = {
                         'brinco': animal['brinco'], 
                         'tipo': animal['tipo'],
@@ -409,7 +424,7 @@ def monitoramento_rebanho(rebanho, relatorio):
                         baixa_prod = obter_sim_nao('\nA produção está BAIXA? (s/n): ')
                         if baixa_prod == 's':
                             prioridade += 2
-                            doentes['sintomas'].append({'produção': 'baixa'})
+                            doentes['sintomas'].append({'Produção': 'baixa'})
 
                     if animal['vacinado'] == 's':
                         vacina_dia = obter_sim_nao('\nA VACINAÇÃO do animal está em dia? (s/n): ')
@@ -421,7 +436,7 @@ def monitoramento_rebanho(rebanho, relatorio):
                     if medicamento == 's':
                         prioridade += 1
                         inf_med = input('\nInforme o(s) medicamento(s) utilizado(s): ')
-                        doentes['sintomas'].append({'utiliza medicamento': ['sim', inf_med]})
+                        doentes['sintomas'].append({'Utiliza medicamento': ['sim', inf_med]})
 
                     dias_doente = apenas_int('\nA quantos DIAS o animal está doente? ')
                     if dias_doente <= 3:
@@ -450,6 +465,15 @@ def monitoramento_rebanho(rebanho, relatorio):
                     
                     doentes['prioridade'] = prioridade
                     doentes['dia(s) doente'] = dias_doente
+
+                    for animal_registro in relatorio:
+                        if animal_registro['brinco'] == doentes['brinco']:
+                            print('Animal já registrado. Excluindo relatório antigo...')
+                            sleep(3)
+                            relatorio.remove(animal_registro)
+                            print('Novo relatório registrado!')
+                            break
+
                     relatorio.append(doentes)
                     animal['observações'] = 'checado'
                     print('\n')
@@ -616,6 +640,10 @@ def monitoramento_rebanho(rebanho, relatorio):
                 print('\n')
 
         elif opc == 5:
+
+            nao_vacinados(rebanho, relatorio)
+        
+        elif opc == 6:
             break
         else:
             console.print('[bold red]Opção inválida! Selecione um número válido do menu.[/bold red]\n')
@@ -791,26 +819,13 @@ def gerenciar_derivados(estoque_derivados):
 
 
 
-# - melhorar
+# - melhorar - R10 - falta produção de leite
 def mostrar_rebanho_total(rebanho, animal):
     print('-'*5 + animal + '-'*5)
     for tipo in rebanho:
         if tipo['tipo'] == animal:
             print(f'{exibir_ficha_animal(tipo)}\n')
 
-def quantidade_produzidos(data, producao_diaria):
-    leite = 0
-    for leites in producao_diaria:
-        leite += float(leites[data]['leite bovino'])
-        leite += float(leites[data]['leite caprino'])
-        leite += float(leites[data]['leite ovino'])
-
-        print(f'{leite}L de leite')
-
-    for ovos in producao_diaria:
-        ovo = 0
-        ovo += float(ovos[data]['ovos'])
-        print(f'{ovo} ovo(s)')
 
 def derivados_no_estoque(estoque_derivados):
     derivado = 0
@@ -818,7 +833,22 @@ def derivados_no_estoque(estoque_derivados):
     for itens in estoque_derivados:
         derivado += itens['quantidade']
         estoque += itens['valor total do estoque']
-        print(f'{itens['produto']} - R${estoque}')
+        print(f'{exibir_produtos(itens)}')
+    print(f'Quantidade de derivados: {derivado}, Estoque: {estoque}')
+
+def mostrar_animais_doentes(rebanho,relatorio): #MODIFICAR
+    qnt = 0
+    for animal in rebanho:
+        if animal['observações'] == 'doente':
+            qnt +=1
+            print(f'Brinco: {animal['brinco']}')
+            print(f'{animal['tipo']} - DOENTE \n')
+        if animal['observações'] == 'checado':
+            qnt += 1
+            print(f'Brinco: {animal['brinco']}')
+            print(f'{animal['tipo']} - DOENTE \n')
+    print(f'Número de animais que estão DOENTES: {qnt}')
+    print('Para maior informação sobre os sintomas, procure o relatório de animais doentes, no monitoramento do rebanho.\n')
 
 
 def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data):
@@ -866,8 +896,9 @@ def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_d
             for animal in animais_d:
                 mostrar_rebanho_total(rebanho, animal)
             print()
-            print(f'Quantidade de leite e ovos do dia {data}')
-            quantidade_produzidos(data, producao_diaria)
-            print()
-            print(f'Estoque de Derivados')
+            print('Estoque de Derivados')
             derivados_no_estoque(estoque_derivados)
+            print()
+            print('Animais Doentes')
+            mostrar_animais_doentes(rebanho,relatorio)
+
