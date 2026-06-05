@@ -830,11 +830,17 @@ def mostrar_rebanho_total(rebanho, animal):
 def derivados_no_estoque(estoque_derivados):
     derivado = 0
     estoque = 0
+    qnt_derivados = 0
     for itens in estoque_derivados:
+        qnt_derivados +=1
         derivado += itens['quantidade']
         estoque += itens['valor total do estoque']
         print(f'{exibir_produtos(itens)}')
-    print(f'Quantidade de derivados: {derivado}, Estoque: {estoque}')
+    print(f'''
+    Quantidade de derivados: {qnt_derivados}
+    Total de Derivados: {derivado} 
+    Estoque Total: R$ {estoque}
+    ''')
 
 def mostrar_animais_doentes(rebanho,relatorio): #MODIFICAR
     qnt = 0
