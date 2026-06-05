@@ -52,10 +52,7 @@ relatorio = list()
 
 data = datetime.datetime.now()
 data = data.strftime('%d/%m/%Y')
-producao_diaria = [{
-    data:
-      {'leite bovino':61, 'leite caprino':7, 'leite ovino' :2, 'ovos' :2}
-}]
+producao_diaria =  dict()
 
 estoque_derivados = [
     {'produto' : 'queijo coalho', 'quantidade' : 5 , 'valor do kg' : 24, 'valor total do estoque' : 120},
