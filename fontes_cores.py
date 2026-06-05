@@ -156,3 +156,11 @@ def título_relatorio():
     tabela_titulo.add_row("ＲＥＬＡＴＯＲＩＯ")
     console.print(tabela_titulo)
     print('\n')
+
+def título_editar_produto():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＥＤＩＴＡＲ  ＰＲＯＤＵＴＯ")
+    console.print(tabela_titulo)
+    print('\n')
