@@ -18,6 +18,14 @@ def apenas_int(mensagem):
         else:
             print("\n[bold red]Erro: Digite apenas números inteiros![/bold red]")
 
+def apenas_float(mensagem):
+    while True:
+        entrada = input(mensagem).strip().replace(',', '.')
+        try:
+            return float(entrada)
+        except ValueError:
+            print('[bold red]Erro! Digite um número válido (ex: 1.5 ou 2).[/bold red]')
+
 def obter_sim_nao(mensagem):
     while True:
         resposta = input(mensagem).lower().strip()
@@ -57,7 +65,15 @@ def exibir_ficha_animal(animal):
         Observações:      [bold cyan]{animal['observações']}[/bold cyan]
 """)
 
+def exibir_produtos(produto):
+    print(f"""
+        Produto:  {produto['produto']}
+        Quantidade disponível: {produto['quantidade']}
+        Valor do Kg:  R$ {produto['valor do kg']:.2f}
+        Valor total do estoque:  R$ {produto['valor total do estoque']:.2f}
 
+""")
+    
 def cadastrar_animal(animais_d, rebanho):
         while True:
             fontes_cores.linha()
@@ -427,7 +443,7 @@ def monitoramento_rebanho(rebanho, relatorio):
                     elif 6 <= prioridade <= 10:
                         print('[bold yellow]Prioridade Média. Isole, observe e trate do animal.[/bold yellow]')
                     elif 11 <= prioridade <= 17:
-                        print('[bold orange]Prioridade Alta! Necessita de avaliação rapidamente![/bold orange]')
+                        print('[bold orange3]Prioridade Alta! Necessita de avaliação rapidamente![/bold orange3]')
                     else:
                         print('[bold red]PRIORIDADE CRÍTICA! Necessita de atendimento IMEDIATO![/bold red]')
                     print('\n')
@@ -436,15 +452,10 @@ def monitoramento_rebanho(rebanho, relatorio):
                     doentes['dia(s) doente'] = dias_doente
                     relatorio.append(doentes)
                     animal['observações'] = 'checado'
-                    print()
-
-                    continuar = obter_sim_nao('- Deseja continuar fazendo checagens? (s/n): ')
                     print('\n')
-                    if continuar != 's':
-                        print('\n')
-                        break 
+
             else:
-                print('\nNão há animais doentes para a triagem.\n')
+                print('\n[bold red]Não há mais animais doentes para a triagem.[/bold red]\n')
 
         elif opc == 2:
             fontes_cores.título_relatorio()
@@ -537,7 +548,7 @@ def monitoramento_rebanho(rebanho, relatorio):
                     fontes_cores.linha_comum()
                     continue
                 
-                opc = obter_sim_nao('Deseja buscar outro brinco? (s/n): ')
+                opc = obter_sim_nao('Deseja buscar outro animal pelo brinco? (s/n): ')
                 print('\n')
                 if opc != 's':
                     break
@@ -600,6 +611,9 @@ def monitoramento_rebanho(rebanho, relatorio):
                 console.print(' [bold green][CONCLUÍDO][/bold green]')
                 console.print('[bold green]Arquivo "relatorio_rebanho.pdf" atualizado com sucesso![/bold green]\n')
                 sleep(1.5)
+                print('\n')
+                input('Pressione a tecla ENTER para sair')
+                print('\n')
 
         elif opc == 5:
             break
@@ -626,7 +640,7 @@ def gerenciar_produçoes(rebanho, producao_diaria):
                 print('\n[bold red]Nenhum animal cadastrado.[/bold red]')
                 continue
 
-            data = input('Data:  ')
+            data = datetime.datetime.now().strftime('%d/%m/%Y')
 
             totais_do_dia = dict()
 
@@ -646,18 +660,23 @@ def gerenciar_produçoes(rebanho, producao_diaria):
             print(f'\n[bold green]Registros concluídos![/bold green]')
             sleep(0.5)
             producao_diaria[data] = totais_do_dia
+            input('\n[bold red]Pressione ENTER para sair.[/bold red]')
 
         elif opcao == 2:
             fontes_cores.linha_comum()
             fontes_cores.título_relatorio_producao()
             if len(producao_diaria) == 0:
                 print('[bold red]Nenhuma produção registrada.[/bold red]')
+                input('\n[bold red]Pressione ENTER para sair.[/bold red]')
             
             else:
                 for data, produtos in producao_diaria.items():
                     print(f'Data: {data}\n\n{produtos}\n\n')
+                    input('\n[bold red]Pressione ENTER para sair.[/bold red]')
 
         elif opcao == 3:
+            print('\n')
+            fontes_cores.linha()
             break
 
         else:
@@ -673,17 +692,22 @@ def gerenciar_derivados(estoque_derivados):
             (1)  - Adicionar derivado
             (2)  - Ver estoque
             (3)  - Editar produto no estoque
-            (4)  - Sair
+            (0)  - Sair
         ''')
         opcao = apenas_int('Escolha uma opção:  ')
 
-        if opcao == 1:
+        if opcao == 0:
+            print('\n')
+            fontes_cores.linha()
+            break
+
+        elif opcao == 1:
             fontes_cores.linha_comum()
             fontes_cores.título_adicionar_derivado()
 
             nome = input('Nome do produto:  ').lower()
-            quantidade = float(input('Quantidade (kg/l) que deseja adicionar no estoque:  '))
-            valor_kg = float(input('Valor por KG/L:  '))
+            quantidade = apenas_float('Quantidade (kg/l) que deseja adicionar no estoque:  ')
+            valor_kg = apenas_float('Valor por KG/L:  ')
 
             for produto in estoque_derivados:
 
@@ -712,7 +736,60 @@ def gerenciar_derivados(estoque_derivados):
 
             else:
                 for produto in estoque_derivados:
-                    print('mostrar produto')
+                    exibir_produtos(produto)
+            
+            input('[bold red]Pressione ENTER para sair.[/bold red]')
+            print('\n\n')
+        
+        elif opcao == 3:
+            fontes_cores.linha_comum()
+            fontes_cores.título_editar_produto()
+
+            nome_produto = input('Digite o nome do produto que deseja editar:  ').lower()
+
+            for produto in estoque_derivados:
+                
+                if produto['produto'] == nome_produto:
+                    while True:
+                        print(f'''
+(1) Nome do produto    (2) Quantidade    (3) Valor do KG    (4) Cancelar edição''')
+                        editar = apenas_int('\n- O que deseja editar?  ')
+
+                        if editar == 1:
+                            novo_nome = input('\nNovo nome:  ').lower()
+                            produto['produto'] = novo_nome
+                            print('\n[bold green]Nome atualizado![/bold green]\n')
+                            sleep(1)
+                            exibir_produtos(produto)
+                            sleep(4)
+
+                        elif editar == 2:
+                            nova_quantidade = apenas_float('\nNova quantidade:  ')
+                            produto['quantidade'] = nova_quantidade
+                            produto['valor total do estoque'] = produto['quantidade'] * produto['valor do kg']
+                            print('\n[bold green]Quantidade atualizada![/bold green]\n')  
+                            sleep(1)  
+                            exibir_produtos(produto)
+                            sleep(4)
+
+                        elif editar == 3:
+                            novo_valor = apenas_float('\nNovo valor:  ')
+                            produto['valor do kg'] = novo_valor
+                            produto['valor total do estoque'] = produto['quantidade'] * produto['valor do kg']
+                            print('\n[bold green]Valor do KG atualizado![/bold green]\n')
+                            sleep(1)
+                            exibir_produtos(produto)
+                            sleep(4)
+
+                        else:
+                            break
+                    break
+            
+            else:
+                print('\n[bold red]Produto não encontrado.[/bold red]\n')
+                        
+
+
 
 # - melhorar
 def mostrar_rebanho_total(rebanho, animal):
