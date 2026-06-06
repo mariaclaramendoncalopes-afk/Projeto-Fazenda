@@ -45,6 +45,12 @@ def título_menu_adm():
     console.print('''[bold blue]
            █▀▄▀█ █▀▀ █▄ █ █  █     ▄▀█ █▀▄ █▀▄▀█
            █ ▀ █ ██▄ █ ▀█ █▄▄█     █▀█ █▄▀ █ ▀ █[/bold blue]''')
+    
+def menu_cliente():
+    console = Console()
+    console.print('''[bold cyan]
+           █▀▄▀█ █▀▀ █▄ █ █  █     █▀▀ █   █ █▀▀ █▄ █ ▀█▀ █▀▀
+           █ ▀ █ ██▄ █ ▀█ █▄▄█     █▄▄ █▄▄ █ ██▄ █ ▀█  █  ██▄[/bold cyan]''')
 
 def título_cadastrar_animal():
     console = Console()
@@ -162,5 +168,53 @@ def título_editar_produto():
     tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
     tabela_titulo.add_column(width=60, justify="center")
     tabela_titulo.add_row("ＥＤＩＴＡＲ  ＰＲＯＤＵＴＯ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_relatorio_pdf():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＲＥＬＡＴＯＲＩＯ ＥＭ ＰＤＦ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_animais_não_vacinados():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＡＮＩＭＡＩＳ  ＮＡＯ  ＶＡＣＩＮＡＤＯＳ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_relatorio_vendas():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＲＥＬＡＴＯＲＩＯ ＤＥ ＶＥＮＤＡＳ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_derivados_disponiveis():
+    console = Console()
+    tabela_titulo = Table(border_style="bold cyan", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＤＥＲＩＶＡＤＯＳ  ＤＩＳＰＯＮＩＶＥＩＳ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_animais_disponiveis():
+    console = Console()
+    tabela_titulo = Table(border_style="bold cyan", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＡＮＩＭＡＩＳ  ＤＩＳＰＯＮＩＶＥＩＳ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_adicionar_carrinho():
+    console = Console()
+    tabela_titulo = Table(border_style="bold cyan", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＡＤＩＣＩＯＮＡＲ  ＮＯ  ＣＡＲＲＩＮＨＯ")
     console.print(tabela_titulo)
     print('\n')
