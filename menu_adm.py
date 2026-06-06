@@ -306,20 +306,6 @@ def remover_animal(rebanho):
         
         break
 
-def nao_vacinados(rebanho,relatorio):
-    qnt = 0
-    for animal in rebanho:
-        if animal['vacinado'] == 'n':
-            qnt +=1
-            print(f'Brinco: {animal['brinco']}')
-            print(f'{animal['tipo']} - NÃO vacinado \n')
-    for animal in relatorio:
-        for sintoma in animal['sintomas']: 
-            if 'Vacinação' in sintoma and sintoma['Vacinação'] == 'pendente':
-                qnt +=1
-                print(f'Brinco: {animal['brinco']}')
-                print(f'{animal['tipo']} - Vacinação PENDENTE \n')
-    print(f'Quantidade de animais que precisam de vacina: {qnt}')
 
 def monitoramento_rebanho(rebanho, relatorio):
     console = Console()
@@ -578,8 +564,11 @@ def monitoramento_rebanho(rebanho, relatorio):
                     break
 
         elif opc == 4:
+            fontes_cores.título_relatorio_pdf()
+
             if len(relatorio) == 0:
                 console.print('[bold yellow]Não há dados de triagem para gerar o documento PDF.[/bold yellow]\n')
+                input('\nPressione a tecla ENTER para sair')
             else:
                 print('Gerando relatório detalhado em PDF...', end='', flush=True)
                 
@@ -640,8 +629,22 @@ def monitoramento_rebanho(rebanho, relatorio):
                 print('\n')
 
         elif opc == 5:
+            fontes_cores.título_animais_não_vacinados()
 
-            nao_vacinados(rebanho, relatorio)
+            qnt = 0
+            for animal in rebanho:
+                if animal['vacinado'] == 'n':
+                    qnt +=1
+                    print(f'Brinco: {animal['brinco']}')
+                    print(f'{animal['tipo']} - NÃO vacinado \n')
+            for animal in relatorio:
+                for sintoma in animal['sintomas']: 
+                    if 'Vacinação' in sintoma and sintoma['Vacinação'] == 'pendente':
+                        qnt +=1
+                        print(f'Brinco: {animal['brinco']}')
+                        print(f'{animal['tipo']} - Vacinação PENDENTE \n')
+            print(f'Quantidade de animais que precisam de vacina: {qnt}')
+            input('\n\nPressione a tecla ENTER para sair')
         
         elif opc == 6:
             break
@@ -815,7 +818,21 @@ def gerenciar_derivados(estoque_derivados):
             
             else:
                 print('\n[bold red]Produto não encontrado.[/bold red]\n')
-                        
+
+
+#vou iniciar quando terminar o  menu do cliente
+# def relatório_vendas(relatorio_vendas):
+#     fontes_cores.linha_comum()
+#     fontes_cores.título_relatorio_vendas()
+
+#     if len(relatorio_vendas) == 0:
+#         print('\n[bold red]Nenhuma venda realizada.[/bold red]\n')
+    
+#     else:
+#         for venda in relatorio_vendas:
+#             print(f"Cliente:  {venda['nome completo']}")
+
+
 
 
 
@@ -857,6 +874,13 @@ def mostrar_animais_doentes(rebanho,relatorio): #MODIFICAR
     print('Para maior informação sobre os sintomas, procure o relatório de animais doentes, no monitoramento do rebanho.\n')
 
 
+
+
+
+
+
+
+
 def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data):
     while True:
         fontes_cores.título_menu_adm()
@@ -869,7 +893,7 @@ def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_d
             (6)  -  Gerenciar produção
             (7)  -  Gerenciar Derivados
             (8)  -  Relatório de vendas
-            (9)  -  xxxxxxxxxxxxxxxxxx
+            (9)  -  Histórico de movimentação
             (0)  -  Sair
     ''')
         
