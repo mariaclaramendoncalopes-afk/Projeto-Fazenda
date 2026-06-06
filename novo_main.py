@@ -2,6 +2,7 @@ import datetime
 import fontes_cores
 import cadastros
 import menu_adm
+import menu_cliente
 from rich import print
 import builtins
 
@@ -60,7 +61,7 @@ estoque_derivados = [
     {'produto' : 'requeijão', 'quantidade' : 3, 'valor do kg' : 30, 'valor total do estoque' : 90}
 ]
 
-relatorio_vendas = []
+relatorio_vendas = dict()
 
 carrinho = []
 
@@ -102,4 +103,4 @@ while True:
             
         
         elif login == 'cliente':
-            print('menu cliente')
+            menu_cliente.menu_cliente(usuarios, estoque_derivados, rebanho, carrinho)
