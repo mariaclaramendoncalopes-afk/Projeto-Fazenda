@@ -104,7 +104,8 @@ def login(usuarios):
             sleep(1)
             print('Abrindo a nossa lojinha da fazenda...')
             sleep(3)
-            print(f'               Seja muito bem-vindo(a) à Fazenda, {pessoa["nome completo"]}!\n\n')
+            fontes_cores.linha()
+            print(f'            Seja muito bem-vindo(a) à Fazenda, {pessoa["nome completo"]}!\n\n')
             sleep(1)
             return 'cliente'
     else:    
