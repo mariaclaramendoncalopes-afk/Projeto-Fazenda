@@ -691,19 +691,19 @@ def gerenciar_produçoes(rebanho, producao_diaria):
             print(f'\n[bold green]Registros concluídos![/bold green]')
             sleep(0.5)
             producao_diaria[data] = totais_do_dia
-            input('\n[bold red]Pressione ENTER para sair.[/bold red]')
+            input('\nPressione ENTER para sair.')
 
         elif opcao == 2:
             fontes_cores.linha_comum()
             fontes_cores.título_relatorio_producao()
             if len(producao_diaria) == 0:
                 print('[bold red]Nenhuma produção registrada.[/bold red]')
-                input('\n[bold red]Pressione ENTER para sair.[/bold red]')
+                input('\nPressione ENTER para sair.')
             
             else:
                 for data, produtos in producao_diaria.items():
                     print(f'Data: {data}\n\n{produtos}\n\n')
-                    input('\n[bold red]Pressione ENTER para sair.[/bold red]')
+                    input('\nPressione ENTER para sair.')
 
         elif opcao == 3:
             print('\n')
@@ -769,7 +769,7 @@ def gerenciar_derivados(estoque_derivados):
                 for produto in estoque_derivados:
                     exibir_produtos(produto)
             
-            input('[bold red]Pressione ENTER para sair.[/bold red]')
+            input('Pressione ENTER para sair.')
             print('\n\n')
         
         elif opcao == 3:
@@ -900,7 +900,10 @@ def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_d
         op = apenas_int('Digite qual opção deseja realizar:  ')
         print('\n')
 
-        if op == 1:
+        if op == 0:
+            break
+
+        elif op == 1:
             cadastrar_animal(animais_d, rebanho)
         
         elif op == 2:

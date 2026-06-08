@@ -218,3 +218,11 @@ def título_adicionar_carrinho():
     tabela_titulo.add_row("ＡＤＩＣＩＯＮＡＲ  ＮＯ  ＣＡＲＲＩＮＨＯ")
     console.print(tabela_titulo)
     print('\n')
+
+def remover_itens_carrinho():
+    console = Console()
+    tabela_titulo = Table(border_style="bold cyan", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＲＥＭＯＶＥＲ  ＩＴＥＮＳ ＤＯ ＣＡＲＲＩＮＨＯ")
+    console.print(tabela_titulo)
+    print('\n')
