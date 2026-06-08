@@ -34,6 +34,8 @@ def obter_sim_nao(mensagem):
 def emitir_recibo(dados_pedidos):
 
     pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+
     pdf.add_page()
 
     pdf.set_font('Arial', 'B', 18)
@@ -57,28 +59,36 @@ def emitir_recibo(dados_pedidos):
     pdf.set_font('Arial', '', 12)
 
     for item in dados_pedidos['itens']:
-        
+
         if 'brinco' in item:
-            
+
             nome_animal = item.get('produto', item.get('nome', 'Animal'))
-            pdf.cell(0, 8, f"Animal: {nome_animal} | Brinco: {item['brinco']} | R$ {item['valor']:.2f}", ln=True)
+            pdf.cell(
+                0, 8,
+                f"Animal: {nome_animal} | Brinco: {item['brinco']} | R$ {item['valor']:.2f}",
+                ln=True
+            )
 
         else:
-            
+
             qtd_item = item.get('quantidade', item.get('qtd', item.get('Quantidade', 1)))
             valor_item = item.get('valor total do estoque', item.get('valor', 0.0))
 
-            pdf.cell(0, 8, f"{item['produto']} | Quantidade: {qtd_item} | R$ {valor_item:.2f}", ln=True)
+            pdf.cell(
+                0, 8,
+                f"{item['produto']} | Quantidade: {qtd_item} | R$ {valor_item:.2f}",
+                ln=True
+            )
 
     pdf.ln(5)
 
     pdf.set_font('Arial', 'B', 14)
-    pdf.cell(0, 10, 'ENDERECO DE ENTREGA', ln=True)
+    pdf.cell(0, 10, 'ENDEREÇO DE ENTREGA', ln=True)
 
     pdf.set_font('Arial', '', 12)
 
     pdf.cell(0, 8, f"Rua: {dados_pedidos['rua']}", ln=True)
-    pdf.cell(0, 8, f"Numero: {dados_pedidos['numero']}", ln=True)
+    pdf.cell(0, 8, f"Número: {dados_pedidos['numero']}", ln=True)
     pdf.cell(0, 8, f"Bairro: {dados_pedidos['bairro']}", ln=True)
     pdf.cell(0, 8, f"Cidade: {dados_pedidos['cidade']}", ln=True)
     pdf.cell(0, 8, f"Estado: {dados_pedidos['estado']}", ln=True)
@@ -100,16 +110,39 @@ def emitir_recibo(dados_pedidos):
     pdf.cell(0, 10, 'RESUMO FINANCEIRO', ln=True)
 
     pdf.set_font('Arial', '', 12)
-
     pdf.cell(0, 8, f"Subtotal: R$ {dados_pedidos['valor']:.2f}", ln=True)
     pdf.cell(0, 8, f"Frete: R$ {dados_pedidos['frete']:.2f}", ln=True)
 
     pdf.set_font('Arial', 'B', 12)
     pdf.cell(0, 10, f"TOTAL: R$ {total_final:.2f}", ln=True)
 
-    pdf.output('recibo.pdf')
 
-    print('[bold green]Recibo gerado com sucesso![/bold green]')
+    nome_arquivo = f"recibo_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+    pdf.output(nome_arquivo)
+
+    print('[✔] Recibo adicionado ao histórico com sucesso!')
+
+
+def segunda_via(historico_pedidos):
+    if not historico_pedidos:
+        print("[bold red]Nenhum pedido encontrado.[/bold red]\n")
+        input('Pressione a tecla ENTER para retornar ao menu')
+        fontes_cores.linha()
+
+    else:
+        print("\nPedidos disponíveis:")
+
+        for i, pedido in enumerate(historico_pedidos):
+            print(f"{i + 1} - {pedido['nome completo']} | {pedido['data_entrega']}")
+
+        escolha = apenas_int("Escolha o pedido: ")
+
+        if escolha < 1 or escolha > len(historico_pedidos):
+            print("Escolha inválida.")
+        else:
+            pedido = historico_pedidos[escolha - 1]
+        emitir_recibo(pedido)
+
 
 def catálogo_venda_derivados(estoque_derivados):
     fontes_cores.linha()
@@ -215,78 +248,87 @@ def adicionar_carrinho(estoque_derivados, rebanho, carrinho):
 
 
 def remover_carrinho(carrinho, rebanho, estoque_derivados):
-
-    if len(carrinho) == 0:
-        print('[bold red]Carrinho vazio.[/bold red]')
-        fontes_cores.linha()
-        
-    else:
-        for item in carrinho:
-
-            if 'brinco' in item:
-                print(f"Animal | Brinco: {item['brinco']}")
-
-            elif 'produto' in item:
-                print(f"Produto | {item['produto']} | Qtd: {item['quantidade']}")
-
-        print('''
-        (1) Remover animal
-        (2) Remover produto
-        ''')
-
-        opc = apenas_int('Escolha: ')
-
-        if opc == 1:
-
-            brinco = input('Brinco do animal: ')
-
+    while True:
+        if len(carrinho) == 0:
+            print('[bold red]Carrinho vazio.[/bold red]')
+            fontes_cores.linha()
+            break
+            
+        else:
             for item in carrinho:
 
-                if 'brinco' in item and item['brinco'] == brinco:
+                if 'brinco' in item:
+                    print(f"Animal | Brinco: {item['brinco']}")
 
-                    carrinho.remove(item)
-                    rebanho.append(item)
+                elif 'produto' in item:
+                    print(f"Produto | {item['produto']} | Qtd: {item['quantidade']}")
 
-                    print('Animal removido do carrinho.')
-                    break
+            print('''
+            (1) Remover animal
+            (2) Remover produto
+            (3) Cancelar remoção
+            ''')
+
+            opc = apenas_int('Escolha: ')
+
+            if opc == 1:
+
+                brinco = input('Brinco do animal: ')
+
+                for item in carrinho:
+
+                    if 'brinco' in item and item['brinco'] == brinco:
+
+                        carrinho.remove(item)
+                        rebanho.append(item)
+
+                        print('\nAnimal removido do carrinho.\n')
+                        break
+
+                else:
+                    print('\n[bold red]Animal não encontrado no carrinho.[/bold red]\n')
+
+            elif opc == 2:
+
+                nome = input('Nome do produto: ').lower()
+
+                for item in carrinho:
+
+                    if 'produto' in item and item['produto'].lower() == nome:
+
+                        for produto in estoque_derivados:
+
+                            if produto['produto'] == item['produto']:
+
+                                produto['quantidade'] += item['quantidade']
+                                produto['valor total do estoque'] = (produto['quantidade'] * produto['valor do kg'])
+                                break
+
+                        else:
+                            estoque_derivados.append({'produto': item['produto'], 'quantidade': item['quantidade'], 'valor do kg': item['valor do kg'], 'valor total do estoque': item['valor total do estoque']})
+
+                        carrinho.remove(item)
+
+                        print('\nProduto removido do carrinho.\n')
+                        break
+
+                else:
+                    print('\n[bold red]Produto não encontrado no carrinho, digite o nome corretamente.[/bold red]\n')
+                    continue
 
             else:
-                print('Animal não encontrado no carrinho.')
-
-        elif opc == 2:
-
-            nome = input('Nome do produto: ').lower()
-
-            for item in carrinho:
-
-                if 'produto' in item and item['produto'].lower() == nome:
-
-                    for produto in estoque_derivados:
-
-                        if produto['produto'] == item['produto']:
-
-                            produto['quantidade'] += item['quantidade']
-                            produto['valor total do estoque'] = (produto['quantidade'] * produto['valor do kg'])
-                            break
-
-                    else:
-                        estoque_derivados.append({'produto': item['produto'], 'quantidade': item['quantidade'], 'valor do kg': item['valor do kg'], 'valor total do estoque': item['valor total do estoque']})
-
-                    carrinho.remove(item)
-
-                    print('Produto removido do carrinho.')
-                    break
-
-            else:
-                print('Produto não encontrado no carrinho.')
+                break
 
 
-def finalizar_pedido(login, carrinho, dados_pedidos):
+
+def finalizar_pedido(login, carrinho, historico_pedidos):
     fontes_cores.linha()
     fontes_cores.título_finalizar_pedido()
 
     if len(carrinho) == 0:
         print('\n[bold red]Seu carrinho está vazio.[/bold red]\n')
+        input('\nPressione a tecla ENTER para retornar ao menu.\n\n')
+        fontes_cores.linha()
         return
     
     total = 0
@@ -316,12 +358,25 @@ def finalizar_pedido(login, carrinho, dados_pedidos):
     if confirmar != 's':
         return
 
-    for item in carrinho:
-        print
 
-    cep = input('Digite o CEP: ').strip()
+    while True:
+        cep = input('Digite o CEP: ').strip()
 
-    endereco = brazilcep.get_address_from_cep(cep)
+        if not cep.isdigit() or len(cep) != 8:
+            print("CEP inválido. Digite 8 números.")
+            continue
+
+        try:
+            endereco = brazilcep.get_address_from_cep(cep)
+
+            if not endereco:
+                print("CEP não encontrado.")
+                continue
+
+            break
+
+        except:
+            print("Erro na consulta. Tente novamente.")
 
     print('\nEndereço encontrado:')
     print(f"Rua: {endereco['street']}")
@@ -329,7 +384,7 @@ def finalizar_pedido(login, carrinho, dados_pedidos):
     print(f"Cidade: {endereco['city']}")
     print(f"Estado: {endereco['uf']}")
 
-    numero = input('\nNúmero da residência: ')
+    numero = apenas_int('\nNúmero da residência: ')
 
     hoje = datetime.today()
 
@@ -381,12 +436,14 @@ def finalizar_pedido(login, carrinho, dados_pedidos):
     print('[bold green]Emitindo recibo de compra...[/bold green]')
     sleep(2)
     emitir_recibo(dados_pedidos)
+    historico_pedidos.append(dados_pedidos)
+    carrinho.clear()
 
     return dados_pedidos
 
 
 
-def menu_cliente(login, estoque_derivados, rebanho, carrinho, dados_pedidos):
+def menu_cliente(login, estoque_derivados, rebanho, carrinho, historico_pedidos):
     while True:
         fontes_cores.menu_cliente()
         print('''
@@ -394,17 +451,20 @@ def menu_cliente(login, estoque_derivados, rebanho, carrinho, dados_pedidos):
             (2) - Adicionar itens ao carrinho de compras
             (3) - Remover itens ou esvaziar carrinho
             (4) - Finalizar pedido | Agendar entrega
-            (6) - Emitir segunda via de recibos anteriores
-            (7) - Alterar dados cadastrais do comprador
+            (5) - Emitir segunda via de recibos anteriores
             (0) - Sair
     ''')
         
         op = apenas_int('- Digite qual opção deseja realizar:  ')
         print('\n')  
 
-        if op == 1:
+        if op == 0:
+            break
+
+        elif op == 1:
             catálogo_venda_derivados(estoque_derivados)
             catálogo_venda_animal(rebanho)
+            input('Pressione a tecla ENTER para voltar ao menu.')
             fontes_cores.linha()
 
         elif op == 2:
@@ -414,5 +474,13 @@ def menu_cliente(login, estoque_derivados, rebanho, carrinho, dados_pedidos):
             remover_carrinho(carrinho, rebanho, estoque_derivados)
 
         elif op == 4:
-            finalizar_pedido(login, carrinho, dados_pedidos)
+            finalizar_pedido(login, carrinho, historico_pedidos)
+
+        elif op == 5:
+            segunda_via(historico_pedidos)
+
+        else:
+            print('\n[bold red]Opção inválida.[/bold red]\n')
+            fontes_cores.linha()
+            continue
 

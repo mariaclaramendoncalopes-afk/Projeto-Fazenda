@@ -63,6 +63,7 @@ estoque_derivados = [
 
 relatorio_vendas = dict()
 dados_pedidos = dict()
+historico_pedidos = []
 
 carrinho = []
 
@@ -100,8 +101,8 @@ while True:
         login = cadastros.login(usuarios)
 
         if login['acesso'] == True:
-            menu_adm.menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data)
+            menu_adm.menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data, historico_pedidos)
             
         
         elif login['acesso'] == False:
-            menu_cliente.menu_cliente(login, estoque_derivados, rebanho, carrinho, dados_pedidos)
+            menu_cliente.menu_cliente(login, estoque_derivados, rebanho, carrinho, historico_pedidos)
