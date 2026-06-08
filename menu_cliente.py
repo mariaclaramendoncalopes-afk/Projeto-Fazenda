@@ -2,6 +2,10 @@ import fontes_cores
 import menu_adm
 from rich import print
 from pick import pick
+import brazilcep
+from datetime import datetime, timedelta
+from fpdf import FPDF
+from time import sleep
 
 def apenas_int(mensagem):
     while True:
@@ -27,7 +31,85 @@ def obter_sim_nao(mensagem):
         else:
             print('\n[bold red]Resposta inválida! Digite apenas "s" para Sim ou "n" para Não.[/bold red]')
 
+def emitir_recibo(dados_pedidos):
 
+    pdf = FPDF()
+    pdf.add_page()
+
+    pdf.set_font('Arial', 'B', 18)
+    pdf.cell(0, 10, 'RECIBO DE COMPRA', ln=True, align='C')
+
+    pdf.ln(10)
+
+    pdf.set_font('Arial', 'B', 14)
+    pdf.cell(0, 10, 'DADOS DO CLIENTE', ln=True)
+
+    pdf.set_font('Arial', '', 12)
+    pdf.cell(0, 8, f"Nome: {dados_pedidos['nome completo']}", ln=True)
+    pdf.cell(0, 8, f"Email: {dados_pedidos['email']}", ln=True)
+    pdf.cell(0, 8, f"Telefone: {dados_pedidos['telefone']}", ln=True)
+
+    pdf.ln(5)
+
+    pdf.set_font('Arial', 'B', 14)
+    pdf.cell(0, 10, 'ITENS COMPRADOS', ln=True)
+
+    pdf.set_font('Arial', '', 12)
+
+    for item in dados_pedidos['itens']:
+        
+        if 'brinco' in item:
+            
+            nome_animal = item.get('produto', item.get('nome', 'Animal'))
+            pdf.cell(0, 8, f"Animal: {nome_animal} | Brinco: {item['brinco']} | R$ {item['valor']:.2f}", ln=True)
+
+        else:
+            
+            qtd_item = item.get('quantidade', item.get('qtd', item.get('Quantidade', 1)))
+            valor_item = item.get('valor total do estoque', item.get('valor', 0.0))
+
+            pdf.cell(0, 8, f"{item['produto']} | Quantidade: {qtd_item} | R$ {valor_item:.2f}", ln=True)
+
+    pdf.ln(5)
+
+    pdf.set_font('Arial', 'B', 14)
+    pdf.cell(0, 10, 'ENDERECO DE ENTREGA', ln=True)
+
+    pdf.set_font('Arial', '', 12)
+
+    pdf.cell(0, 8, f"Rua: {dados_pedidos['rua']}", ln=True)
+    pdf.cell(0, 8, f"Numero: {dados_pedidos['numero']}", ln=True)
+    pdf.cell(0, 8, f"Bairro: {dados_pedidos['bairro']}", ln=True)
+    pdf.cell(0, 8, f"Cidade: {dados_pedidos['cidade']}", ln=True)
+    pdf.cell(0, 8, f"Estado: {dados_pedidos['estado']}", ln=True)
+    pdf.cell(0, 8, f"CEP: {dados_pedidos['cep']}", ln=True)
+
+    pdf.ln(5)
+
+    pdf.set_font('Arial', 'B', 14)
+    pdf.cell(0, 10, 'ENTREGA', ln=True)
+
+    pdf.set_font('Arial', '', 12)
+    pdf.cell(0, 8, f"Data da entrega: {dados_pedidos['data_entrega']}", ln=True)
+
+    pdf.ln(5)
+
+    total_final = dados_pedidos['valor'] + dados_pedidos['frete']
+
+    pdf.set_font('Arial', 'B', 14)
+    pdf.cell(0, 10, 'RESUMO FINANCEIRO', ln=True)
+
+    pdf.set_font('Arial', '', 12)
+
+    pdf.cell(0, 8, f"Subtotal: R$ {dados_pedidos['valor']:.2f}", ln=True)
+    pdf.cell(0, 8, f"Frete: R$ {dados_pedidos['frete']:.2f}", ln=True)
+
+    pdf.set_font('Arial', 'B', 12)
+    pdf.cell(0, 10, f"TOTAL: R$ {total_final:.2f}", ln=True)
+
+    pdf.output('recibo.pdf')
+
+    print('[bold green]Recibo gerado com sucesso![/bold green]')
 
 def catálogo_venda_derivados(estoque_derivados):
     fontes_cores.linha()
@@ -199,17 +281,119 @@ def remover_carrinho(carrinho, rebanho, estoque_derivados):
                 print('Produto não encontrado no carrinho.')
 
 
+def finalizar_pedido(login, carrinho, dados_pedidos):
+    fontes_cores.linha()
+    fontes_cores.título_finalizar_pedido()
+
+    if len(carrinho) == 0:
+        print('\n[bold red]Seu carrinho está vazio.[/bold red]\n')
+        return
+    
+    total = 0
+
+    for item in carrinho:
+
+        if 'valor do kg' in item:
+
+            print(f'Produto: {item["produto"]}')
+            print(f'Quantidade: {item["quantidade"]}')
+            print(f'Valor: R$ {item["valor total do estoque"]:.2f}\n')
+
+            total += item['valor total do estoque']
+
+        else:
+
+            print(f'Animal: {item["tipo"]}')
+            print(f'Brinco: {item["brinco"]}')
+            print(f'Valor: R$ {item["valor"]:.2f}\n')
+
+            total += item["valor"]
+
+    print(f'Total parcial: R$ {total:.2f}')
+
+    confirmar = obter_sim_nao('\nConfirmar pedido? (s/n):   ').lower()
+
+    if confirmar != 's':
+        return
+
+    for item in carrinho:
+        print
+
+    cep = input('Digite o CEP: ').strip()
+
+    endereco = brazilcep.get_address_from_cep(cep)
+
+    print('\nEndereço encontrado:')
+    print(f"Rua: {endereco['street']}")
+    print(f"Bairro: {endereco['district']}")
+    print(f"Cidade: {endereco['city']}")
+    print(f"Estado: {endereco['uf']}")
+
+    numero = input('\nNúmero da residência: ')
+
+    hoje = datetime.today()
+
+    data1 = hoje + timedelta(days=5)
+    data2 = hoje + timedelta(days=10)
+    data3 = hoje + timedelta(days=15)
+
+    print(f'''
+    Datas disponíveis:
+
+    (1) {data1.strftime("%d/%m/%Y")}
+    (2) {data2.strftime("%d/%m/%Y")}
+    (3) {data3.strftime("%d/%m/%Y")}
+    ''')
+
+    opcao = apenas_int('Escolha uma data: ')
+
+    if opcao == 1:
+        data_entrega = data1.strftime("%d/%m/%Y")
+    elif opcao == 2:
+        data_entrega = data2.strftime("%d/%m/%Y")
+    else:
+        data_entrega = data3.strftime("%d/%m/%Y")
 
 
-def menu_cliente(usuarios, estoque_derivados, rebanho, carrinho):
+    if total >= 500:
+        frete = 50
+    else:
+        frete = 145
+
+    dados_pedidos = {
+        'nome completo': login['nome completo'],
+        'email': login['email'],
+        'telefone': login['telefone'],
+        'cep': cep,
+        'rua': endereco['street'],
+        'bairro': endereco['district'],
+        'cidade': endereco['city'],
+        'estado': endereco['uf'],
+        'numero': numero,
+        'data_entrega': data_entrega,
+        'valor': total,
+        'frete': frete,
+        'itens': carrinho.copy()
+    }
+
+    print(f'Frete: R$ {frete:.2f}')
+    print('\n[bold green]Pedido confirmado com sucesso.[/bold green]')
+    print('[bold green]Emitindo recibo de compra...[/bold green]')
+    sleep(2)
+    emitir_recibo(dados_pedidos)
+
+    return dados_pedidos
+
+
+
+def menu_cliente(login, estoque_derivados, rebanho, carrinho, dados_pedidos):
     while True:
         fontes_cores.menu_cliente()
         print('''
             (1) - Visualizar catálogo
             (2) - Adicionar itens ao carrinho de compras
             (3) - Remover itens ou esvaziar carrinho
-            (4) - Agendar transporte
-            (5) - Finalizar pedido e emitir Recibo Detalhado
+            (4) - Finalizar pedido | Agendar entrega
             (6) - Emitir segunda via de recibos anteriores
             (7) - Alterar dados cadastrais do comprador
             (0) - Sair
@@ -228,4 +412,7 @@ def menu_cliente(usuarios, estoque_derivados, rebanho, carrinho):
 
         elif op == 3:
             remover_carrinho(carrinho, rebanho, estoque_derivados)
+
+        elif op == 4:
+            finalizar_pedido(login, carrinho, dados_pedidos)
 

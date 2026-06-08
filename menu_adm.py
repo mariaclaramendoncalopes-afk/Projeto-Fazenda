@@ -881,7 +881,7 @@ def mostrar_animais_doentes(rebanho,relatorio): #MODIFICAR
 
 
 
-def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data):
+def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data):
     while True:
         fontes_cores.título_menu_adm()
         print('''
@@ -923,6 +923,9 @@ def menu_adm(usuarios, animais_d, rebanho, relatorio, producao_diaria, estoque_d
 
         elif op == 7:
             gerenciar_derivados(estoque_derivados)
+
+        elif op == 8:
+            print('colocar o relatório de vendas')
 
         elif op == 9:
             print('Todos animais presentes no rebanho, por tipo:\n')

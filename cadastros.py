@@ -97,7 +97,7 @@ def login(usuarios):
             fontes_cores.linha()
             print(f'                   Bem vindo(a), {usuario}\n\n')
             sleep(1)
-            return 'administrador'
+            return pessoa
         
         elif usuario == pessoa['usuario'] and senha == pessoa['senha'] and pessoa['acesso'] == False:
             print('\n\n[bold cyan]Acesso do Cliente autorizado![/bold cyan]\n')
@@ -107,7 +107,7 @@ def login(usuarios):
             fontes_cores.linha()
             print(f'            Seja muito bem-vindo(a) à Fazenda, {pessoa["nome completo"]}!\n\n')
             sleep(1)
-            return 'cliente'
+            return pessoa
     else:    
         print('\n[bold red]Usuário não encontrado[/bold red]\n')
         return 'falhou'

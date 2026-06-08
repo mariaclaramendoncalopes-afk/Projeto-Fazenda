@@ -226,3 +226,19 @@ def remover_itens_carrinho():
     tabela_titulo.add_row("ＲＥＭＯＶＥＲ  ＩＴＥＮＳ ＤＯ ＣＡＲＲＩＮＨＯ")
     console.print(tabela_titulo)
     print('\n')
+
+def título_finalizar_pedido():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＦＩＮＡＬＩＺＡＲ  ＰＥＤＩＤＯ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_agendar_entrega():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＡＧＥＮＤＡＲ  ＥＮＴＲＥＧＡ")
+    console.print(tabela_titulo)
+    print('\n')
