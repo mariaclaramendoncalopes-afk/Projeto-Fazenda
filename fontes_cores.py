@@ -242,3 +242,23 @@ def título_agendar_entrega():
     tabela_titulo.add_row("ＡＧＥＮＤＡＲ  ＥＮＴＲＥＧＡ")
     console.print(tabela_titulo)
     print('\n')
+
+
+
+#Painel de controle
+def título_tipos_animaisPC(animal):
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    animal = " ".join(animal)
+    tabela_titulo.add_row(f'[bold]{animal.upper()}[/bold]')
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_producao_diariaPC():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＰＲＯＤＵＣＡＯ  ＤＩＡＲＩＡ")
+    console.print(tabela_titulo)
+    print('\n')

@@ -75,6 +75,13 @@ def exibir_produtos(produto):
 
 """)
     
+
+def exibir_producao_diaria(producao_diaria):
+    for data, produtos in producao_diaria.items():
+        print(f'Data: {data}\n\n{produtos}\n\n')
+        input('\nPressione ENTER para sair.')
+
+
 def cadastrar_animal(animais_d, rebanho):
         while True:
             fontes_cores.linha()
@@ -702,9 +709,7 @@ def gerenciar_produçoes(rebanho, producao_diaria):
                 input('\nPressione ENTER para sair.')
             
             else:
-                for data, produtos in producao_diaria.items():
-                    print(f'Data: {data}\n\n{produtos}\n\n')
-                    input('\nPressione ENTER para sair.')
+                exibir_producao_diaria(producao_diaria)
 
         elif opcao == 3:
             print('\n')
@@ -889,12 +894,12 @@ def relatorio_vendas(historico_pedidos):
 
 
 
-# - melhorar - R10 - falta produção de leite
+# - R10
 def mostrar_rebanho_total(rebanho, animal):
-    print('-'*5 + animal + '-'*5)
     for tipo in rebanho:
         if tipo['tipo'] == animal:
-            print(f'{exibir_ficha_animal(tipo)}\n')
+            exibir_ficha_animal(tipo)
+            
 
 
 def derivados_no_estoque(estoque_derivados):
@@ -905,7 +910,7 @@ def derivados_no_estoque(estoque_derivados):
         qnt_derivados +=1
         derivado += itens['quantidade']
         estoque += itens['valor total do estoque']
-        print(f'{exibir_produtos(itens)}')
+        exibir_produtos(itens)
     print(f'''
     Quantidade de derivados: {qnt_derivados}
     Total de Derivados: {derivado} 
@@ -924,7 +929,7 @@ def mostrar_animais_doentes(rebanho,relatorio): #MODIFICAR
             print(f'Brinco: {animal['brinco']}')
             print(f'{animal['tipo']} - DOENTE \n')
     print(f'Número de animais que estão DOENTES: {qnt}')
-    print('Para maior informação sobre os sintomas, procure o relatório de animais doentes, no monitoramento do rebanho.\n')
+    print('Para maior informação sobre os sintomas, procure: Relatório animais, no Monitoramento do rebanho.\n')
 
 
 
@@ -946,7 +951,7 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
             (6)  -  Gerenciar produção
             (7)  -  Gerenciar Derivados
             (8)  -  Relatório de vendas
-            (9)  -  Histórico de movimentação
+            (9)  -  Painel de Controle
             (0)  -  Sair
     ''')
         
@@ -983,11 +988,20 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
         elif op == 9:
             print('Todos animais presentes no rebanho, por tipo:\n')
             for animal in animais_d:
+                fontes_cores.título_tipos_animaisPC(animal)
                 mostrar_rebanho_total(rebanho, animal)
-            print()
-            print('Estoque de Derivados')
+                print()
+
+
+            fontes_cores.título_producao_diariaPC()
+            if len(producao_diaria) == 0:
+                print('[bold red]Nenhuma produção registrada.[/bold red]')
+            else:
+                exibir_producao_diaria(producao_diaria)
+
+            print('\nEstoque de Derivados')
             derivados_no_estoque(estoque_derivados)
-            print()
-            print('Animais Doentes')
+            
+            print('\nAnimais Doentes')
             mostrar_animais_doentes(rebanho,relatorio)
 
