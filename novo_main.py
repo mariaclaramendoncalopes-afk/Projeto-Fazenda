@@ -99,6 +99,9 @@ while True:
         fontes_cores.título_login()
         
         login = cadastros.login(usuarios)
+        
+        if not login:
+            continue
 
         if login['acesso'] == True:
             menu_adm.menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data, historico_pedidos)

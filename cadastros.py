@@ -110,4 +110,4 @@ def login(usuarios):
             return pessoa
     else:    
         print('\n[bold red]Usuário não encontrado[/bold red]\n')
-        return 'falhou'
+        return
