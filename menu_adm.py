@@ -1,4 +1,5 @@
 import datetime
+import matplotlib.pyplot as plt
 from rich import print
 from rich.console import Console
 import builtins
@@ -820,18 +821,70 @@ def gerenciar_derivados(estoque_derivados):
                 print('\n[bold red]Produto não encontrado.[/bold red]\n')
 
 
-#vou iniciar quando terminar o  menu do cliente
-# def relatório_vendas(relatorio_vendas):
-#     fontes_cores.linha_comum()
-#     fontes_cores.título_relatorio_vendas()
+def relatorio_vendas(historico_pedidos):
 
-#     if len(relatorio_vendas) == 0:
-#         print('\n[bold red]Nenhuma venda realizada.[/bold red]\n')
-    
-#     else:
-#         for venda in relatorio_vendas:
-#             print(f"Cliente:  {venda['nome completo']}")
+    if not historico_pedidos:
+        print("\n[bold red]Nenhum pedido encontrado.[/bold red]\n")
+        return
 
+    total_vendas = 0
+    total_pedidos = len(historico_pedidos)
+
+    vendas_por_dia = {}
+    vendas_por_cliente = {}
+
+    fontes_cores.linha()
+    fontes_cores.título_relatorio_vendas()
+
+    for pedido in historico_pedidos:
+
+        valor_total = pedido["valor"] + pedido["frete"]
+        total_vendas += valor_total
+
+        data = pedido["data_entrega"]
+        vendas_por_dia[data] = vendas_por_dia.get(data, 0) + valor_total
+
+        cliente = pedido["nome completo"]
+        vendas_por_cliente[cliente] = vendas_por_cliente.get(cliente, 0) + valor_total
+
+        print("\n----------------------------")
+        print(f"Cliente: {pedido['nome completo']}")
+        print(f"Email: {pedido['email']}")
+        print(f"Telefone: {pedido['telefone']}")
+        print(f"Endereço: {pedido['rua']}, {pedido['numero']}")
+        print(f"Cidade: {pedido['cidade']} - {pedido['estado']}")
+        print(f"Data entrega: {pedido['data_entrega']}")
+        print(f"Valor produtos: R$ {pedido['valor']:.2f}")
+        print(f"Frete: R$ {pedido['frete']:.2f}")
+        print(f"TOTAL: R$ {valor_total:.2f}")
+        print("-------------------------------")
+
+
+    print("\nRESUMO GERAL")
+    print(f"Total de pedidos: {total_pedidos}")
+    print(f"Faturamento total: R$ {total_vendas:.2f}")
+
+
+    print("\nTOP CLIENTES")
+
+    top_clientes = sorted(vendas_por_cliente.items(), key=lambda x: x[1], reverse=True)
+
+    for cliente, valor in top_clientes:
+        print(f"{cliente}: R$ {valor:.2f}")
+
+
+    datas = list(vendas_por_dia.keys())
+    valores = list(vendas_por_dia.values())
+
+    plt.figure(figsize=(10,5))
+    plt.plot(datas, valores, marker='o')
+    plt.title("Faturamento por Data de Entrega")
+    plt.xlabel("Data")
+    plt.ylabel("R$")
+    plt.xticks(rotation=45)
+    plt.grid(True)
+
+    plt.show()
 
 
 
@@ -881,7 +934,7 @@ def mostrar_animais_doentes(rebanho,relatorio): #MODIFICAR
 
 
 
-def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data):
+def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data, historico_pedidos):
     while True:
         fontes_cores.título_menu_adm()
         print('''
@@ -925,7 +978,7 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
             gerenciar_derivados(estoque_derivados)
 
         elif op == 8:
-            print('colocar o relatório de vendas')
+            relatorio_vendas(historico_pedidos)
 
         elif op == 9:
             print('Todos animais presentes no rebanho, por tipo:\n')
