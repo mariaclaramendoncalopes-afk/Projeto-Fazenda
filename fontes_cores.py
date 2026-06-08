@@ -246,6 +246,15 @@ def título_agendar_entrega():
 
 
 #Painel de controle
+def título_painelcontrolePC():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＰＡＩＮＥＬ ＤＥ ＣＯＮＴＲＯＬＥ")
+    console.print(tabela_titulo)
+    print('\n')
+
+
 def título_tipos_animaisPC(animal):
     console = Console()
     tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
@@ -259,6 +268,22 @@ def título_producao_diariaPC():
     console = Console()
     tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
     tabela_titulo.add_column(width=60, justify="center")
-    tabela_titulo.add_row("ＰＲＯＤＵＣＡＯ  ＤＩＡＲＩＡ")
+    tabela_titulo.add_row("ＲＥＬＡＴＯＲＩＯ ＤＥ ＰＲＯＤＵＣＡＯ  ＤＩＡＲＩＡ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_estoque_derivadosPC():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＲＥＬＡＴＯＲＩＯ ＤＥ ＤＥＲＩＶＡＤＯＳ")
+    console.print(tabela_titulo)
+    print('\n')
+
+def título_animais_doentePC():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＲＥＬＡＴＯＲＩＯ ＤＥ ＡＮＩＭＡＩＳ  ＤＯＥＮＴＥＳ")
     console.print(tabela_titulo)
     print('\n')
