@@ -5,6 +5,7 @@ import menu_adm
 import menu_cliente
 from rich import print
 import builtins
+import historico
 
 input = lambda prompt="": builtins.input(print(prompt, end="") or "")
 

@@ -6,6 +6,7 @@ import brazilcep
 from datetime import datetime, timedelta
 from fpdf import FPDF
 from time import sleep
+import historico
 
 def apenas_int(mensagem):
     while True:
@@ -342,6 +343,8 @@ def finalizar_pedido(login, carrinho, historico_pedidos):
             print(f'Valor: R$ {item["valor total do estoque"]:.2f}\n')
 
             total += item['valor total do estoque']
+
+            menu_adm.registrar_historico_mov(historico.historico_mov, data = datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Venda', item = item['produto'], quantidade = item['quantidade'])
 
         else:
 

@@ -9,6 +9,7 @@ from rich.table import Table
 from rich.panel import Panel
 from fpdf import FPDF
 input = lambda prompt="": builtins.input(print(prompt, end="") or "")
+import historico
 
 
 def apenas_int(mensagem):
@@ -754,6 +755,7 @@ def gerenciar_derivados(estoque_derivados):
                     produto['valor do kg'] = valor_kg
                     produto['valor total do estoque'] = produto['quantidade'] * produto['valor do kg']
 
+                    registrar_historico_mov(historico.historico_mov, data = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Produção', item = produto['produto'], quantidade = produto['quantidade'])
                     print('\n[bold green]Estoque atualizado![/bold green]\n')
                     break
             
@@ -762,6 +764,7 @@ def gerenciar_derivados(estoque_derivados):
 
                 estoque_derivados.append({'produto' : nome, 'quantidade' : quantidade, 'valor do kg' : valor_kg, 'valor total do estoque' : valor_total})
 
+                registrar_historico_mov(historico.historico_mov, data = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Produção', item = nome, quantidade = produto['quantidade'])
                 print('\n[bold green]Produto adicionado no estoque![/bold green]')
 
         elif opcao == 2:
@@ -807,6 +810,9 @@ def gerenciar_derivados(estoque_derivados):
                             print('\n[bold green]Quantidade atualizada![/bold green]\n')  
                             sleep(1)  
                             exibir_produtos(produto)
+
+                            registrar_historico_mov(historico.historico_mov, data = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Produção', item = produto['produto'], quantidade = produto['quantidade'])
+                            
                             sleep(4)
 
                         elif editar == 3:
@@ -894,7 +900,7 @@ def relatorio_vendas(historico_pedidos):
 
 
 
-# - R10
+# - OP 9
 def mostrar_rebanho_total(rebanho, animal):
     for tipo in rebanho:
         if tipo['tipo'] == animal:
@@ -933,7 +939,15 @@ def mostrar_animais_doentes(rebanho,relatorio): #MODIFICAR
     print('Para maior informação sobre os sintomas, procure: Relatório animais, no Monitoramento do rebanho.\n')
 
 
-
+# - OP 10
+def registrar_historico_mov(historico_mov, data, acao, item, quantidade):
+    historico.historico_mov.append(
+        {'Data': data,
+         'Ação' : acao,
+         'Item': item,
+         'Quantidade': quantidade
+         }
+    )
 
 
 
@@ -949,7 +963,7 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
             (3)  -  Modificar dados do animal
             (4)  -  Retirar animal da lista
             (5)  -  Monitoramento do rebanho
-            (6)  -  Gerenciar produção
+            (6)  -  Gerenciar Produção
             (7)  -  Gerenciar Derivados
             (8)  -  Relatório de vendas
             (9)  -  Painel de Controle
@@ -1007,3 +1021,11 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
             fontes_cores.título_animais_doentePC()
             mostrar_animais_doentes(rebanho,relatorio)
 
+        elif op == 10:
+            for historicos in historico.historico_mov:
+                if historicos['Ação'] == 'Produção':
+                    print('HISTÓRICO DE ESTOQUE DE DERIVADOS MODIFICADOS:\n')
+                    print(historicos)
+                if historicos['Ação'] == 'Venda':
+                    print('HISTÓRIDCO DE DERIVADOS VENDIDOS:\n')
+                    print(historicos)
