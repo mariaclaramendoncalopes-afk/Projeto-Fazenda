@@ -490,6 +490,7 @@ def monitoramento_rebanho(rebanho, relatorio):
 
             else:
                 print('\n[bold red]Não há mais animais doentes para a triagem.[/bold red]\n')
+                input('Pressione a tecla ENTER para sair.')
 
         elif opc == 2:
             fontes_cores.título_relatorio()
@@ -879,6 +880,12 @@ def relatorio_vendas(historico_pedidos):
         print(f"Endereço: {pedido['rua']}, {pedido['numero']}")
         print(f"Cidade: {pedido['cidade']} - {pedido['estado']}")
         print(f"Data entrega: {pedido['data_entrega']}")
+        if 'itens' in pedido and pedido['itens']:
+            for item in pedido['itens']:
+                if 'valor do kg' in item:
+                    print(f"\nProduto: {item['produto']} | Qtd: {item['quantidade']}")
+                else:
+                    print(f"\nAnimal: {item['tipo']} | Brinco: {item['brinco']}\n")
         print(f"Valor produtos: R$ {pedido['valor']:.2f}")
         print(f"Frete: R$ {pedido['frete']:.2f}")
         print(f"TOTAL: R$ {valor_total:.2f}")
@@ -974,14 +981,15 @@ def painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, r
             fontes_cores.linha_comum()
             fontes_cores.título_historico_estoquePC()
 
-            for h in historico_mov:
-                if h['Ação'] == 'Produção':
-                    print(f"Data: {h['Data']} | Item: {h['Item']} | Qtd: {h['Quantidade']}")
+            if not historico_mov:
+                print('[bold red]Nenhuma modificação de estoque registrada.[/bold red]')
 
             else:
-                print('[bold red]Nenhuma modificação de estoque registrada.[bold red]')
+                for h in historico_mov:
+                    if h['Ação'] == 'Produção':
+                        print(f"Data: {h['Data']} | Item: {h['Item']} | Qtd: {h['Quantidade']}")
 
-            input('\nPressione ENTER para continuar...')
+                input('\nPressione ENTER para continuar...')
 
         elif opc == 6:
             print('Saindo do Painel de Controle...')
