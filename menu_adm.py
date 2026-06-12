@@ -2,13 +2,11 @@ import datetime
 import matplotlib.pyplot as plt
 from rich import print
 from rich.console import Console
-import builtins
 import fontes_cores
 from time import sleep
 from rich.table import Table
 from rich.panel import Panel
 from fpdf import FPDF
-input = lambda prompt="": builtins.input(print(prompt, end="") or "")
 import historico
 
 
@@ -846,7 +844,8 @@ def gerenciar_derivados(estoque_derivados):
 
 
 def relatorio_vendas(historico_pedidos):
-
+    fontes_cores.linha()
+    fontes_cores.título_relatorio_vendas()
     if not historico_pedidos:
         print("\n[bold red]Nenhum pedido encontrado.[/bold red]\n")
         input('Pressione a tecla ENTER para retornar ao menu.')
@@ -859,8 +858,6 @@ def relatorio_vendas(historico_pedidos):
     vendas_por_dia = {}
     vendas_por_cliente = {}
 
-    fontes_cores.linha()
-    fontes_cores.título_relatorio_vendas()
 
     for pedido in historico_pedidos:
 
@@ -980,13 +977,14 @@ def painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, r
                     print(f"Data: {h['Data']} | Item: {h['Item']} | Qtd: {h['Quantidade']}")
 
             else:
-                print('[bold red]Nenhuma modificação de estoque registrada.[bold red]\n')
+                print('[bold red]Nenhuma modificação de estoque registrada.[bold red]')
 
             input('\nPressione ENTER para continuar...')
 
         elif opc == 7:
             print('Saindo do Painel de Controle...')
             sleep(1)
+            fontes_cores.linha()
             break
         else:
             print('[bold red]Opção inválida do Painel de Controle![/bold red]')
