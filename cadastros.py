@@ -3,9 +3,18 @@ from time import sleep
 import fontes_cores
 from rich.console import Console
 import re
+import json
+import os
 
 def senhas(usuarios):
-    nome_completo = input('Digite seu nome completo:  ').lower()
+    while True:
+        nome_completo = input('Digite seu nome completo:  ').strip()
+
+        if nome_completo.isalpha():
+            nome_completo = nome_completo.lower()
+            break
+        
+        print('\n[bold red]NOME INVÁLIDO:[/bold red] Digite seu nome completo (apenas letras).\n')
 
     while True:
         usuario = input('Digite um novo usuário:  ').lower()
@@ -16,17 +25,25 @@ def senhas(usuarios):
 
         for pessoa in usuarios:
             if pessoa['usuario'] == usuario:
-                print('[bold red]Já existe usuário com esse nome. Tente novamente.[/bold red]\n')
+                print('\n[bold red]Já existe usuário com esse nome. Tente novamente.[/bold red]\n')
                 break
         else:
             break
         
-    regex_email = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    regex_email = r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$'
     while True:
         email = input('Digite seu e-mail:  ').lower()
-        if re.match(regex_email, email):
+ 
+        if not re.match(regex_email, email):
+            print('\n[bold red]❌ E-MAIL INVÁLIDO:[/bold red] Use o formato padrão (exemplo@email.com)\n')
+            continue
+
+        for pessoa in usuarios:
+            if pessoa['email'] == email:
+                print('\n[bold red]Já existe usuário com esse E-mail. Tente novamente.[/bold red]\n')
+                break
+        else:
             break
-        print('\n[bold red]❌ E-MAIL INVÁLIDO:[/bold red] Use o formato padrão (exemplo@email.com)\n')
 
     regex_tel = r'^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$'
     while True:
@@ -44,7 +61,7 @@ def senhas(usuarios):
             continue
         
         if senha == usuario:
-            print('[bold red]SENHA FRACA:[/bold red] Senha não pode ser igual ao usuário\n')
+            print('\n[bold red]SENHA FRACA:[/bold red] Senha não pode ser igual ao usuário\n')
             continue
 
         confirmacao = input('Confirme sua senha:  ')
@@ -62,6 +79,10 @@ def cadastro_adm(usuarios):
     nome_completo, usuario, email, telefone, senha = senhas(usuarios)
 
     usuarios.append({'nome completo': nome_completo, 'usuario': usuario, 'email' : email, 'telefone': telefone, 'senha': senha, 'acesso': True})
+
+    with open("usuarios.json", "w", encoding="utf-8") as arquivo:
+        json.dump(usuarios, arquivo, indent=4, ensure_ascii=False)
+
     print('\n')
     print('[bold cyan]Realizando cadastro...[/bold cyan]')
     sleep(1)
@@ -73,6 +94,9 @@ def cadastro_adm(usuarios):
 
 def cadastro_cliente(usuarios):
     nome_completo, usuario, email, telefone, senha = senhas(usuarios)
+
+    with open("usuarios.json", "w", encoding="utf-8") as arquivo:
+        json.dump(usuarios, arquivo, indent=4, ensure_ascii=False)
 
     usuarios.append({'nome completo': nome_completo, 'usuario': usuario, 'email' : email, 'telefone': telefone, 'senha': senha, 'acesso': False})
     print('\n')
@@ -110,4 +134,6 @@ def login(usuarios):
             return pessoa
     else:    
         print('\n[bold red]Usuário não encontrado[/bold red]\n')
+        input('\nPressione a tecla ENTER para retornar ao menu')
+        print('\n')
         return

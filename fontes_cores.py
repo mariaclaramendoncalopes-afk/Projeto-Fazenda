@@ -58,6 +58,14 @@ def título_cadastrar_animal():
     tabela_titulo.add_column(width=60, justify="center")
     tabela_titulo.add_row("ＣＡＤＡＳＴＲＡＲ  ＡＮＩＭＡＬ  ＮＯ  ＲＥＢＡＮＨＯ")
     console.print(tabela_titulo)
+    
+def título_animais_rebanho():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＡＮＩＭＡＩＳ  ＤＯ  ＲＥＢＡＮＨＯ")
+    console.print(tabela_titulo)
+    print('\n')
 
 def título_buscar_animal():
     console = Console()
@@ -219,6 +227,15 @@ def título_adicionar_carrinho():
     console.print(tabela_titulo)
     print('\n')
 
+
+def título_visualizar_carrinho():
+    console = Console()
+    tabela_titulo = Table(border_style="bold cyan", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＶＩＳＵＡＬＩＺＡＲ  ＣＡＲＲＩＮＨＯ")
+    console.print(tabela_titulo)
+    print('\n')
+
 def remover_itens_carrinho():
     console = Console()
     tabela_titulo = Table(border_style="bold cyan", show_header=False, padding=(0, 0), expand=False)
@@ -245,7 +262,6 @@ def título_agendar_entrega():
 
 
 
-#Painel de controle
 def título_painelcontrolePC():
     console = Console()
     tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)

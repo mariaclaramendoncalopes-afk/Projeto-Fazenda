@@ -36,6 +36,13 @@ def obter_sim_nao(mensagem):
         else:
             print('\n[bold red]Resposta inválida! Digite apenas "s" para Sim ou "n" para Não.[/bold red]')
 
+def apenas_letras(mensagem):
+    while True:
+        entrada = input(mensagem).strip()
+        if entrada and entrada.replace(" ", "").isalpha():
+            return entrada.lower()
+        print('[bold red]Erro! Digite apenas letras.[/bold red]\n')
+
 
 def sintoma_gravidade(gravidade):
     while True:
@@ -117,15 +124,15 @@ def cadastrar_animal(animais_d, rebanho):
                 else:
                     break
 
-            status = input('\nStatus do animal:  ').lower ()
-            peso = apenas_float('\nPeso do animal:  ')
-            idade = apenas_int('\nIdade do animal:  ')
+            status = input('\nStatus do animal?  ').lower ()
+            peso = apenas_float('\nPeso do animal?  ')
+            idade = apenas_int('\nIdade do animal?  ')
             sexo = input('\nSexo do animal:  (F/M)?  ').upper ()
-            valor = apenas_float('\nValor do animal:  ')
+            valor = apenas_float('\nValor do animal?  ')
             produto = input('\nO que ele produz?  (caso não produza nada, deixe o espaço vazio):  ').lower ()
-            producao = apenas_int('\nQuanto esse animal produz por dia:  ')
-            vacinado = obter_sim_nao('\nÉ vacinado - (s/n)?  ').lower ()
-            observacoes = input('\nObservações: (caso não tenha, deixe o espaço vazio)  ').lower ()
+            producao = apenas_int('\nQuanto esse animal produz por dia?  (caso não produza nada, digite 0):  ')
+            vacinado = obter_sim_nao('\nÉ vacinado?  (s/n)?  ').lower ()
+            observacoes = input('\nObservações? (caso não tenha, deixe o espaço vazio)  ').lower ()
 
             rebanho.append({
                     'brinco': brinco, 'tipo' : tipo, 'status' : status, 'peso' : peso, 'idade' : idade, 'sexo' : sexo,
@@ -151,6 +158,16 @@ def cadastrar_animal(animais_d, rebanho):
                 print('\n')
                 fontes_cores.linha()
                 break
+
+
+def todos_animais(rebanho):
+    fontes_cores.linha()
+    fontes_cores.título_animais_rebanho()
+
+    for animal in rebanho:
+        exibir_ficha_animal(animal)
+
+    input('\n\nPressione a tecla ENTER para sair')
 
 
 def buscar_animal(rebanho):
@@ -743,7 +760,7 @@ def gerenciar_derivados(estoque_derivados):
             fontes_cores.linha_comum()
             fontes_cores.título_adicionar_derivado()
 
-            nome = input('Nome do produto:  ').lower()
+            nome = apenas_letras('Nome do produto:  ').lower()
             quantidade = apenas_float('Quantidade (kg/l) que deseja adicionar no estoque:  ')
             valor_kg = apenas_float('Valor por KG/L:  ')
 
@@ -901,7 +918,11 @@ def relatorio_vendas(historico_pedidos):
 
 
 # - OP 9
-def mostrar_rebanho_total(rebanho, animal):
+def mostrar_rebanho_total(rebanho, animais_d):
+    for animal in animais_d:
+        fontes_cores.título_tipos_animaisPC(animal)
+        mostrar_rebanho_total(rebanho, animal)
+        print()
     for tipo in rebanho:
         if tipo['tipo'] == animal:
             exibir_ficha_animal(tipo)
@@ -959,14 +980,16 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
         fontes_cores.título_menu_adm()
         print('''
             (1)  -  Cadastrar animal no rebanho
-            (2)  -  Buscar animal
-            (3)  -  Modificar dados do animal
-            (4)  -  Retirar animal da lista
-            (5)  -  Monitoramento do rebanho
-            (6)  -  Gerenciar Produção
-            (7)  -  Gerenciar Derivados
-            (8)  -  Relatório de vendas
-            (9)  -  Painel de Controle
+            (2)  -  Listar todos os animais do rebanho
+            (3)  -  Buscar animal pelo brinco
+            (4)  -  Modificar dados do animal
+            (5)  -  Retirar animal da lista
+            (6)  -  Monitoramento do rebanho
+            (7)  -  Gerenciar Produção
+            (8)  -  Gerenciar Derivados
+            (9)  -  Relatório de vendas
+            (10) -  Painel de Controle
+            (11) - XXX
             (0)  -  Sair
     ''')
         
@@ -978,29 +1001,32 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
 
         elif op == 1:
             cadastrar_animal(animais_d, rebanho)
-        
+
         elif op == 2:
+            todos_animais(rebanho)
+        
+        elif op == 3:
             buscar_animal(rebanho)
 
-        elif op == 3:
+        elif op == 4:
             modificar_animal(rebanho)
 
-        elif op == 4:
+        elif op == 5:
             remover_animal(rebanho)
 
-        elif op == 5:
+        elif op == 6:
             monitoramento_rebanho(rebanho, relatorio)
 
-        elif op == 6:
+        elif op == 7:
             gerenciar_produçoes(rebanho, producao_diaria)
 
-        elif op == 7:
+        elif op == 8:
             gerenciar_derivados(estoque_derivados)
 
-        elif op == 8:
+        elif op == 9:
             relatorio_vendas(historico_pedidos)
 
-        elif op == 9:
+        elif op == 10:
             fontes_cores.título_painelcontrolePC()
             print('Todos animais presentes no rebanho, por tipo:\n')
             for animal in animais_d:
@@ -1021,7 +1047,7 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
             fontes_cores.título_animais_doentePC()
             mostrar_animais_doentes(rebanho,relatorio)
 
-        elif op == 10:
+        elif op == 11:
             for historicos in historico.historico_mov:
                 if historicos['Ação'] == 'Produção':
                     print('HISTÓRICO DE ESTOQUE DE DERIVADOS MODIFICADOS:\n')

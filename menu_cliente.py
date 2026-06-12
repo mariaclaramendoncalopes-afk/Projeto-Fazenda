@@ -142,7 +142,7 @@ def segunda_via(historico_pedidos):
             print("Escolha inválida.")
         else:
             pedido = historico_pedidos[escolha - 1]
-        emitir_recibo(pedido)
+            emitir_recibo(pedido)
 
 
 def catálogo_venda_derivados(estoque_derivados):
@@ -248,78 +248,103 @@ def adicionar_carrinho(estoque_derivados, rebanho, carrinho):
                     print('[bold red]Animal não encontrado.[/bold red]')
 
 
+def visualizar_carrinho(carrinho):
+    fontes_cores.linha()
+    fontes_cores.título_visualizar_carrinho()
+
+    if len(carrinho) == 0:
+        print('\n[bold red]Seu carrinho está vazio! Que tal adicionar alguns produtos?[/bold red]\n')
+        input('\n\nPressione a tecla ENTER para retornar ao menu.')
+        fontes_cores.linha()
+        return
+    
+    else:
+        for item in carrinho:
+
+            if 'brinco' in item:
+                menu_adm.exibir_ficha_animal(item)
+
+            elif 'valor do kg' in item:
+                menu_adm.exibir_produtos(item)
+
+        input('\n\nPressione ENTER para retornar ao menu.')
+
+
+
 def remover_carrinho(carrinho, rebanho, estoque_derivados):
     while True:
         if len(carrinho) == 0:
-            print('[bold red]Carrinho vazio.[/bold red]')
+            print('[bold red]Carrinho vazio.[/bold red]\n')
             fontes_cores.linha()
             break
             
         else:
-            for item in carrinho:
-
-                if 'brinco' in item:
-                    print(f"Animal | Brinco: {item['brinco']}")
-
-                elif 'produto' in item:
-                    print(f"Produto | {item['produto']} | Qtd: {item['quantidade']}")
-
+            fontes_cores.linha()
+            fontes_cores.remover_itens_carrinho()
             print('''
-            (1) Remover animal
-            (2) Remover produto
-            (3) Cancelar remoção
+            (1) Remover item específico
+            (2) Esvaziar carrinho
+            (0) Voltar
             ''')
 
-            opc = apenas_int('Escolha: ')
+            op = apenas_int('Escolha: ')
 
-            if opc == 1:
-
-                brinco = input('Brinco do animal: ')
-
+            if op == 1:
+                contador = 1
+                print("\n--- SEUS ITENS ---")
                 for item in carrinho:
+                    if 'brinco' in item:
+                        print(f'[{contador}] Animal | Brinco: {item["brinco"]}')
+                    elif 'produto' in item:
+                        print(f'[{contador}] Produto | {item["produto"]} ({item["quantidade"]} KG/L)')
+                    contador += 1
 
-                    if 'brinco' in item and item['brinco'] == brinco:
+                opcao = apenas_int('\nQual número de item deseja remover? ')
 
-                        carrinho.remove(item)
+                if 1 <= opcao <= len(carrinho):
+                    item = carrinho[opcao - 1]
+
+                    if 'brinco' in item:
                         rebanho.append(item)
 
-                        print('\nAnimal removido do carrinho.\n')
-                        break
-
-                else:
-                    print('\n[bold red]Animal não encontrado no carrinho.[/bold red]\n')
-
-            elif opc == 2:
-
-                nome = input('Nome do produto: ').lower()
-
-                for item in carrinho:
-
-                    if 'produto' in item and item['produto'].lower() == nome:
-
+                    elif 'produto' in item:
                         for produto in estoque_derivados:
-
                             if produto['produto'] == item['produto']:
-
                                 produto['quantidade'] += item['quantidade']
                                 produto['valor total do estoque'] = (produto['quantidade'] * produto['valor do kg'])
                                 break
-
                         else:
-                            estoque_derivados.append({'produto': item['produto'], 'quantidade': item['quantidade'], 'valor do kg': item['valor do kg'], 'valor total do estoque': item['valor total do estoque']})
+                            estoque_derivados.append(item)
 
-                        carrinho.remove(item)
-
-                        print('\nProduto removido do carrinho.\n')
-                        break
+                    carrinho.remove(item)
+                    print('\n[bold green]Item removido do carrinho com sucesso.[/bold green]\n')
 
                 else:
-                    print('\n[bold red]Produto não encontrado no carrinho, digite o nome corretamente.[/bold red]\n')
-                    continue
+                    print('\n[bold red]Número inválido.[/bold red]\n')
 
-            else:
+            elif op == 2:
+                for item in carrinho:
+                    if 'brinco' in item:
+                        rebanho.append(item)
+
+                    elif 'produto' in item:
+                        for produto in estoque_derivados:
+                            if produto['produto'] == item['produto']:
+                                produto['quantidade'] += item['quantidade']
+                                produto['valor total do estoque'] = (produto['quantidade'] * produto['valor do kg'])
+                                break
+                        else:
+                            estoque_derivados.append(item)
+
+                carrinho.clear()
+                print('\n[bold green]Carrinho esvaziado com sucesso.[/bold green]\n')
+
+            elif op == 0:
                 break
 
+            else:
+                print('[bold red]Opção inválida.[/bold red]')
+                continue
 
 
 def finalizar_pedido(login, carrinho, historico_pedidos):
@@ -409,9 +434,10 @@ def finalizar_pedido(login, carrinho, historico_pedidos):
         data_entrega = data1.strftime("%d/%m/%Y")
     elif opcao == 2:
         data_entrega = data2.strftime("%d/%m/%Y")
-    else:
+    elif opcao == 3:
         data_entrega = data3.strftime("%d/%m/%Y")
-
+    else:
+        print('\n[bold red]Data inválida. Digite uma data válida[/bold red]\n')
 
     if total >= 500:
         frete = 50
@@ -450,11 +476,12 @@ def menu_cliente(login, estoque_derivados, rebanho, carrinho, historico_pedidos)
     while True:
         fontes_cores.menu_cliente()
         print('''
-            (1) - Visualizar catálogo
+            (1) - Catálogo de vendas
             (2) - Adicionar itens ao carrinho de compras
-            (3) - Remover itens ou esvaziar carrinho
-            (4) - Finalizar pedido | Agendar entrega
-            (5) - Emitir segunda via de recibos anteriores
+            (3) - Visualizar carrinho
+            (4) - Remover itens ou esvaziar carrinho
+            (5) - Finalizar pedido | Agendar entrega
+            (6) - Emitir segunda via de recibos anteriores
             (0) - Sair
     ''')
         
@@ -474,12 +501,15 @@ def menu_cliente(login, estoque_derivados, rebanho, carrinho, historico_pedidos)
             adicionar_carrinho(estoque_derivados, rebanho, carrinho)
 
         elif op == 3:
-            remover_carrinho(carrinho, rebanho, estoque_derivados)
+            visualizar_carrinho(carrinho)
 
         elif op == 4:
-            finalizar_pedido(login, carrinho, historico_pedidos)
+            remover_carrinho(carrinho, rebanho, estoque_derivados)
 
         elif op == 5:
+            finalizar_pedido(login, carrinho, historico_pedidos)
+
+        elif op == 6:
             segunda_via(historico_pedidos)
 
         else:

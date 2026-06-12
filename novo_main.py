@@ -4,18 +4,20 @@ import cadastros
 import menu_adm
 import menu_cliente
 from rich import print
-import builtins
 import historico
-
-input = lambda prompt="": builtins.input(print(prompt, end="") or "")
-
-
+import json
+import os
 
 
-usuarios = [
-    {'nome completo': 'kamille vieira da silva', 'usuario' : 'kamille', 'email' : 'kamille@gmail.com', 'telefone' : '83974007252', 'senha' : '1234', 'acesso' : True},
-    {'nome completo': 'maria clara', 'usuario' : 'clara', 'email' : 'clara@hotmail.com', 'telefone' : '83000000000', 'senha' : '5678', 'acesso' : False},
-]
+
+if os.path.exists("usuarios.json"):
+    with open("usuarios.json", "r", encoding="utf-8") as arquivo:
+        usuarios = json.load(arquivo)
+else:
+    usuarios = [
+        {'nome completo': 'kamille vieira da silva', 'usuario' : 'kamille', 'email' : 'kamille@gmail.com', 'telefone' : '83974007252', 'senha' : '1234', 'acesso' : True},
+        {'nome completo': 'maria clara', 'usuario' : 'clara', 'email' : 'clara@hotmail.com', 'telefone' : '83000000000', 'senha' : '5678', 'acesso' : False},
+    ]
 
 rebanho = [
     {
