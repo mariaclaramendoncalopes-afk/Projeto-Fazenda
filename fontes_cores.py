@@ -303,3 +303,11 @@ def título_animais_doentePC():
     tabela_titulo.add_row("ＲＥＬＡＴＯＲＩＯ ＤＥ ＡＮＩＭＡＩＳ  ＤＯＥＮＴＥＳ")
     console.print(tabela_titulo)
     print('\n')
+
+def título_historico_estoquePC():
+    console = Console()
+    tabela_titulo = Table(border_style="bold blue", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("[bold cyan]Histórico de Estoque de Derivados Modificados[/bold cyan]")
+    console.print(tabela_titulo)
+    print('\n')

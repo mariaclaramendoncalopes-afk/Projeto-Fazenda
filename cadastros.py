@@ -10,7 +10,7 @@ def senhas(usuarios):
     while True:
         nome_completo = input('Digite seu nome completo:  ').strip()
 
-        if nome_completo.isalpha():
+        if nome_completo.replace(' ', '').isalpha():
             nome_completo = nome_completo.lower()
             break
         
@@ -35,7 +35,7 @@ def senhas(usuarios):
         email = input('Digite seu e-mail:  ').lower()
  
         if not re.match(regex_email, email):
-            print('\n[bold red]❌ E-MAIL INVÁLIDO:[/bold red] Use o formato padrão (exemplo@email.com)\n')
+            print('\n[bold red]E-MAIL INVÁLIDO:[/bold red] Use o formato padrão (exemplo@email.com)\n')
             continue
 
         for pessoa in usuarios:
@@ -51,7 +51,7 @@ def senhas(usuarios):
         apenas_numeros = re.sub(r'\D', '', telefone)
         if re.match(regex_tel, telefone) and len(apenas_numeros) in [10, 11]:
             break
-        print('\n[bold red]❌ TELEFONE INVÁLIDO:[/bold red] Digite o DDD + número (ex: 83999999999)\n')
+        print('\n[bold red]TELEFONE INVÁLIDO:[/bold red] Digite o DDD + número (ex: 83999999999)\n')
 
     while True:
         senha = input('Crie sua senha:  ')

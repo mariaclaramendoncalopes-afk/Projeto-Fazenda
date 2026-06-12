@@ -18,7 +18,7 @@ def apenas_int(mensagem):
         if entrada.isdigit():
             return int(entrada)
         else:
-            print("\n[bold red]Erro: Digite apenas números inteiros![/bold red]")
+            print("\n[bold red]Erro: Digite apenas números inteiros![/bold red]\n")
 
 def apenas_float(mensagem):
     while True:
@@ -26,7 +26,7 @@ def apenas_float(mensagem):
         try:
             return float(entrada)
         except ValueError:
-            print('[bold red]Erro! Digite um número válido (ex: 1.5 ou 2).[/bold red]')
+            print('\n[bold red]Erro! Digite um número válido (ex: 1.5 ou 2).[/bold red]\n')
 
 def obter_sim_nao(mensagem):
     while True:
@@ -41,7 +41,7 @@ def apenas_letras(mensagem):
         entrada = input(mensagem).strip()
         if entrada and entrada.replace(" ", "").isalpha():
             return entrada.lower()
-        print('[bold red]Erro! Digite apenas letras.[/bold red]\n')
+        print('\n[bold red]Erro! Digite apenas letras.[/bold red]\n')
 
 
 def sintoma_gravidade(gravidade):
@@ -124,10 +124,10 @@ def cadastrar_animal(animais_d, rebanho):
                 else:
                     break
 
-            status = input('\nStatus do animal?  ').lower ()
+            status = apenas_letras('\nStatus do animal?  (lactação|venda|produção|etc):  ').lower ()
             peso = apenas_float('\nPeso do animal?  ')
             idade = apenas_int('\nIdade do animal?  ')
-            sexo = input('\nSexo do animal:  (F/M)?  ').upper ()
+            sexo = apenas_letras('\nSexo do animal:  (F/M)?  ').upper ()
             valor = apenas_float('\nValor do animal?  ')
             produto = input('\nO que ele produz?  (caso não produza nada, deixe o espaço vazio):  ').lower ()
             producao = apenas_int('\nQuanto esse animal produz por dia?  (caso não produza nada, digite 0):  ')
@@ -168,6 +168,7 @@ def todos_animais(rebanho):
         exibir_ficha_animal(animal)
 
     input('\n\nPressione a tecla ENTER para sair')
+    fontes_cores.linha()
 
 
 def buscar_animal(rebanho):
@@ -375,7 +376,7 @@ def monitoramento_rebanho(rebanho, relatorio):
 
                     fontes_cores.título_checagem()
                     print(f'     [bold cyan]BRINCO do animal em checagem: {animal["brinco"]}  |  {animal["tipo"]}[/bold cyan]')
-                    temp = float(input('\nInforme a TEMPERATURA do animal: '))
+                    temp = apenas_float('\nInforme a TEMPERATURA do animal: ')
                     if temp < 35.5:
                         prioridade += 4
                         estado = 'Hipotermia Grave!'
@@ -447,7 +448,7 @@ def monitoramento_rebanho(rebanho, relatorio):
                     if medicamento == 's':
                         prioridade += 1
                         inf_med = input('\nInforme o(s) medicamento(s) utilizado(s): ')
-                        doentes['sintomas'].append({'Utiliza medicamento': ['sim', inf_med]})
+                        doentes['sintomas'].append({'utiliza medicamento': ['sim', inf_med]})
 
                     dias_doente = apenas_int('\nA quantos DIAS o animal está doente? ')
                     if dias_doente <= 3:
@@ -567,12 +568,7 @@ def monitoramento_rebanho(rebanho, relatorio):
                         conteudo_painel += f"[bold]Prioridade:[/bold] [{cor}]{prio} ({txt})[/{cor}]\n\n"
                         conteudo_painel += f"[cyan][bold]Sintomas Detectados:[/bold][/cyan]\n{sintomas_formatados}"
 
-                        painel = Panel(
-                            conteudo_painel, 
-                            title=f"RELATÓRIO DO ANIMAL {busca}", 
-                            border_style=cor, 
-                            expand=False
-                        )
+                        painel = Panel(conteudo_painel, title=f"RELATÓRIO DO ANIMAL {busca}", border_style=cor, expand=False)
                         console.print(painel)
                         print('\n')
                         sleep(2)
@@ -853,6 +849,8 @@ def relatorio_vendas(historico_pedidos):
 
     if not historico_pedidos:
         print("\n[bold red]Nenhum pedido encontrado.[/bold red]\n")
+        input('Pressione a tecla ENTER para retornar ao menu.')
+        fontes_cores.linha()
         return
 
     total_vendas = 0
@@ -916,17 +914,82 @@ def relatorio_vendas(historico_pedidos):
 
 
 
+def painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, relatorio, historico):
+    while True:
+        fontes_cores.linha()
+        fontes_cores.título_painelcontrolePC()
+        print('''
+            (1) - Visualizar Rebanho Total (por Tipo)
+            (2) - Verificar Produção Diária
+            (3) - Consultar Estoque de Derivados
+            (4) - Ver Resumo de Animais Doentes
+            (5) - Histórico de Modificações no Estoque
+            (6) - Histórico de Derivados Vendidos
+            (7) - Voltar ao Menu Principal
+        ''')
+        
+        opc = apenas_int('\n- Escolha uma opção do Painel: ')
+        print('\n')
+        
+        if opc == 1:
+            print('[bold green]Todos animais presentes no rebanho, por tipo:[/bold green]\n')
+            for tipo in animais_d:
+                fontes_cores.título_tipos_animaisPC(tipo)
+                
+                houve_animal = False
+                for animal in rebanho:
+                    if animal['tipo'].lower() == tipo.lower():
+                        exibir_ficha_animal(animal)
+                        houve_animal = True
+                        
+                if not houve_animal:
+                    print(f"Nenhum animal do tipo {tipo} encontrado no rebanho.\n")
 
-# - OP 9
-def mostrar_rebanho_total(rebanho, animais_d):
-    for animal in animais_d:
-        fontes_cores.título_tipos_animaisPC(animal)
-        mostrar_rebanho_total(rebanho, animal)
-        print()
-    for tipo in rebanho:
-        if tipo['tipo'] == animal:
-            exibir_ficha_animal(tipo)
-            
+            input('\nPressione ENTER para continuar...')
+
+        elif opc == 2:
+            fontes_cores.linha_comum()
+            fontes_cores.título_producao_diariaPC()
+            if len(producao_diaria) == 0:
+                print('[bold red]Nenhuma produção registrada.[/bold red]')
+            else:
+                exibir_producao_diaria(producao_diaria)
+
+            input('\nPressione ENTER para continuar...')
+
+        elif opc == 3:
+            fontes_cores.linha_comum()
+            fontes_cores.título_estoque_derivadosPC()
+            derivados_no_estoque(estoque_derivados)
+
+            input('\nPressione ENTER para continuar...')
+
+        elif opc == 4:
+            fontes_cores.linha_comum()
+            fontes_cores.título_animais_doentePC()
+            mostrar_animais_doentes(rebanho, relatorio)
+
+            input('\nPressione ENTER para continuar...')
+
+        elif opc == 5:
+            fontes_cores.linha_comum()
+            fontes_cores.título_historico_estoquePC()
+
+            for h in historico.historico_mov:
+                if h['Ação'] == 'Produção':
+                    print(f"Data: {h['Data']} | Item: {h['Item']} | Qtd: {h['Quantidade']}")
+
+            else:
+                print('[bold red]Nenhuma modificação de estoque registrada.[bold red]\n')
+
+            input('\nPressione ENTER para continuar...')
+
+        elif opc == 7:
+            print('Saindo do Painel de Controle...')
+            sleep(1)
+            break
+        else:
+            print('[bold red]Opção inválida do Painel de Controle![/bold red]')
 
 
 def derivados_no_estoque(estoque_derivados):
@@ -934,7 +997,7 @@ def derivados_no_estoque(estoque_derivados):
     estoque = 0
     qnt_derivados = 0
     for itens in estoque_derivados:
-        qnt_derivados +=1
+        qnt_derivados += 1
         derivado += itens['quantidade']
         estoque += itens['valor total do estoque']
         exibir_produtos(itens)
@@ -942,33 +1005,33 @@ def derivados_no_estoque(estoque_derivados):
     [bold purple]Resumo:[/bold purple]
     Quantidade de Derivados: {qnt_derivados}
     Total de Derivados: {derivado} 
-    Estoque Total: R$ {estoque}
+    Estoque Total: R$ {estoque:.2f}
     ''')
 
-def mostrar_animais_doentes(rebanho,relatorio): #MODIFICAR
+
+def mostrar_animais_doentes(rebanho, relatorio):
     qnt = 0
     for animal in rebanho:
         if animal['observações'] == 'doente':
-            qnt +=1
-            print(f'Brinco: {animal['brinco']}')
-            print(f'{animal['tipo']} - DOENTE \n')
-        if animal['observações'] == 'checado':
+            qnt += 1
+            print(f'Brinco: {animal["brinco"]}')
+            print(f'{animal["tipo"]} - DOENTE \n')
+        elif animal['observações'] == 'checado':
             qnt += 1            
-            print(f'Brinco: {animal['brinco']}')
-            print(f'{animal['tipo']} - DOENTE\n')
+            print(f'Brinco: {animal["brinco"]}')
+            print(f'{animal["tipo"]} - DOENTE (Checado)\n')
+            
     print(f'Número de animais que estão [bold red]DOENTES[/bold red]: {qnt}')
     print('Para maior informação sobre os sintomas, procure: Relatório animais, no Monitoramento do rebanho.\n')
 
 
-# - OP 10
-def registrar_historico_mov(historico_mov, data, acao, item, quantidade):
-    historico.historico_mov.append(
-        {'Data': data,
-         'Ação' : acao,
-         'Item': item,
-         'Quantidade': quantidade
-         }
-    )
+def registrar_historico_mov(historico, data, acao, item, quantidade):
+    historico.historico_mov.append({
+        'Data': data,
+        'Ação': acao,
+        'Item': item,
+        'Quantidade': quantidade
+    })
 
 
 
@@ -989,7 +1052,6 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
             (8)  -  Gerenciar Derivados
             (9)  -  Relatório de vendas
             (10) -  Painel de Controle
-            (11) - XXX
             (0)  -  Sair
     ''')
         
@@ -1027,31 +1089,4 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
             relatorio_vendas(historico_pedidos)
 
         elif op == 10:
-            fontes_cores.título_painelcontrolePC()
-            print('Todos animais presentes no rebanho, por tipo:\n')
-            for animal in animais_d:
-                fontes_cores.título_tipos_animaisPC(animal)
-                mostrar_rebanho_total(rebanho, animal)
-                print()
-
-
-            fontes_cores.título_producao_diariaPC()
-            if len(producao_diaria) == 0:
-                print('[bold red]Nenhuma produção registrada.[/bold red]')
-            else:
-                exibir_producao_diaria(producao_diaria)
-
-            fontes_cores.título_estoque_derivadosPC()
-            derivados_no_estoque(estoque_derivados)
-            
-            fontes_cores.título_animais_doentePC()
-            mostrar_animais_doentes(rebanho,relatorio)
-
-        elif op == 11:
-            for historicos in historico.historico_mov:
-                if historicos['Ação'] == 'Produção':
-                    print('HISTÓRICO DE ESTOQUE DE DERIVADOS MODIFICADOS:\n')
-                    print(historicos)
-                if historicos['Ação'] == 'Venda':
-                    print('HISTÓRIDCO DE DERIVADOS VENDIDOS:\n')
-                    print(historicos)
+            painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, relatorio, historico)
