@@ -6,7 +6,7 @@ import brazilcep
 from datetime import datetime, timedelta
 from fpdf import FPDF
 from time import sleep
-import historico
+
 
 def apenas_int(mensagem):
     while True:
@@ -194,7 +194,9 @@ def adicionar_carrinho(estoque_derivados, rebanho, carrinho):
             qtd = apenas_float('\nQuantidade que deseja (KG/L):  ')
 
             if qtd <= 0:
-                print('[bold red]Quantidade inválida![/bold red]')
+                print('\n[bold red]Quantidade inválida![/bold red]\n')
+                input('Pressione a tecla ENTER para sair.')
+                print('\n')
                 continue
 
             for produto in estoque_derivados:
@@ -291,7 +293,7 @@ def remover_carrinho(carrinho, rebanho, estoque_derivados):
 
             if op == 1:
                 contador = 1
-                print("\n--- SEUS ITENS ---")
+                fontes_cores.título_carrinho()
                 for item in carrinho:
                     if 'brinco' in item:
                         print(f'[{contador}] Animal | Brinco: {item["brinco"]}')
@@ -340,14 +342,15 @@ def remover_carrinho(carrinho, rebanho, estoque_derivados):
                 print('\n[bold green]Carrinho esvaziado com sucesso.[/bold green]\n')
 
             elif op == 0:
+                fontes_cores.linha()
                 break
 
             else:
-                print('[bold red]Opção inválida.[/bold red]')
+                print('\n[bold red]Opção inválida.[/bold red]\n')
                 continue
 
 
-def finalizar_pedido(login, carrinho, historico_pedidos):
+def finalizar_pedido(login, carrinho, historico_pedidos, historico_mov):
     fontes_cores.linha()
     fontes_cores.título_finalizar_pedido()
 
@@ -369,7 +372,7 @@ def finalizar_pedido(login, carrinho, historico_pedidos):
 
             total += item['valor total do estoque']
 
-            menu_adm.registrar_historico_mov(historico.historico_mov, data = datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Venda', item = item['produto'], quantidade = item['quantidade'])
+            menu_adm.registrar_historico_mov(historico_mov, data = datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Venda', item = item['produto'], quantidade = item['quantidade'])
 
         else:
 
@@ -472,7 +475,7 @@ def finalizar_pedido(login, carrinho, historico_pedidos):
 
 
 
-def menu_cliente(login, estoque_derivados, rebanho, carrinho, historico_pedidos):
+def menu_cliente(login, estoque_derivados, rebanho, carrinho, historico_pedidos, historico_mov):
     while True:
         fontes_cores.menu_cliente()
         print('''
@@ -489,6 +492,11 @@ def menu_cliente(login, estoque_derivados, rebanho, carrinho, historico_pedidos)
         print('\n')  
 
         if op == 0:
+            print('\n Encerrando o sistema... \n')
+            sleep(1)
+            print(' Salvando dados...')
+            sleep(1)
+            print('\n Sistema encerrado com sucesso. Até logo! ')
             break
 
         elif op == 1:
@@ -507,7 +515,7 @@ def menu_cliente(login, estoque_derivados, rebanho, carrinho, historico_pedidos)
             remover_carrinho(carrinho, rebanho, estoque_derivados)
 
         elif op == 5:
-            finalizar_pedido(login, carrinho, historico_pedidos)
+            finalizar_pedido(login, carrinho, historico_pedidos, historico_mov)
 
         elif op == 6:
             segunda_via(historico_pedidos)

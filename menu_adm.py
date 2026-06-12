@@ -7,7 +7,7 @@ from time import sleep
 from rich.table import Table
 from rich.panel import Panel
 from fpdf import FPDF
-import historico
+
 
 
 def apenas_int(mensagem):
@@ -535,6 +535,7 @@ def monitoramento_rebanho(rebanho, relatorio):
                 
                 if len(relatorio) == 0:
                     console.print('[bold yellow]Não foi feita a checagem de nenhum animal ainda.[/bold yellow]\n')
+                    input('\nPressione a tecla ENTER para sair')
                     break
 
                 busca = input('- Digite o BRINCO do animal que está procurando (ou "sair" para voltar): ')
@@ -733,7 +734,7 @@ def gerenciar_produçoes(rebanho, producao_diaria):
             continue
 
 
-def gerenciar_derivados(estoque_derivados):
+def gerenciar_derivados(estoque_derivados, historico_mov):
     while True:
         fontes_cores.linha()
         fontes_cores.título_gerenciamento_derivados()
@@ -766,7 +767,7 @@ def gerenciar_derivados(estoque_derivados):
                     produto['valor do kg'] = valor_kg
                     produto['valor total do estoque'] = produto['quantidade'] * produto['valor do kg']
 
-                    registrar_historico_mov(historico.historico_mov, data = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Produção', item = produto['produto'], quantidade = produto['quantidade'])
+                    registrar_historico_mov(historico_mov, data = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Produção', item = produto['produto'], quantidade = produto['quantidade'])
                     print('\n[bold green]Estoque atualizado![/bold green]\n')
                     break
             
@@ -775,7 +776,7 @@ def gerenciar_derivados(estoque_derivados):
 
                 estoque_derivados.append({'produto' : nome, 'quantidade' : quantidade, 'valor do kg' : valor_kg, 'valor total do estoque' : valor_total})
 
-                registrar_historico_mov(historico.historico_mov, data = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Produção', item = nome, quantidade = produto['quantidade'])
+                registrar_historico_mov(historico_mov, data = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Produção', item = nome, quantidade = produto['quantidade'])
                 print('\n[bold green]Produto adicionado no estoque![/bold green]')
 
         elif opcao == 2:
@@ -822,7 +823,7 @@ def gerenciar_derivados(estoque_derivados):
                             sleep(1)  
                             exibir_produtos(produto)
 
-                            registrar_historico_mov(historico.historico_mov, data = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Produção', item = produto['produto'], quantidade = produto['quantidade'])
+                            registrar_historico_mov(historico_mov, data = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), acao= 'Produção', item = produto['produto'], quantidade = produto['quantidade'])
                             
                             sleep(4)
 
@@ -841,6 +842,7 @@ def gerenciar_derivados(estoque_derivados):
             
             else:
                 print('\n[bold red]Produto não encontrado.[/bold red]\n')
+                input('\nPressione a tecla ENTER para sair')
 
 
 def relatorio_vendas(historico_pedidos):
@@ -894,7 +896,8 @@ def relatorio_vendas(historico_pedidos):
 
     for cliente, valor in top_clientes:
         print(f"{cliente}: R$ {valor:.2f}")
-
+        
+    input('\nPressione a tecla ENTER para retornar ao menu.')
 
     datas = list(vendas_por_dia.keys())
     valores = list(vendas_por_dia.values())
@@ -911,7 +914,7 @@ def relatorio_vendas(historico_pedidos):
 
 
 
-def painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, relatorio, historico):
+def painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, relatorio, historico_mov):
     while True:
         fontes_cores.linha()
         fontes_cores.título_painelcontrolePC()
@@ -921,8 +924,7 @@ def painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, r
             (3) - Consultar Estoque de Derivados
             (4) - Ver Resumo de Animais Doentes
             (5) - Histórico de Modificações no Estoque
-            (6) - Histórico de Derivados Vendidos
-            (7) - Voltar ao Menu Principal
+            (6) - Voltar ao Menu Principal
         ''')
         
         opc = apenas_int('\n- Escolha uma opção do Painel: ')
@@ -972,7 +974,7 @@ def painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, r
             fontes_cores.linha_comum()
             fontes_cores.título_historico_estoquePC()
 
-            for h in historico.historico_mov:
+            for h in historico_mov:
                 if h['Ação'] == 'Produção':
                     print(f"Data: {h['Data']} | Item: {h['Item']} | Qtd: {h['Quantidade']}")
 
@@ -981,7 +983,7 @@ def painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, r
 
             input('\nPressione ENTER para continuar...')
 
-        elif opc == 7:
+        elif opc == 6:
             print('Saindo do Painel de Controle...')
             sleep(1)
             fontes_cores.linha()
@@ -1023,8 +1025,8 @@ def mostrar_animais_doentes(rebanho, relatorio):
     print('Para maior informação sobre os sintomas, procure: Relatório animais, no Monitoramento do rebanho.\n')
 
 
-def registrar_historico_mov(historico, data, acao, item, quantidade):
-    historico.historico_mov.append({
+def registrar_historico_mov(historico_mov, data, acao, item, quantidade):
+    historico_mov.append({
         'Data': data,
         'Ação': acao,
         'Item': item,
@@ -1036,7 +1038,7 @@ def registrar_historico_mov(historico, data, acao, item, quantidade):
 
 
 
-def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data, historico_pedidos):
+def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data, historico_pedidos, historico_mov):
     while True:
         fontes_cores.título_menu_adm()
         print('''
@@ -1057,6 +1059,11 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
         print('\n')
 
         if op == 0:
+            print('\n Encerrando o sistema... \n')
+            sleep(1)
+            print(' Salvando dados...')
+            sleep(1)
+            print('\n Sistema encerrado com sucesso. Até logo! ')
             break
 
         elif op == 1:
@@ -1081,10 +1088,10 @@ def menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_deri
             gerenciar_produçoes(rebanho, producao_diaria)
 
         elif op == 8:
-            gerenciar_derivados(estoque_derivados)
+            gerenciar_derivados(estoque_derivados, historico_mov)
 
         elif op == 9:
             relatorio_vendas(historico_pedidos)
 
         elif op == 10:
-            painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, relatorio, historico)
+            painel_de_controle(rebanho, animais_d, producao_diaria, estoque_derivados, relatorio, historico_mov)

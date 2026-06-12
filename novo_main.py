@@ -1,10 +1,10 @@
 import datetime
+from time import sleep
 import fontes_cores
 import cadastros
 import menu_adm
 import menu_cliente
 from rich import print
-import historico
 import json
 import os
 
@@ -67,6 +67,7 @@ estoque_derivados = [
 relatorio_vendas = dict()
 dados_pedidos = dict()
 historico_pedidos = []
+historico_mov = []
 
 carrinho = []
 
@@ -85,6 +86,11 @@ while True:
     print('\n')
 
     if op == '0':
+        print('\n Encerrando o sistema... \n')
+        sleep(1)
+        print(' Salvando dados...')
+        sleep(1)
+        print('\n Sistema encerrado com sucesso. Até logo! ')
         break
 
     elif op == '1':
@@ -107,8 +113,8 @@ while True:
             continue
 
         if login['acesso'] == True:
-            menu_adm.menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data, historico_pedidos)
+            menu_adm.menu_adm(login, animais_d, rebanho, relatorio, producao_diaria, estoque_derivados, data, historico_pedidos, historico_mov)
             
         
         elif login['acesso'] == False:
-            menu_cliente.menu_cliente(login, estoque_derivados, rebanho, carrinho, historico_pedidos)
+            menu_cliente.menu_cliente(login, estoque_derivados, rebanho, carrinho, historico_pedidos, historico_mov)

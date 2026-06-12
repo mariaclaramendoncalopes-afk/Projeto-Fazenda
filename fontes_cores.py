@@ -227,6 +227,13 @@ def título_adicionar_carrinho():
     console.print(tabela_titulo)
     print('\n')
 
+def título_carrinho():
+    console = Console()
+    tabela_titulo = Table(border_style="bold cyan", show_header=False, padding=(0, 0), expand=False)
+    tabela_titulo.add_column(width=60, justify="center")
+    tabela_titulo.add_row("ＣＡＲＲＩＮＨＯ")
+    console.print(tabela_titulo)
+    print('\n')
 
 def título_visualizar_carrinho():
     console = Console()
