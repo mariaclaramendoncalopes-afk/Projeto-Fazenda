@@ -1,10 +1,8 @@
 from rich import print
 from time import sleep
 import fontes_cores
-from rich.console import Console
 import re
 import json
-import os
 
 def senhas(usuarios):
     while True:
@@ -95,10 +93,11 @@ def cadastro_adm(usuarios):
 def cadastro_cliente(usuarios):
     nome_completo, usuario, email, telefone, senha = senhas(usuarios)
 
+    usuarios.append({'nome completo': nome_completo, 'usuario': usuario, 'email' : email, 'telefone': telefone, 'senha': senha, 'acesso': False})
+
     with open("usuarios.json", "w", encoding="utf-8") as arquivo:
         json.dump(usuarios, arquivo, indent=4, ensure_ascii=False)
-
-    usuarios.append({'nome completo': nome_completo, 'usuario': usuario, 'email' : email, 'telefone': telefone, 'senha': senha, 'acesso': False})
+        
     print('\n')
     print('[bold cyan]Realizando cadastro...[/bold cyan]')
     sleep(1)

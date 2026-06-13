@@ -21,10 +21,10 @@ def apenas_int(mensagem):
 def apenas_float(mensagem):
     while True:
         entrada = input(mensagem).strip().replace(',', '.')
-        try:
+        if entrada.replace('.', '', 1).isdigit() and entrada != '':
             return float(entrada)
-        except ValueError:
-            print('\n[bold red]Erro! Digite um número válido (ex: 1.5 ou 2).[/bold red]\n')
+            
+        print('\n[bold red]Erro! Digite um número válido (ex: 1.5 ou 2).[/bold red]\n')
 
 def obter_sim_nao(mensagem):
     while True:
